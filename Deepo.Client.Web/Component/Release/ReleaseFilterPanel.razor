@@ -1,8 +1,10 @@
-﻿
+﻿@inject IStringLocalizer<Languages> _localizer;
+
 <MudCard Elevation="5">
+
     <MudCardHeader Class="mt-4 mx-20">
         <CardHeaderContent>
-            <MudText Typo="Typo.h5">Upcoming Releases</MudText>
+            <MudText Typo="Typo.h5">@_localizer["UpcomingReleases"]</MudText>
         </CardHeaderContent>
         <CardHeaderActions>
             <MudIconButton Icon="@Icons.Material.Filled.Settings" />
@@ -11,7 +13,6 @@
     <MudCardContent Class="mx-10">
         <MudStack>
             <MudTabs @bind-ActivePanelIndex="@ActivetabIndex" Outlined="false">
-
                 @foreach (ReleaseTabModel tab in _tabs)
                 {
                     <MudTabPanel Text="@tab.Label" Icon="@tab.Icon" Disabled="@tab.Disabled" ToolTip="@tab.ToolTip">
