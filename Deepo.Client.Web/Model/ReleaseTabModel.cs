@@ -20,4 +20,3 @@ public class ReleaseTabModel
         this.Disabled = true;
     }
 }
-

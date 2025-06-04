@@ -15,7 +15,7 @@ public class HttpClientOption : IHttpClientOption
         BaseAddress = default!;
         Name = string.Empty;
         UserAgent = string.Empty;
-        TaskID = Guid.NewGuid().ToString();
+        TaskID = Guid.Empty.ToString();
     }
 }
 
