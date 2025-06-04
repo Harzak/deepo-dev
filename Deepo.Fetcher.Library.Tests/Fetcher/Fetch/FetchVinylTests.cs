@@ -1,5 +1,5 @@
-﻿using Deepo.DAL.Service.Features.Author;
-using Deepo.DAL.Service.Features.ReleaseAlbum;
+﻿using Deepo.DAL.Service.Feature.ReleaseAlbum;
+using Deepo.DAL.Service.Interfaces;
 using Deepo.Fetcher.Library.Fetcher.Fetch;
 using Deepo.Fetcher.Library.Service.Discogs;
 using Deepo.Fetcher.Library.Service.Spotify;
@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,7 +42,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
             _discogsServiceMock.Setup(x => x.GetArtist(It.IsAny<string>(), new CancellationToken()))
               .ReturnsAsync(new Service.HttpServiceResult<IAuthor>(new Mock<IAuthor>().Object, true));
             _discogsServiceMock.Setup(x => x.GetLastReleaseByArtistID(It.IsAny<string>(), new CancellationToken()))
-             .ReturnsAsync(new Service.HttpServiceResult<IAlbum>(new Mock<IAlbum>().Object, true));
+             .ReturnsAsync(new Service.HttpServiceResult<AlbumModel>(new Mock<AlbumModel>().Object, true));
             Dto.Spotify.Album release = new()
             {
                 ReleaseDate = DateTime.UtcNow.AddDays(-15).ToString(),
@@ -64,7 +63,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
             await fetch.StartAsync(new CancellationToken());
 
             //Assert
-            _releaseAlbumDBServiceMock.Verify(x => x.Insert(It.IsAny<IAlbum>(), new CancellationToken()), Times.Never);
+            _releaseAlbumDBServiceMock.Verify(x => x.Insert(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Never);
         }
 
         [TestMethod]
@@ -74,7 +73,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
             _discogsServiceMock.Setup(x => x.GetArtist(It.IsAny<string>(), new CancellationToken()))
                 .ReturnsAsync(new Service.HttpServiceResult<IAuthor>(new Mock<IAuthor>().Object, true));
             _discogsServiceMock.Setup(x => x.GetLastReleaseByArtistID(It.IsAny<string>(), new CancellationToken()))
-             .ReturnsAsync(new Service.HttpServiceResult<IAlbum>(new Mock<IAlbum>().Object, true));
+             .ReturnsAsync(new Service.HttpServiceResult<AlbumModel>(new Mock<AlbumModel>().Object, true));
             Dto.Spotify.Album release = new()
             {
                 ReleaseDate = DateTime.UtcNow.AddDays(-5).ToString(),
@@ -96,7 +95,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
             await fetch.StartAsync(new CancellationToken());
 
             //Assert
-            _releaseAlbumDBServiceMock.Verify(x => x.Insert(It.IsAny<IAlbum>(), new CancellationToken()), Times.Once);
+            _releaseAlbumDBServiceMock.Verify(x => x.Insert(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Once);
         }
     }
 }
