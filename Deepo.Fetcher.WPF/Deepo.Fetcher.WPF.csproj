@@ -15,12 +15,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Commands\**" />
 	  <Compile Remove="Controls\**" />
 	  <Compile Remove="Localization\**" />
+	  <EmbeddedResource Remove="Commands\**" />
 	  <EmbeddedResource Remove="Controls\**" />
 	  <EmbeddedResource Remove="Localization\**" />
+	  <None Remove="Commands\**" />
 	  <None Remove="Controls\**" />
 	  <None Remove="Localization\**" />
+	  <Page Remove="Commands\**" />
 	  <Page Remove="Controls\**" />
 	  <Page Remove="Localization\**" />
 	</ItemGroup>
@@ -79,11 +83,6 @@
 			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 			<SubType>Designer</SubType>
 		</Page>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Commands\" />
-	  <Folder Include="Ressources\Icon\" />
 	</ItemGroup>
 
 	<ItemGroup>
