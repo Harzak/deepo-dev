@@ -6,6 +6,7 @@ namespace Deepo.DAL.Service.Feature.Fetcher;
 public class FetcherDBService : IFetcherDBService
 {
     private readonly Models.DEEPOContext _dbContext;
+
     public FetcherDBService(Models.DEEPOContext dbContext)
     {
         _dbContext = dbContext;

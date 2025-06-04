@@ -56,12 +56,11 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
         {
             Creation_Date = DateTime.Now,
             Modification_Date = DateTime.Now,
-            Creation_User = "DEEPO",
+            Creation_User = "Auto",
             Name = item.Title ?? string.Empty,
             GUID = Guid.NewGuid().ToString(),
             Author_Releases = author_Releases,
-            
-            Type_Release = _dbContext.Type_Releases.First(x => x.Code == "VINYL")
+            Type_Release = _dbContext.Type_Releases.First(x => x.Code == "VINYL") // todo
         };
 
 
@@ -171,7 +170,7 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
             .ToList()
             .AsReadOnly();
     }
-    
+
     public Release_Album? GetById(Guid id)
     {
         return _dbContext.Release_Albums

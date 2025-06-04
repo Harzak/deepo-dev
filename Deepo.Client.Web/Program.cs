@@ -4,9 +4,7 @@ using Framework.Common.Utils.Time.Provider;
 using Framework.Web.Http.Client.Service;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
-using System.Globalization;
 using System.Reflection;
 
 namespace Deepo.Client.Web;

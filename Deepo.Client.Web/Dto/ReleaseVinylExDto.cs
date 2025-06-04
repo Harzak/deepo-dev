@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace Deepo.Client.Web.Dto;
+﻿namespace Deepo.Client.Web.Dto;
 
 [Serializable]
 public class ReleaseVinylExDto : ReleaseVinylDto
