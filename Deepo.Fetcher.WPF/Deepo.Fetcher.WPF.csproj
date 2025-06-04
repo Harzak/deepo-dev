@@ -54,10 +54,10 @@
 		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.1" />
 		<PackageReference Include="Harzak.Framework.WPF.Behavior" Version="1.0.1" />
 		<PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
-		<PackageReference Include="NLog" Version="5.4.0" />
-		<PackageReference Include="NLog.Extensions.Logging" Version="5.4.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
+		<PackageReference Include="NLog" Version="5.5.0" />
+		<PackageReference Include="NLog.Extensions.Logging" Version="5.5.0" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
 		<PackageReference Include="WPF-UI" Version="4.0.2" />
 	</ItemGroup>
