@@ -28,10 +28,7 @@ internal class DiscogService : HttpService, IDiscogService
         _endPointSearch = new EndPointSearch(_options, logger);
         _endPointMasters = new EndPointMasters(_options, logger);
         _endPointArtistReleases = new EndPointArtistReleases(_options, logger);
-    }
-    protected override void SetHeader()
-    {
-        base.SetHeader();
+
         base.SetAuthorization("Discogs", $"token={_options.Token}");
     }
 
