@@ -13,7 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.1" />
 		<PackageReference Include="Harzak.Framework.Common.Worker" Version="1.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.4" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.5" />
 	</ItemGroup>
 
 	<ItemGroup>
