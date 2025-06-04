@@ -1,13 +1,11 @@
-﻿@using Deepo.Client.Web.Dto
-@inject IStringLocalizer<Languages> _localizer;
-
+﻿
 @if (_releaseResult == null)
 {
     <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else if (_releaseResult != null && _releaseResult.IsFailed)
 {
-    <MudText>@_localizer["Oops"]</MudText>
+    <MudText>@this.Localizer["Oops"]</MudText>
 }
 else if (_releaseResult != null && _releaseResult.Content != null)
 {
@@ -18,64 +16,30 @@ else if (_releaseResult != null && _releaseResult.Content != null)
         <MudItem Class="my-4" lg="6">
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">@_localizer["Album"]:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Album"]:</MudText>
                 <MudText Typo="Typo.body2">@_releaseResult.Content.Name</MudText>
             </MudItem>
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">@_localizer["Artist"]:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Artist"]:</MudText>
                 <MudText Typo="Typo.body2">@_releaseResult.Content.AuthorsNames</MudText>
             </MudItem>
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">@_localizer["Release"]:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Release"]:</MudText>
                 <MudText Typo="Typo.body2">@_releaseResult.Content.ReleaseDate</MudText>
             </MudItem>
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25"> @_localizer["Label"]:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25"> @this.Localizer["Label"]:</MudText>
                 <MudText Typo="Typo.body2">@_releaseResult.Content.Label</MudText>
             </MudItem>
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25"> @_localizer["Genre"]:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25"> @this.Localizer["Genre"]:</MudText>
                 <MudText Typo="Typo.body2">@String.Join(", ", _releaseResult.Content.Genres.Select(x => x.Value))</MudText>
             </MudItem>
 
         </MudItem>
     </MudGrid>
-}
-
-
-@code {
-    [CascadingParameter]
-    private IMudDialogInstance? MudDialog { get; set; }
-
-    [Inject]
-    private IHttpService? HttpService { get; set; }
-
-    [Parameter]
-    public Guid Vinyl_ID { get; set; }
-
-    private DtoResult<ReleaseVinylExDto>? _releaseResult;
-
-    protected async override void OnInitialized()
-    {
-        await GetReleasesAsync().ConfigureAwait(false);
-    }
-
-
-    private async Task GetReleasesAsync()
-    {
-        ArgumentNullException.ThrowIfNull(HttpService);
-
-        string query = $"/vinyl/{Vinyl_ID}";
-        OperationResult<string> httpResult = await HttpService.GetAsync(query, CancellationToken.None).ConfigureAwait(false);
-
-        if (httpResult != null)
-        {
-            _releaseResult = JsonConvert.DeserializeObject<DtoResult<ReleaseVinylExDto>>(httpResult.Content);
-        }
-        StateHasChanged();
-    }
 }

@@ -20,3 +20,6 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:Deepo.Client.Web.Component.Vinyl.ReleasesVinyl")]
 [assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:Deepo.Client.Web.Component.Vinyl.ReleasesVinylGridItem")]
 [assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:Deepo.Client.Web.Layout.MainLayout")]
+[assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:Deepo.Client.Web.Component.Vinyl.ReleasesVinylFilter")]
+[assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:Deepo.Client.Web.Component.Vinyl.ReleaseVinylDetail")]
+[assembly: SuppressMessage("Maintainability", "CA1515:Consider making public types internal", Justification = "<Pending>", Scope = "type", Target = "~T:Deepo.Client.Web.Component.Vinyl.ReleaseVinylDetailDialog")]

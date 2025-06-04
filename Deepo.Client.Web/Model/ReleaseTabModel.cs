@@ -14,8 +14,8 @@ public class ReleaseTabModel
     public ReleaseTabModel()
     {
         this.Type = EReleaseType.Unknown;
-        this.Label = String.Empty;
-        this.ToolTip = String.Empty;
+        this.Label = string.Empty;
+        this.ToolTip = string.Empty;
         this.Icon = Icons.Material.Outlined.HelpOutline;
         this.Disabled = true;
     }

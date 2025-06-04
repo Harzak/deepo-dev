@@ -5,7 +5,6 @@ namespace Deepo.Client.Web.Theme;
 public class ThemeProvider : IThemeProvider
 {
     private const string YELLOW_DARK = "#d2b770";
-    //private const string YELLOW_LIGHT = "#fff3bf";
 
     public MudTheme BuildMudTheme() => new MudTheme()
     {
