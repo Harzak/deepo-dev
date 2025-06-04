@@ -1,0 +1,99 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<AnalysisLevel>latest-all</AnalysisLevel>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<AssemblyName>Deepo Fetcher Viewer</AssemblyName>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<ApplicationIcon>Resources\Icon\deepo.ico</ApplicationIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Controls\**" />
+	  <Compile Remove="Localization\**" />
+	  <EmbeddedResource Remove="Controls\**" />
+	  <EmbeddedResource Remove="Localization\**" />
+	  <None Remove="Controls\**" />
+	  <None Remove="Localization\**" />
+	  <Page Remove="Controls\**" />
+	  <Page Remove="Localization\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="appsettings.json" />
+		<None Remove="NLog.config" />
+		<None Remove="Resources\Icon\deepo%402x.ico" />
+		<None Remove="Resources\Icon\deepo%402x.png" />
+		<None Remove="Resources\Icon\deepo%403x.ico" />
+		<None Remove="Resources\Icon\deepo%403x.png" />
+		<None Remove="Resources\Icon\deepo%404x.ico" />
+		<None Remove="Resources\Icon\deepo%404x.png" />
+		<None Remove="Resources\Icon\deepo.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Resource Include="Resources\Icon\deepo.ico" />
+		<Content Include="NLog.config">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Harzak.Framework.Common.Data" Version="1.0.1" />
+		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.1" />
+		<PackageReference Include="Harzak.Framework.WPF.Behavior" Version="1.0.1" />
+		<PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
+		<PackageReference Include="NLog" Version="5.4.0" />
+		<PackageReference Include="NLog.Extensions.Logging" Version="5.4.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+		<PackageReference Include="WPF-UI" Version="4.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Deepo.DAL.Service\Deepo.DAL.Service.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Page Update="Themes\Styles\DataGridCellDeepoStyle.xaml">
+		  <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		  <SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Styles\DataGridHeaderDeepoStyle.xaml">
+		  <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+		  <SubType>Designer</SubType>
+		</Page>
+		<Page Update="Themes\Styles\MainWindow.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+			<SubType>Designer</SubType>
+		</Page>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Commands\" />
+	  <Folder Include="Ressources\Icon\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\Icon\deepo.png" />
+	  <Resource Include="Resources\Icon\deepo@2x.ico" />
+	  <Resource Include="Resources\Icon\deepo@2x.png" />
+	  <Resource Include="Resources\Icon\deepo@3x.ico" />
+	  <Resource Include="Resources\Icon\deepo@3x.png" />
+	  <Resource Include="Resources\Icon\deepo@4x.ico" />
+	  <Resource Include="Resources\Icon\deepo@4x.png" />
+	</ItemGroup>
+
+</Project>

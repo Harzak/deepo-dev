@@ -1,0 +1,16 @@
+﻿<MudItem xs="6" sm="4" md="4" lg="3" xxl="4">
+
+    <MudLink OnClick="OpenDialogAsync">
+        <MudImage Style="height:200px; overflow:hidden;" Width="200" Height="200" Elevation="8" ObjectPosition=" ObjectPosition.Center" ObjectFit="ObjectFit.Cover" Class="rounded-lg" Fluid="true"
+                  Src="@(!String.IsNullOrEmpty(Item?.CoverUrl) ? Item.CoverUrl: "/images/unavailable.svg")" />
+    </MudLink>
+
+    <MudText Inline="false" Align="Align.Left" Typo="Typo.body1">
+        @Item?.AuthorsNames.Truncate(27, TRUNCATION_TEXT)
+    </MudText>
+
+    <MudText Inline="false" Align="Align.Left" Typo="Typo.body2">
+        @Item?.Name.Truncate(30, TRUNCATION_TEXT)
+    </MudText>
+
+</MudItem>

@@ -1,0 +1,6 @@
+﻿
+<MudDatePicker Class="my-6 mx-15" @bind-Date="_selectedDate" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMMM" />
+
+@code{
+    private DateTime? _selectedDate = DateTime.Now;
+}

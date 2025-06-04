@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="yo"
+                android:id="@+id/newReleasesCover"
+                android:src="@android:drawable/ic_menu_info_details"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Let's Start Here"
+                    android:textSize="16dp"
+                    android:singleLine="true"
+                    android:textStyle="bold"
+                    android:id="@+id/newReleasesItemName"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="4dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lil Yachty"
+                    android:singleLine="true"
+                    android:textSize="13dp"
+                    android:id="@+id/newReleasesItemAuthors"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="4dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic"
+                    android:textSize="13dp"
+                    android:singleLine="true"
+                    android:text="27/01/2023"
+                    android:id="@+id/newReleasesItemReleaseDate"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="4dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"                 
+                               android:singleLine="true"
+                    android:text="Psychedelic rock, psychedelic soul"
+                    android:textSize="13dp"
+                    android:id="@+id/newReleasesItemGenre"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>

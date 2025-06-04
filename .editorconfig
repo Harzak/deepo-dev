@@ -1,0 +1,28 @@
+﻿[*.cs]
+
+# IDE0090: Utiliser 'new(...)'
+dotnet_diagnostic.IDE0090.severity = silent
+
+# IDE0025: Utiliser un corps d'expression pour les propriétés
+dotnet_diagnostic.IDE0025.severity = none
+
+# CA1822: Marquer les membres comme étant static
+dotnet_diagnostic.CA1822.severity = silent
+
+# CA1014: Marquer les assemblys avec CLSCompliant
+dotnet_diagnostic.CA1014.severity = none
+
+# CA1812: Host est une classe interne qui n'est apparemment jamais instanciée. Si tel est le cas, supprimez le code de l'assembly. Si cette classe est destinée à contenir uniquement des membres statiques, rendez-la static (Shared en Visual Basic).
+dotnet_diagnostic.CA1812.severity = none
+
+# CA1707: Les identificateurs ne doivent pas contenir de traits de soulignement
+dotnet_diagnostic.CA1707.severity = none
+
+# CS0067: L'événement 'CommandBase.RaiseCanExecuteChanged' n'est jamais utilisé
+dotnet_diagnostic.CS0067.severity = none
+
+# CA1056: URI-like properties should not be strings
+dotnet_diagnostic.CA1056.severity = none
+
+# IDE0066: Convert switch statement to expression
+dotnet_diagnostic.IDE0066.severity = none

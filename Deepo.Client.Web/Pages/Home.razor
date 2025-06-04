@@ -1,0 +1,29 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<MudGrid Class="mt-2" Justify="Justify.Center">
+
+    <MudImage Width="100" Height="100" Src="/images/logo.png" />
+
+    <MudFlexBreak />
+
+    <MudItem xs="12" sm="12" md="10" lg="8" xxl="10">
+        <ReleaseFilterPanel @bind-SelectedRelease="_selectedReleaseType" />
+    </MudItem>
+
+    <MudItem xs="12" sm="12" md="10" lg="7" xxl="9">
+        @switch (_selectedReleaseType)
+        {
+            case EReleaseType.Vinyl:
+                <Deepo.Client.Web.Component.Vinyl.ReleasesVinyl />
+                break;
+            default:
+                break;
+        }
+    </MudItem>
+</MudGrid>
+
+@code {
+    private EReleaseType _selectedReleaseType { get; set; } = EReleaseType.Vinyl;
+}

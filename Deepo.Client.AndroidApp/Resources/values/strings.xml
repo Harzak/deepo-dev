@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Deepo.Client.Android</string>
+    <string name="menu_str_home">Home</string>
+	<string name="menu_str_releases">New Releases</string>
+	<string name="menu_str_settings">Settings</string>
+	
+	<!--Layout New releases-->
+	<string name="newreleases_search_hint">Search new releases</string>
+	
+</resources>

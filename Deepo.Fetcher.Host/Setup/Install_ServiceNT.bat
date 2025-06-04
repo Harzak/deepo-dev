@@ -1,0 +1,1 @@
+start cmd /k sc.exe create DEEPO.Fetchers binpath="C:\Workspaces\Deepo\Deepo.Fetcher.Host\bin\Release\net6.0\publish\Deepo.Fetcher.Host.ServiceNT.exe" start=demand displayname="Deepo Fetchers" obj=".\LocalSystem" 

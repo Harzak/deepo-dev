@@ -1,0 +1,15 @@
+﻿using System.Windows.Controls;
+
+namespace Deepo.Fetcher.WPF.Views
+{
+    /// <summary>
+    /// Logique d'interaction pour FetcherViewModel.xaml
+    /// </summary>
+    public partial class SelectedFetcherView : UserControl
+    {
+        public SelectedFetcherView()
+        {
+            InitializeComponent();
+        }
+    }
+}

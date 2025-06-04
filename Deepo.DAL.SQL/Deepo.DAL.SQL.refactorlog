@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="f2c78043-4c6d-410a-a1ea-8662f6f8f03b" ChangeDateTime="08/10/2022 07:22:07">
+    <Property Name="ElementName" Value="[fetcher].[Execution].[SartAt]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[fetcher].[Execution]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="StartAt" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b7fc106e-146b-4bfb-89b4-298ca69f9e06" ChangeDateTime="08/10/2022 07:22:34">
+    <Property Name="ElementName" Value="[fetcher].[Execution].[StartAt]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[fetcher].[Execution]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="StartedAt" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="25c8e7c7-b942-42b2-867c-35ea41ad81f2" ChangeDateTime="08/10/2022 07:22:37">
+    <Property Name="ElementName" Value="[fetcher].[Execution].[EndAt]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[fetcher].[Execution]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="EndedAt" />
+  </Operation>
+</Operations>

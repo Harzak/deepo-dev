@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>net9.0</TargetFramework>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Nullable>enable</Nullable>
+	  <AnalysisLevel>latest-all</AnalysisLevel>
+	  <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+	  <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+	  <EnableNETAnalyzers>True</EnableNETAnalyzers>
+	  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Command\" />
+    <Folder Include="Response\" />
+    <Folder Include="Result\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.1" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Deepo.DAL.Service\Deepo.DAL.Service.csproj" />
+    <ProjectReference Include="..\Deepo.Dto\Deepo.Dto.csproj" />
+  </ItemGroup>
+
+</Project>

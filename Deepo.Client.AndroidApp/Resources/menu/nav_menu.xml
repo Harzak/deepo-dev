@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+	<item android:id="@+id/navigate_to_home" android:enabled="true" android:icon="@mipmap/ic_home" app:showAsAction="ifRoom" android:title="@string/menu_str_home" />
+	<item android:id="@+id/navigate_to_newReleases" android:enabled="true" android:icon="@mipmap/ic_radar" android:showAsAction="ifRoom" android:title="@string/menu_str_releases"/>
+	<item android:id="@+id/navigate_to_settings" android:enabled="true" android:icon="@mipmap/ic_settings" android:showAsAction="ifRoom" android:title="@string/menu_str_settings"/>
+</menu>

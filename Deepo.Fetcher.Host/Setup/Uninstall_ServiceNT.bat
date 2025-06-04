@@ -1,0 +1,1 @@
+start cmd /k sc.exe delete DEEPO.Fetchers

@@ -1,0 +1,67 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy Deepo.API to Azure Web App - deepo-api
+
+env:
+  AZURE_WEBAPP_NAME: deepo-api   # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: '/Deepo.API'      # set this to the path to your web app project, defaults to the repository root
+  PROJECT_NAME: "Deepo.API"
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      - name: Authenticate with GitHub Packages
+        run: dotnet nuget add source --username ${{ github.actor }} --password ${{ secrets.WRITE_PACKAGES_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+
+      - name: Restore dependencies
+        run: dotnet restore "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj"
+
+      - name: Build with dotnet
+        run: dotnet build "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj" --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish "${{ env.PROJECT_NAME }}/${{ env.PROJECT_NAME }}.csproj" -c Release -o "${{ env.DOTNET_ROOT }}/${{ env.AZURE_WEBAPP_NAME }}"
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: ${{ env.PROJECT_NAME }}/bin/Release/net9.0
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3872275847DA435DA50BBD06300BBE30 }}
+          package: .

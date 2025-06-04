@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+	<!--#region Grey-->
+	<color name="GreyDarkest">#000000</color>
+	<color name="GreyDarker">#1F1F1F</color>
+	<color name="GreyDark">#2E343E</color>
+	<color name="GreyNormal">#3E4552</color>
+	<color name="GreyLight">#B3B3B3</color>
+	<color name="GreyLighter">#ACB3C0</color>
+	<color name="GreyLightest">#FAFAFA</color>
+	<!--#endregion-->
+
+</resources>

@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net9.0-android</TargetFramework>
+		<SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+		<OutputType>Exe</OutputType>
+		<Nullable>enable</Nullable>
+		<AnalysisLevel>latest-all</AnalysisLevel>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+		<EnableNETAnalyzers>True</EnableNETAnalyzers>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<ApplicationId>com.deepo.app</ApplicationId>
+		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="nlog.config" />
+		<None Remove="Resources\layout\layout_home.xml" />
+		<None Remove="Resources\layout\layout_newReleases.xml" />
+		<None Remove="Resources\layout\layout_settings.xml" />
+		<None Remove="Resources\mipmap-anydpi-v26\ic_home.xml" />
+		<None Remove="Resources\mipmap-anydpi-v26\ic_radar.xml" />
+		<None Remove="Resources\mipmap-anydpi-v26\ic_settings.xml" />
+		<None Remove="Resources\values-v21\styles.xml" />
+		<None Remove="Resources\values\colors.xml" />
+		<None Remove="Resources\values\nav_menu.xml" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.1" />
+		<PackageReference Include="Harzak.Framework.Web.Http" Version="1.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.4" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Ninject" Version="3.3.6" />
+		<PackageReference Include="NLog" Version="5.4.0" />
+		<PackageReference Include="NLog.Extensions.Logging" Version="5.4.0" />
+		<PackageReference Include="Xamarin.AndroidX.Activity" Version="1.10.1" />
+		<PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.7.0.5" />
+		<PackageReference Include="Xamarin.AndroidX.Fragment" Version="1.8.6" />
+		<PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4" Version="1.0.0.31" />
+		<PackageReference Include="Xamarin.Google.Android.Material" Version="1.12.0.2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="nlog.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+</Project>
