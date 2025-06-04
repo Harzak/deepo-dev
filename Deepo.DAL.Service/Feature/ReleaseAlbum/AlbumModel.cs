@@ -12,8 +12,8 @@ public class AlbumModel
     public string? Country { get; set; }
     public double Duration { get; set; }
     public IEnumerable<IAuthor>? Artists { get; set; }
-    public IEnumerable<string> Genres { get; set; } 
-    public Dictionary<string, string> ProvidersIdentifier { get;  }
+    public IEnumerable<string> Genres { get; set; }
+    public Dictionary<string, string> ProvidersIdentifier { get; }
 
     public AlbumModel()
     {

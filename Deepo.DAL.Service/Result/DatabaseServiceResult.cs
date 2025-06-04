@@ -16,23 +16,3 @@ public class DatabaseServiceResult : ResultBase
 
     }
 }
-
-public class DatabaseServiceResult<T> : OperationResult<T>
-{
-    public int RowAffected { get; set; }
-
-    public DatabaseServiceResult()
-    {
-
-    }
-
-    public DatabaseServiceResult(T content) : base(content)
-    {
-
-    }
-
-    public DatabaseServiceResult(T content, bool result) : base(content, result)
-    {
-
-    }
-}

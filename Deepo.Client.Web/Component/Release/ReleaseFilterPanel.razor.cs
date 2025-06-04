@@ -43,7 +43,7 @@ public partial class ReleaseFilterPanel
 
     protected override void OnInitialized()
     {
-    
+
         _tabs.Add(new ReleaseTabModel()
         {
             Label = this.Localizer["Vinyl"],

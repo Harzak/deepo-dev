@@ -1,5 +1,4 @@
 ﻿using Framework.Web.Http.Client.Service;
-using System.Globalization;
 
 namespace Deepo.Client.Web.Configuration;
 
