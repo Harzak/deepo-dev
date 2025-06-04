@@ -5,6 +5,7 @@ using Framework.Web.Http.Client.Service;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
+using System.Globalization;
 
 namespace Deepo.Client.Web;
 
@@ -17,8 +18,10 @@ internal static class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services.AddHttpClient();
+        builder.Services.AddLocalization();
 
         builder.Services.AddMudServices();
+
         builder.Services.AddTransient<ITimeProvider, Framework.Common.Utils.Time.Provider.TimeProvider>();
         builder.Services.AddSingleton<IThemeProvider, ThemeProvider>();
         builder.Services.AddTransient<IHttpService, HttpService>();
@@ -29,7 +32,8 @@ internal static class Program
             UserAgent = "deepo.web"
         });
 
-        await builder.Build().RunAsync().ConfigureAwait(false);
+        var app = builder.Build();
+        await app.RunAsync().ConfigureAwait(false);
     }
 }
 

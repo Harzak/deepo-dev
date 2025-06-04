@@ -9,24 +9,50 @@
 		<EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
 		<EnableNETAnalyzers>True</EnableNETAnalyzers>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<NeutralLanguage>en-US</NeutralLanguage>
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.1" />
 		<PackageReference Include="Harzak.Framework.Web.Http" Version="1.0.2" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.4" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.4" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.4" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
-		<PackageReference Include="Microsoft.Net.Http.Headers" Version="9.0.4" />
-		<PackageReference Include="MudBlazor" Version="8.5.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.5" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.5" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
+		<PackageReference Include="Microsoft.Net.Http.Headers" Version="9.0.5" />
+		<PackageReference Include="MudBlazor" Version="8.7.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="NLog" Version="5.4.0" />
-		<PackageReference Include="NLog.Extensions.Logging" Version="5.4.0" />
+		<PackageReference Include="NLog" Version="5.5.0" />
+		<PackageReference Include="NLog.Extensions.Logging" Version="5.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Folder Include="wwwroot\images\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Resources\Languages.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Languages.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Resources\Languages.en-US.resx">
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages.fr-FR.resx">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Languages.resx">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	    <Generator>PublicResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Languages.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

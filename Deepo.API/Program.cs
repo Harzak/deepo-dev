@@ -31,7 +31,6 @@ public static class Program
 
         app.UseAuthorization();
 
-
         app.MapControllers();
 
         app.Run();

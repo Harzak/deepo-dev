@@ -1,4 +1,5 @@
 ﻿@using Deepo.Client.Web.Dto
+@inject IStringLocalizer<Languages> _localizer;
 
 @if (_releaseResult == null)
 {
@@ -6,38 +7,38 @@
 }
 else if (_releaseResult != null && _releaseResult.IsFailed)
 {
-    <MudText>Oops, something went wrong</MudText>
+    <MudText>@_localizer["Oops"]</MudText>
 }
 else if (_releaseResult != null && _releaseResult.Content != null)
 {
-    <MudGrid  Justify=" Justify.FlexStart">
+    <MudGrid Justify=" Justify.FlexStart">
         <MudItem lg="6">
             <MudImage Elevation="2" Width="250" Height="250" Src="@(!String.IsNullOrEmpty(_releaseResult.Content?.CoverUrl) ? _releaseResult.Content.CoverUrl: "/images/unavailable.svg")" />
         </MudItem>
         <MudItem Class="my-4" lg="6">
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">Album:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25">@_localizer["Album"]:</MudText>
                 <MudText Typo="Typo.body2">@_releaseResult.Content.Name</MudText>
             </MudItem>
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2"  Class="w-25">Artist:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25">@_localizer["Artist"]:</MudText>
                 <MudText Typo="Typo.body2">@_releaseResult.Content.AuthorsNames</MudText>
             </MudItem>
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">Release:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25">@_localizer["Release"]:</MudText>
                 <MudText Typo="Typo.body2">@_releaseResult.Content.ReleaseDate</MudText>
             </MudItem>
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">Label:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25"> @_localizer["Label"]:</MudText>
                 <MudText Typo="Typo.body2">@_releaseResult.Content.Label</MudText>
             </MudItem>
 
             <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">Genre:</MudText>
+                <MudText Typo="Typo.body2" Class="w-25"> @_localizer["Genre"]:</MudText>
                 <MudText Typo="Typo.body2">@String.Join(", ", _releaseResult.Content.Genres.Select(x => x.Value))</MudText>
             </MudItem>
 
