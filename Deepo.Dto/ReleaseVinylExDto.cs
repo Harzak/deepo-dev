@@ -1,12 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Deepo.Dto
+namespace Deepo.Dto;
+
+[Serializable]
+public class ReleaseVinylExDto : ReleaseVinylDto
 {
-    [Serializable]
-    public class ReleaseVinylExDto : ReleaseVinylDto
-    {
-        public string Label { get; set; } = string.Empty;
-        public string Country { get; set; } = string.Empty;
-        public Dictionary<string, string> Genres { get; } = [];
-    }
+    public string Label { get; set; } = string.Empty;
+    public string Country { get; set; } = string.Empty;
+    public Dictionary<string, string> Genres { get; } = [];
 }
