@@ -21,12 +21,8 @@ internal class SpotifyAuthService : HttpService, IAuthenticationHttpService
     {
         ArgumentNullException.ThrowIfNull(options?.Value?.Spotify, nameof(options.Value.Spotify));
 
-        _options = options.Value.Spotify;    
-    }
+        _options = options.Value.Spotify;
 
-    protected override void SetHeader()
-    {
-        base.SetHeader();
         base.SetAuthorization("Basic", $"{Convert.ToBase64String(Encoding.UTF8.GetBytes(_options.ConsumerKey + ":" + _options.ConsumerSecret))}");
     }
 
