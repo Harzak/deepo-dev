@@ -1,13 +1,17 @@
 ﻿@inherits LayoutComponentBase
+
 <div class="page"> 
+
     <MudThemeProvider IsDarkMode="true" Theme="@ThemeProvider?.BuildMudTheme()" />
     <MudPopoverProvider />
     <MudDialogProvider />
     <MudSnackbarProvider />
+
     <main>
         <article class=".container-fluid content px-4">
             @Body
         </article>
     </main>
+
 </div>
 

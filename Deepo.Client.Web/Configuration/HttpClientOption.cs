@@ -1,4 +1,5 @@
 ﻿using Framework.Web.Http.Client.Service;
+using System.Globalization;
 
 namespace Deepo.Client.Web.Configuration;
 
@@ -9,12 +10,12 @@ public class HttpClientOption : IHttpClientOption
     public string UserAgent { get; set; }
     public string TaskID { get; set; }
 
-    public HttpClientOption(Uri uri)
+    public HttpClientOption()
     {
-        BaseAddress = uri;
+        BaseAddress = default!;
         Name = string.Empty;
         UserAgent = string.Empty;
-        TaskID = string.Empty;
+        TaskID = Guid.NewGuid().ToString();
     }
 }
 

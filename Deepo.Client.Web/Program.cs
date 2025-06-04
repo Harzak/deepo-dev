@@ -4,8 +4,10 @@ using Framework.Common.Utils.Time.Provider;
 using Framework.Web.Http.Client.Service;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using MudBlazor.Services;
 using System.Globalization;
+using System.Reflection;
 
 namespace Deepo.Client.Web;
 
@@ -25,11 +27,13 @@ internal static class Program
         builder.Services.AddTransient<ITimeProvider, Framework.Common.Utils.Time.Provider.TimeProvider>();
         builder.Services.AddSingleton<IThemeProvider, ThemeProvider>();
         builder.Services.AddTransient<IHttpService, HttpService>();
-        builder.Services.AddSingleton<IHttpClientOption>(e => new HttpClientOption(new Uri("https://deepo-api.azurewebsites.net"))
+
+        builder.Services.AddSingleton<IHttpClientOption>(e => new HttpClientOption()
         {
-            Name = "deepo.web",
+            BaseAddress = new Uri(HttpRoute.API_BASE_ADRESS),
+            Name = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty,
             TaskID = Guid.NewGuid().ToString(),
-            UserAgent = "deepo.web"
+            UserAgent = Assembly.GetExecutingAssembly().GetName().Name ?? string.Empty
         });
 
         var app = builder.Build();

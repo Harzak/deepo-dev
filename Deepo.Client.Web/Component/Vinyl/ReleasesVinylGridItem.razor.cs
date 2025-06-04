@@ -7,7 +7,7 @@ namespace Deepo.Client.Web.Component.Vinyl;
 public partial class ReleasesVinylGridItem
 {
     [Inject]
-    public IDialogService? DialogService { get; set; }
+    public IDialogService DialogService { get; set; } = default!;
 
     [Parameter]
     public ReleaseVinylDto? Item { get; set; }
@@ -16,7 +16,6 @@ public partial class ReleasesVinylGridItem
 
     private async Task OpenDialogAsync()
     {
-        ArgumentNullException.ThrowIfNull(DialogService);
         DialogParameters<Guid> parameters = new()
         {
             { "Vinyl_ID", Item?.Id ?? Guid.Empty}

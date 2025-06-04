@@ -1,12 +1,11 @@
-﻿@inject IStringLocalizer<Languages> _localizer;
-
+﻿
 @if (this.IsVisible && _releasesResult == null)
 {
     <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
 }
 else if (_releasesResult != null && _releasesResult.IsFailed)
 {
-    <MudText> @_localizer["Oops"]</MudText>
+    <MudText> @this.Localizer["Oops"]</MudText>
 }
 else if (this.IsVisible && _releasesResult != null && _releasesResult.Content != null && _releasesResult.Content.Any())
 {

@@ -10,4 +10,3 @@ public class ReleaseVinylDto
     public string ThumbUrl { get; set; } = string.Empty;
     public string CoverUrl { get; set; } = string.Empty;
 }
-

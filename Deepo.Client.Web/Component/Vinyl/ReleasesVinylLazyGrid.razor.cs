@@ -1,15 +1,22 @@
-﻿using Deepo.Client.Web.Dto;
+﻿using Deepo.Client.Web.Configuration;
+using Deepo.Client.Web.Dto;
+using Deepo.Client.Web.Resources;
 using Framework.Common.Utils.Result;
 using Framework.Web.Http.Client.Service;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace Deepo.Client.Web.Component.Vinyl;
 
 public partial class ReleasesVinylLazyGrid
 {
     [Inject]
-    private IHttpService? HttpService { get; set; }
+    private IHttpService HttpService { get; set; } = default!;
+
+    [Inject]
+    private IStringLocalizer<Languages> Localizer { get; set; } = default!;
 
     [Parameter]
     public int MaxItem { get; set; }
@@ -27,24 +34,21 @@ public partial class ReleasesVinylLazyGrid
     {
         if (this.IsVisible && !_isLoaded)
         {
-            await GetReleasesAsync().ConfigureAwait(false);
+            await LoadReleasesAsync().ConfigureAwait(false);
             StateHasChanged();
         }
     }
 
-    private async Task GetReleasesAsync()
+    private async Task LoadReleasesAsync()
     {
-        ArgumentNullException.ThrowIfNull(HttpService);
-
-        string query = $"vinyl?market=FR&offset={this.Position * this.MaxItem}&limit={this.MaxItem}";
+        string query = string.Format(CultureInfo.InvariantCulture, HttpRoute.VINYL_RELEASE_ROUTE, (this.Position * this.MaxItem), this.MaxItem);
         OperationResult<string> httpResult = await HttpService.GetAsync(query, CancellationToken.None).ConfigureAwait(false);
 
-        if (!string.IsNullOrEmpty(httpResult?.Content))
+        if (httpResult.IsSuccess && httpResult.HasContent)
         {
             _releasesResult = JsonConvert.DeserializeObject<DtoResult<List<ReleaseVinylDto>>>(httpResult.Content);
             _isLoaded = true;
         }
     }
-
 }
 
