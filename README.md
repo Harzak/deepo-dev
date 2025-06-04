@@ -12,7 +12,7 @@ This app was built during my spare time as a way to explore and pratice full-sta
 
 ## :rocket: Tech Stack
 
-- **Frontend**: Blazor (server side), MudBlazor  
+- **Frontend**: Blazor (WebAssembly), MudBlazor  
 - **Backend**: .NET 9 (C#), REST API, BackgroundService, WPF, Mediator  
 - **Database**: SQLServer, Entity Framework (database first)  
 - **API**: Spotify, Discogs  
