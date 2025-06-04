@@ -22,12 +22,9 @@ internal class AuthorDBService : IAuthorDBService
 
     public async Task<DatabaseServiceResult> Insert(IAuthor item, CancellationToken cancellationToken)
     {
-        DatabaseServiceResult result = new();
+        ArgumentNullException.ThrowIfNull(item, nameof(item));
 
-        if (item is null)
-        {
-            return result;
-        }
+        DatabaseServiceResult result = new();
 
         try
         {
@@ -57,7 +54,7 @@ internal class AuthorDBService : IAuthorDBService
 
     public bool Exists(IAuthor item)
     {
-        if (item is null) return false;
+        ArgumentNullException.ThrowIfNull(item, nameof(item));
 
         return _dbContext.Authors.Any(x => x.Provider.Code == item.Provider_Code && x.Provider_Author_Identifier == item.Provider_Identifier);
     }
