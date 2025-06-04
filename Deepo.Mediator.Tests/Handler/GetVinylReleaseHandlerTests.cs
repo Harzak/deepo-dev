@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Features.ReleaseAlbum;
+﻿using Deepo.DAL.Service.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
