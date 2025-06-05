@@ -16,3 +16,7 @@ This app was built during my spare time as a way to explore and pratice full-sta
 - **Backend**: .NET 9 (C#), REST API, BackgroundService, WPF, Mediator  
 - **Database**: SQLServer, Entity Framework (database first)  
 - **API**: Spotify, Discogs  
+
+## :wrench: Solution overview
+![Solution_Structure](https://github.com/user-attachments/assets/af7090cb-c389-4ec8-a092-2f5eb301167d)
+
