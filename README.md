@@ -8,7 +8,8 @@ This app was built during my spare time as a way to explore and pratice full-sta
 - **Web API**: Exposes the most recently scraped releases  
 - **Web Client**: Front-End application that consumes the API to display the latest releases to users  
 
-![Peepo_Archi](https://github.com/user-attachments/assets/a31ca278-baa5-4e9e-b38b-331a590e6439)
+![Overview_Architecture](https://github.com/user-attachments/assets/bfef2dd4-f1c2-47f9-abac-045b89d63285)  
+
 
 ## :rocket: Tech Stack
 
@@ -17,6 +18,7 @@ This app was built during my spare time as a way to explore and pratice full-sta
 - **Database**: SQLServer, Entity Framework (database first)  
 - **API**: Spotify, Discogs  
 
-## :wrench: Solution overview
+## :wrench: Solution overview  
+
 ![Solution_Structure](https://github.com/user-attachments/assets/af7090cb-c389-4ec8-a092-2f5eb301167d)
 
