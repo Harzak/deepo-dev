@@ -1,5 +1,4 @@
-﻿
-@if (_releaseResult == null)
+﻿@if (_releaseResult == null)
 {
     <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="my-7" />
 }
@@ -9,45 +8,68 @@ else if (_releaseResult != null && _releaseResult.IsFailed)
 }
 else if (_releaseResult != null && _releaseResult.Content != null)
 {
-    <MudGrid Justify=" Justify.FlexStart">
+    <MudGrid Class="mb-4" Justify=" Justify.FlexStart">
         <MudItem lg="12">
-            <MudText Inline="true" Typo="Typo.h4">@_releaseResult.Content.Name</MudText>
-            <MudText Inline="true" Typo="Typo.h4">- </MudText>
-            <MudText Inline="true" Typo="Typo.h5">@_releaseResult.Content.AuthorsNames</MudText>
+            <MudText Class="mr-4" Inline="true" Typo="Typo.h4">@_releaseResult.Content.Name</MudText>
         </MudItem>
-        <MudItem Class="pa-0 ma-8" lg="5">
-            <MudImage Elevation="2" Width="300" Height="300" Src="@(!String.IsNullOrEmpty(_releaseResult.Content?.CoverUrl) ? _releaseResult.Content.CoverUrl: "/images/unavailable.svg")" />
+        <MudItem Class="pt-0" lg="12">
+            <MudText Color="Color.Secondary" Inline="true" Typo="Typo.h5">@_releaseResult.Content.AuthorsNames</MudText>
         </MudItem>
-        <MudItem Class="my-4" lg="5">
+        <MudItem Class="" lg="6">
+            <MudImage Elevation="10" Width="260" Height="260" Src="@(!String.IsNullOrEmpty(_releaseResult.Content?.CoverUrl) ? _releaseResult.Content.CoverUrl : "/images/unavailable.svg")" />
+        </MudItem>
+        <MudItem lg="6">
 
-            <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Release"]:</MudText>
-                <MudText Typo="Typo.body2">@_releaseResult.Content.ReleaseDate</MudText>
+            <MudItem lg="12" Class="my-2 d-flex align-start">
+                <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.CalendarMonth" />
+                <MudText Color="Color.Secondary" Class="w-25">@this.Localizer["Release"]</MudText>
+                <MudText>@_releaseResult.Content.ReleaseDate.ToShortDateString()</MudText>
             </MudItem>
 
-            <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Country"]:</MudText>
-                <MudText Typo="Typo.body2">@_releaseResult.Content.Country</MudText>
+            <MudItem lg="12" Class="my-2 d-flex align-start">
+                <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.LocationOn" />
+                <MudText Color="Color.Secondary" Class="w-25">@this.Localizer["Country"]</MudText>
+                <MudText>@_releaseResult.Content.Country</MudText>
             </MudItem>
 
-            <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25"> @this.Localizer["Label"]:</MudText>
-                <MudText Typo="Typo.body2">@_releaseResult.Content.Label</MudText>
+            <MudItem lg="12" Class="my-2 d-flex align-start">
+                <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.DoorBack" />
+                <MudText Color="Color.Secondary" Class="w-25"> @this.Localizer["Label"]</MudText>
+                <MudText>@_releaseResult.Content.Label</MudText>
             </MudItem>
 
-            <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25"> @this.Localizer["Genre"]:</MudText>
-                <MudText Typo="Typo.body2">@String.Join(", ", _releaseResult.Content.Genres.Select(x => x.Value))</MudText>
+            <MudItem lg="12" Class=" my-2 d-flex align-start">
+                <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.LibraryMusic" />
+                <MudText Color="Color.Secondary" Class="w-25"> @this.Localizer["Genre"]</MudText>
+                <MudText>@((_releaseResult.Content.Genres?.Any() == true) ? String.Join(", ", _releaseResult.Content.Genres.Select(x => x.Value)) : this.Localizer["Unknown"])</MudText>
             </MudItem>
 
-            @foreach(var track in _releaseResult.Content.Tracklist)
-            {
-                <MudItem lg="12" Class="d-flex align-start">
-                    <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Track"]:</MudText>
-                    <MudText Typo="Typo.body2">@track.Title</MudText>
+        </MudItem>
+
+        <MudItem Class=" my-2 mt-4  d-flex align-start" lg="12">
+            <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.QueueMusic" />
+            <MudText Color="Color.Secondary">@this.Localizer["Tracklist"]</MudText>
+        </MudItem>
+        @for (int i = 0; i < _releaseResult.Content.Tracklist.Count; i++)
+        {
+            int localIndex = i;
+            <MudItem lg="12" Class="pt-2 d-flex align-start">
+                <MudItem lg="1">
+                    <MudText Color="Color.Tertiary" Typo="Typo.body2">
+                        @(_releaseResult.Content.Tracklist[localIndex].Position == 0 ? localIndex+ 1 : _releaseResult.Content.Tracklist[localIndex].Position)
+                    </MudText>
                 </MudItem>
-            }  
-
-        </MudItem>
+                <MudItem lg="10">
+                    <MudText Typo="Typo.body2">
+                        @_releaseResult.Content.Tracklist[localIndex].Title
+                    </MudText>
+                </MudItem>
+                <MudItem lg="1">
+                    <MudText Typo="Typo.body2">
+                        <i> @(_releaseResult.Content.Tracklist[localIndex].Duration)</i>
+                    </MudText>
+                </MudItem>
+            </MudItem>
+        }
     </MudGrid>
 }

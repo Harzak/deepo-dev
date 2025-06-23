@@ -20,6 +20,8 @@ public class ThemeProvider : IThemeProvider
             TextDisabled = Colors.Gray.Default,
             TextPrimary = Colors.Gray.Lighten3,
             Primary = YELLOW_DARK,
+            Secondary = Colors.Gray.Lighten1,
+            Tertiary = Colors.Gray.Default,
             Background = Colors.Gray.Darken4
         },
 

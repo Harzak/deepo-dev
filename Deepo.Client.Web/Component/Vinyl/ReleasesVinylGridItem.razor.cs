@@ -25,8 +25,8 @@ public partial class ReleasesVinylGridItem
             CloseButton = true,
             BackdropClick = true,
             CloseOnEscapeKey = true,
-            FullWidth = true,
-            MaxWidth = MaxWidth.Medium
+            FullWidth = true
+            
         };
         await DialogService.ShowAsync<ReleaseVinylDetailDialog>(string.Empty, parameters, options).ConfigureAwait(false);
     }
