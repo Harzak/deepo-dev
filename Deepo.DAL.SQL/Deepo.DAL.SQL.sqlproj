@@ -210,6 +210,8 @@
     <Build Include="dbo\Views\V_LastVinylRelease.sql" />
     <Build Include="fetcher\Views\V_FetchersLastExecution.sql" />
     <Build Include="dbo\Tables\Genre_Album_Release.sql" />
+    <Build Include="dbo\Tables\Tracklist_Album.sql" />
+    <Build Include="dbo\Tables\Tracklist_Album_1.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script\Script.PostDeployment.sql" />

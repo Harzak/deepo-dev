@@ -49,6 +49,16 @@ internal sealed class GetVinylReleaseHandler : IRequestHandler<GetVinylReleaseQu
             result.Content.Genres.Add(genre.Code, genre.Name);
         }
 
+        foreach (var track in album.Tracklist_Albums)
+        {
+            result.Content.Tracklist.Add(new  TrackVinyl()
+            {
+                Title = track.Track_Album.Title ?? string.Empty,
+                Duration = track.Track_Album.Duration,
+                Position = track.Track_Album.Position
+            });
+        }   
+
         result.WithSuccess();
 
         return await Task.FromResult(result).ConfigureAwait(false);

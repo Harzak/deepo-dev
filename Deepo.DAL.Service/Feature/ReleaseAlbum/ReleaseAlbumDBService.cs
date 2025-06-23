@@ -99,12 +99,27 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
             }
         }
 
+        List<Tracklist_Album> tracklist = [];  
+        foreach (TrackModel track in item.Tracklist)
+        {
+            tracklist.Add(new  Tracklist_Album
+            {
+                Track_Album = new Track_Album
+                {
+                    Title = track.Title ?? string.Empty,
+                    Duration = track.Duration,
+                    Position = track.Position
+                }
+            });
+        }
+
         _dbContext.Release_Albums.Add(new Release_Album
         {
             Release = newRelease,
             Country = item.Country ?? string.Empty,
             Label = item.Label ?? string.Empty,
-            Genre_Albums = genres
+            Genre_Albums = genres,
+            Tracklist_Albums = tracklist
         });
 
         try
@@ -174,6 +189,8 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
     public Release_Album? GetById(Guid id)
     {
         return _dbContext.Release_Albums
+            .Include(x => x.Tracklist_Albums)
+            .ThenInclude(x => x.Track_Album)
             .Include(x => x.Genre_Albums)
             .Include(x => x.Release)
             .ThenInclude(x => x.Asset_Releases)
