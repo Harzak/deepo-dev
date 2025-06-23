@@ -10,24 +10,24 @@ else if (_releaseResult != null && _releaseResult.IsFailed)
 else if (_releaseResult != null && _releaseResult.Content != null)
 {
     <MudGrid Justify=" Justify.FlexStart">
-        <MudItem lg="6">
-            <MudImage Elevation="2" Width="250" Height="250" Src="@(!String.IsNullOrEmpty(_releaseResult.Content?.CoverUrl) ? _releaseResult.Content.CoverUrl: "/images/unavailable.svg")" />
+        <MudItem lg="12">
+            <MudText Inline="true" Typo="Typo.h4">@_releaseResult.Content.Name</MudText>
+            <MudText Inline="true" Typo="Typo.h4">- </MudText>
+            <MudText Inline="true" Typo="Typo.h5">@_releaseResult.Content.AuthorsNames</MudText>
         </MudItem>
-        <MudItem Class="my-4" lg="6">
-
-            <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Album"]:</MudText>
-                <MudText Typo="Typo.body2">@_releaseResult.Content.Name</MudText>
-            </MudItem>
-
-            <MudItem lg="12" Class="d-flex align-start">
-                <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Artist"]:</MudText>
-                <MudText Typo="Typo.body2">@_releaseResult.Content.AuthorsNames</MudText>
-            </MudItem>
+        <MudItem Class="pa-0 ma-8" lg="5">
+            <MudImage Elevation="2" Width="300" Height="300" Src="@(!String.IsNullOrEmpty(_releaseResult.Content?.CoverUrl) ? _releaseResult.Content.CoverUrl: "/images/unavailable.svg")" />
+        </MudItem>
+        <MudItem Class="my-4" lg="5">
 
             <MudItem lg="12" Class="d-flex align-start">
                 <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Release"]:</MudText>
                 <MudText Typo="Typo.body2">@_releaseResult.Content.ReleaseDate</MudText>
+            </MudItem>
+
+            <MudItem lg="12" Class="d-flex align-start">
+                <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Country"]:</MudText>
+                <MudText Typo="Typo.body2">@_releaseResult.Content.Country</MudText>
             </MudItem>
 
             <MudItem lg="12" Class="d-flex align-start">
