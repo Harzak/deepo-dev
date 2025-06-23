@@ -1,5 +1,4 @@
-﻿
-@if (this.IsVisible && _releasesResult == null)
+﻿@if (this.IsVisible && _releasesResult == null)
 {
     <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
 }
@@ -9,8 +8,20 @@ else if (_releasesResult != null && _releasesResult.IsFailed)
 }
 else if (this.IsVisible && _releasesResult != null && _releasesResult.Content != null && _releasesResult.Content.Any())
 {
+    <MudItem  lg="2">
+        <MudSelect  Clearable=true Placeholder="All Genres" T=string>
+            <MudSelectItem Value=e>All Genres</MudSelectItem>
+        </MudSelect>
+    </MudItem>
+
+    <MudFlexBreak />
+
     @for (int i = 0; i < _releasesResult.Content.Count; i++)
     {
         <ReleasesVinylGridItem Item="_releasesResult.Content[i]" />
     }
+}
+
+@code {
+    private string e = "All Genres";
 }

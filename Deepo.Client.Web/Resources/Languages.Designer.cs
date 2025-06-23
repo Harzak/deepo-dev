@@ -151,11 +151,29 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tracklist.
+        /// </summary>
+        public static string Tracklist {
+            get {
+                return ResourceManager.GetString("Tracklist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TV Show.
         /// </summary>
         public static string TVShow {
             get {
                 return ResourceManager.GetString("TVShow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
             }
         }
         
