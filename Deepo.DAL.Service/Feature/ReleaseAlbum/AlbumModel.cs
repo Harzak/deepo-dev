@@ -13,12 +13,14 @@ public class AlbumModel
     public double Duration { get; set; }
     public IEnumerable<IAuthor>? Artists { get; set; }
     public IEnumerable<string> Genres { get; set; }
+    public IEnumerable<TrackModel> Tracklist { get; set; }
     public Dictionary<string, string> ProvidersIdentifier { get; }
 
     public AlbumModel()
     {
         this.ProvidersIdentifier = [];
         this.Genres = [];
+        this.Tracklist = [];
     }
 }
 

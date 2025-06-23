@@ -40,6 +40,14 @@ else if (_releaseResult != null && _releaseResult.Content != null)
                 <MudText Typo="Typo.body2">@String.Join(", ", _releaseResult.Content.Genres.Select(x => x.Value))</MudText>
             </MudItem>
 
+            @foreach(var track in _releaseResult.Content.Tracklist)
+            {
+                <MudItem lg="12" Class="d-flex align-start">
+                    <MudText Typo="Typo.body2" Class="w-25">@this.Localizer["Track"]:</MudText>
+                    <MudText Typo="Typo.body2">@track.Title</MudText>
+                </MudItem>
+            }  
+
         </MudItem>
     </MudGrid>
 }

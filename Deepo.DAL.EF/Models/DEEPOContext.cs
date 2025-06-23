@@ -57,6 +57,10 @@ public partial class DEEPOContext : DbContext
 
     public virtual DbSet<Release_TVShow> Release_TVShows { get; set; }
 
+    public virtual DbSet<Track_Album> Track_Albums { get; set; }
+
+    public virtual DbSet<Tracklist_Album> Tracklist_Albums { get; set; }
+
     public virtual DbSet<Type_Asset> Type_Assets { get; set; }
 
     public virtual DbSet<Type_Release> Type_Releases { get; set; }
@@ -390,6 +394,33 @@ public partial class DEEPOContext : DbContext
             entity.HasOne(d => d.Release).WithMany(p => p.Release_TVShows)
                 .HasForeignKey(d => d.Release_ID)
                 .HasConstraintName("FK_Release_Serie_Release");
+        });
+
+        modelBuilder.Entity<Track_Album>(entity =>
+        {
+            entity.HasKey(e => e.Track_Album_ID);
+
+            entity.ToTable("Track_Album");
+
+            entity.Property(e => e.Duration).HasMaxLength(50);
+            entity.Property(e => e.Title).HasMaxLength(1000);
+        });
+
+        modelBuilder.Entity<Tracklist_Album>(entity =>
+        {
+            entity.HasKey(e => e.Tracklist_Album_ID);
+
+            entity.ToTable("Tracklist_Album");
+
+            entity.HasOne(d => d.Release_Album).WithMany(p => p.Tracklist_Albums)
+                .HasForeignKey(d => d.Release_Album_ID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Tracklist_Album_Release_Album");
+
+            entity.HasOne(d => d.Track_Album).WithMany(p => p.Tracklist_Albums)
+                .HasForeignKey(d => d.Track_Album_ID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Tracklist_Album_Track_Album");
         });
 
         modelBuilder.Entity<Type_Asset>(entity =>
