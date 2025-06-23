@@ -1,4 +1,4 @@
-﻿<MudItem xs="6" sm="4" md="4" lg="3" xxl="4">
+﻿<MudItem Class="pl-16" xs="8" sm="6" md="4" lg="3" xxl="2">
 
     <MudLink OnClick="OpenDialogAsync">
         <MudImage Style="height:200px; overflow:hidden;" Width="200" Height="200" Elevation="8" ObjectPosition=" ObjectPosition.Center" ObjectFit="ObjectFit.Cover" Class="rounded-lg" Fluid="true"
@@ -9,7 +9,7 @@
         @Item?.AuthorsNames.Truncate(27, TRUNCATION_TEXT)
     </MudText>
 
-    <MudText Inline="false" Align="Align.Left" Typo="Typo.body2">
+    <MudText Inline="false" Align="Align.Justify" Typo="Typo.body2">
         @Item?.Name.Truncate(30, TRUNCATION_TEXT)
     </MudText>
 
