@@ -1,24 +1,47 @@
 ﻿CREATE VIEW [dbo].[V_LastVinylRelease]
-	AS 
-	SELECT
-	  [dbo].Release.Release_ID,
-	  [dbo].Release.GUID AS 'ReleasGUID',
-	  [dbo].Release.Name AS 'AlbumName',
-	  STRING_AGG([dbo].Author.Name, ', ') AS 'ArtistsNames',
-	  [dbo].Release.Creation_Date,
-	  [dbo].Asset.Content_Min_URL as 'Thumb_URL',
-	  [dbo].Asset.Content_URL as 'Cover_URL'
-	FROM
-	  [dbo].Release
-	  LEFT JOIN [dbo].Release_Album ON [dbo].Release_Album.Release_ID = [dbo].Release.Release_ID
-	  FULL OUTER JOIN [dbo].Author_Release ON [dbo].Author_Release.Release_ID = [dbo].Release.Release_ID
-	  FULL OUTER JOIN [dbo].Author ON [dbo].Author.Author_ID = [dbo].Author_Release.Author_ID
-	  LEFT JOIN [dbo].Asset_Release ON [dbo].Release.Release_ID = [dbo].Asset_Release.Release_ID
-	  LEFT JOIN [dbo].Asset ON [dbo].Asset.Asset_ID = [dbo].Asset_Release.Asset_ID
-	GROUP BY
-	  [dbo].Release.Release_ID,
-	  [dbo].Release.GUID,
-	  [dbo].Release.Name,
-	  [dbo].Release.Creation_Date,
-	  [dbo].Asset.Content_Min_URL,
-	  [dbo].Asset.Content_URL
+AS 
+WITH ReleaseAuthors AS (
+    SELECT
+        AR.Release_ID,
+        STRING_AGG(A.Name, ', ') AS 'ArtistsNames'
+    FROM
+        [dbo].Author_Release AR
+        INNER JOIN [dbo].Author A ON A.Author_ID = AR.Author_ID
+    GROUP BY
+        AR.Release_ID
+),
+ReleaseGenresIdentifier AS (
+    SELECT
+        RA.Release_ID,
+        STRING_AGG(GA.Identifier, ';') WITHIN GROUP (ORDER BY GA.Name) AS 'GenresIdentifier'
+    FROM
+        [dbo].Release_Album RA
+        INNER JOIN [dbo].Genre_Album_Release GAR ON GAR.Release_Album_ID = RA.Release_Album_ID
+        INNER JOIN [dbo].Genre_Album GA ON GA.Genre_Album_ID = GAR.Genre_Album_ID
+    GROUP BY
+        RA.Release_ID
+),
+ReleaseAssets AS (
+    SELECT
+        AR.Release_ID,
+        A.Content_Min_URL AS 'Thumb_URL',
+        A.Content_URL AS 'Cover_URL'
+    FROM
+        [dbo].Asset_Release AR
+        INNER JOIN [dbo].Asset A ON A.Asset_ID = AR.Asset_ID
+)
+SELECT
+    R.Release_ID,
+    R.GUID AS 'ReleasGUID',
+    R.Name AS 'AlbumName',
+    RA.ArtistsNames,
+    RG.GenresIdentifier,
+    R.Creation_Date,
+    AS1.Thumb_URL,
+    AS1.Cover_URL
+FROM
+    [dbo].Release R
+    LEFT JOIN [dbo].Release_Album RA1 ON RA1.Release_ID = R.Release_ID
+    LEFT JOIN ReleaseAuthors RA ON RA.Release_ID = R.Release_ID
+    LEFT JOIN ReleaseGenresIdentifier RG ON RG.Release_ID = R.Release_ID
+    LEFT JOIN ReleaseAssets AS1 ON AS1.Release_ID = R.Release_ID

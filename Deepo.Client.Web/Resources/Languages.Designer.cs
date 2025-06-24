@@ -70,6 +70,15 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Artist.
         /// </summary>
         public static string Artist {
@@ -147,6 +156,15 @@ namespace Deepo.Client.Web.Resources {
         public static string Release {
             get {
                 return ResourceManager.GetString("Release", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SelectAllGenres.
+        /// </summary>
+        public static string SelectAllGenres {
+            get {
+                return ResourceManager.GetString("SelectAllGenres", resourceCulture);
             }
         }
         

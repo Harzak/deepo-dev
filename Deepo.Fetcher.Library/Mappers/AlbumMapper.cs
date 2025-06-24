@@ -18,9 +18,9 @@ public static class AlbumMapper
         {
             Title = master.Title,
             Artists = master.Artists,
-            CoverURL = master.Images?.ElementAt(0)?.Uri,
+            CoverURL = master.Images?.ElementAtOrDefault(0)?.Uri,
             Country = master.Country,
-            Label = master.Labels?.ElementAt(0)?.Name,  
+            Label = master.Labels?.ElementAtOrDefault(0)?.Name,  
             Genres = master.Genres ?? [],
             ThumbURL = master.ThumbsURL           
         };

@@ -198,7 +198,7 @@ public partial class DEEPOContext : DbContext
 
             entity.ToTable("Genre_Album");
 
-            entity.Property(e => e.Code).HasMaxLength(5);
+            entity.Property(e => e.Identifier).HasMaxLength(5);
             entity.Property(e => e.Name).HasMaxLength(50);
 
             entity.HasMany(d => d.Release_Albums).WithMany(p => p.Genre_Albums)

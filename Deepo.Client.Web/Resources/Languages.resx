@@ -162,4 +162,10 @@
   <data name="Tracklist" xml:space="preserve">
     <value>Tracklist</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="SelectAllGenres" xml:space="preserve">
+    <value>SelectAllGenres</value>
+  </data>
 </root>

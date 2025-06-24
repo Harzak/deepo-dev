@@ -9,5 +9,4 @@ public class ReleaseVinylExDto : ReleaseVinylDto
     public string Country { get; set; } = string.Empty;
     public string? Duration { get; set; } = string.Empty;
     public Collection<TrackVinyl> Tracklist { get; } = new Collection<TrackVinyl>([]);
-    public Dictionary<string, string> Genres { get; } = [];
 }

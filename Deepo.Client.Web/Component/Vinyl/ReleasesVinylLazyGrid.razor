@@ -1,27 +1,32 @@
-﻿@if (this.IsVisible && _releasesResult == null)
+﻿@using Deepo.Client.Web.Dto
+
+@if (this.IsVisible && _releasesFetchResult == null)
 {
     <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
 }
-else if (_releasesResult != null && _releasesResult.IsFailed)
+else if (_releasesFetchResult != null && _releasesFetchResult.IsFailed)
 {
     <MudText> @this.Localizer["Oops"]</MudText>
 }
-else if (this.IsVisible && _releasesResult != null && _releasesResult.Content != null && _releasesResult.Content.Any())
+else if (this.IsVisible && _releasesFetchResult != null && _releasesFetchResult.Content != null && _releasesFetchResult.Content.Any())
 {
-    <MudItem  lg="2">
-        <MudSelect  Clearable=true Placeholder="All Genres" T=string>
-            <MudSelectItem Value=e>All Genres</MudSelectItem>
-        </MudSelect>
-    </MudItem>
-
+    <MudGrid Class="mt-2" Justify="Justify.FlexEnd">
+        <MudItem>
+            <MudSelect FitContent=true Margin=Margin.Dense Variant=Variant.Outlined Label="@Localizer["Genre"]" SelectedValuesChanged=OnSelectedGenresChanged SelectAll="true" SelectAllText="@Localizer["SelectAllGenres"]" T=GenreDto  MultiSelection=true Clearable=true>
+                @if (_genreFetchResult?.Content != null)
+                {
+                    @foreach (GenreDto genre in _genreFetchResult.Content)
+                    {
+                        <MudSelectItem T="GenreDto" Value="@genre">@genre</MudSelectItem>
+                    }
+                }
+            </MudSelect>
+        </MudItem>
+    </MudGrid>
     <MudFlexBreak />
 
-    @for (int i = 0; i < _releasesResult.Content.Count; i++)
+    @foreach (ReleaseVinylDto release in _releasesFiltered)
     {
-        <ReleasesVinylGridItem Item="_releasesResult.Content[i]" />
+        <ReleasesVinylGridItem Item="release" />
     }
-}
-
-@code {
-    private string e = "All Genres";
 }

@@ -21,35 +21,39 @@ internal sealed class GetVinylReleaseHandler : IRequestHandler<GetVinylReleaseQu
 
         OperationResult<ReleaseVinylExDto> result = new();
 
-        Release_Album? album = _db.GetById(request.Id);
+        Release_Album? vinylReleaseDB = _db.GetById(request.Id);
 
-        if (album is null)
+        if (vinylReleaseDB is null)
         {
             return result.WithFailure();
         }
 
         result.Content = new ReleaseVinylExDto()
         {
-            Id = !string.IsNullOrEmpty(album.Release.GUID) ? Guid.Parse(album.Release.GUID) : Guid.Empty,
-            Name = album.Release.Name ?? string.Empty,
-            ReleaseDate = album.Release.Creation_Date,
-            AuthorsNames = string.Join("-", album.Release.Author_Releases.Select(x => x.Author?.Name)) ?? string.Empty,
-            Country = album.Country ?? string.Empty,
-            Label = album.Label ?? string.Empty,
+            Id = !string.IsNullOrEmpty(vinylReleaseDB.Release.GUID) ? Guid.Parse(vinylReleaseDB.Release.GUID) : Guid.Empty,
+            Name = vinylReleaseDB.Release.Name ?? string.Empty,
+            ReleaseDate = vinylReleaseDB.Release.Creation_Date,
+            AuthorsNames = string.Join("-", vinylReleaseDB.Release.Author_Releases.Select(x => x.Author?.Name)) ?? string.Empty,
+            Country = vinylReleaseDB.Country ?? string.Empty,
+            Label = vinylReleaseDB.Label ?? string.Empty,
         };
 
-        foreach (Asset_Release asset in album.Release.Asset_Releases)
+        foreach (Asset_Release asset in vinylReleaseDB.Release.Asset_Releases)
         {
             result.Content.CoverUrl = asset.Asset?.Content_URL ?? string.Empty;
             result.Content.ThumbUrl = asset.Asset?.Content_Min_URL ?? string.Empty;
         }
 
-        foreach (Genre_Album genre in album.Genre_Albums)
+        foreach (Genre_Album genre in vinylReleaseDB.Genre_Albums)
         {
-            result.Content.Genres.Add(genre.Code, genre.Name);
+            result.Content.Genres.Add(new GenreDto()
+            {
+                Name = genre.Name,
+                Identifier = Guid.Parse(genre.Identifier)
+            });
         }
 
-        foreach (var track in album.Tracklist_Albums)
+        foreach (var track in vinylReleaseDB.Tracklist_Albums)
         {
             result.Content.Tracklist.Add(new  TrackVinyl()
             {

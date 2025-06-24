@@ -86,5 +86,26 @@ public class VinylController : ControllerBase
             return Ok(result);
         }
     }
+
+    //vinyl/genres
+    [HttpGet]
+    [Route("genres")]
+    public async Task<IActionResult> GetGenres(CancellationToken cancellationToken, string? filter = null)
+    {
+        var query = new GetAllVinylGenresQuery(filter);
+        OperationResultList<Dto.GenreDto> result = await _mediator.Send(query, cancellationToken).ConfigureAwait(false);
+        if (result is null || result.IsFailed)
+        {
+            return BadRequest(result);
+        }
+        else if (!result.HasContent)
+        {
+            return NoContent();
+        }
+        else
+        {
+            return Ok(result);
+        }
+    }
 }
 

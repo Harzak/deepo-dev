@@ -13,6 +13,8 @@ public partial class V_LastVinylRelease
 
     public string? ArtistsNames { get; set; }
 
+    public string? GenresIdentifier { get; set; }
+
     public DateTime? Creation_Date { get; set; }
 
     public string? Thumb_URL { get; set; }

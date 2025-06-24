@@ -30,11 +30,7 @@ public class GenreAlbumService : IGenreAlbumService
 
     public bool Exists(Genre_Album genre)
     {
-        if (string.IsNullOrEmpty(genre?.Code))
-        {
-            return false;
-        }
-        return _dbContext.Genre_Albums.Any(x => x.Code == genre.Code);
+        return _dbContext.Genre_Albums.Any(x => x.Identifier == genre.Identifier);
     }
 
     public async Task<DatabaseOperationResult> Insert(string genreName, CancellationToken cancellationToken)
@@ -50,7 +46,7 @@ public class GenreAlbumService : IGenreAlbumService
 
         _dbContext.Genre_Albums.Add(new Genre_Album()
         {
-            Code = GenerateGenreCode(normalizedGenreName),
+            Identifier = Guid.NewGuid().ToString(),
             Name = PretifyGenreName(normalizedGenreName)
         });
 
@@ -125,15 +121,6 @@ public class GenreAlbumService : IGenreAlbumService
 
     private string PretifyGenreName(string genreName)
     {
-        return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(genreName.ToLowerInvariant());
-    }
-
-    private string GenerateGenreCode(string genreName)
-    {
-        while (genreName.Contains(' ', StringComparison.InvariantCulture))
-        {
-            genreName = genreName.Replace(" ", "", StringComparison.InvariantCulture);
-        }
-        return genreName.Substring(0, 5);
+        return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(genreName.ToLowerInvariant());
     }
 }

@@ -18,58 +18,6 @@ END
 
 GO
 
-IF NOT EXISTS (select * from [dbo].Genre_Album)
-BEGIN
-	SET IDENTITY_INSERT [dbo].[Genre_Album] ON ;
-	INSERT [dbo].[Genre_Album] ([Genre_Album_ID], [Code], [Name]) VALUES 
-	(1, N'UNKNW', N'Unknow'), 
-	(2, N'ELEC', N'Electro'), 
-	(3, N'HIPP', N'Hip-hop'),
-	(4, N'ROCK', N'Rock'), 
-	(5, N'INDR', N'Indie rock'), 
-	(6, N'JAZZ', N'Jazz'),
-	(7, N'METAL', N'Metal')
-	SET IDENTITY_INSERT [dbo].[Genre_Album] OFF
-END
-
-GO
-
-IF NOT EXISTS (select * from [dbo].Genre_Movie)
-BEGIN
-	SET IDENTITY_INSERT [dbo].[Genre_Movie] ON 
-	INSERT [dbo].[Genre_Movie] ([Genre_Movie_ID], [Code], [Name]) VALUES 
-	(1, N'UNKNW', N'Unknow'),
-	(3, N'ACT', N'Action'), 
-	(4, N'CMDY', N'Comedy'),
-	(5, N'DRAMA', N'Drama'),
-	(6, N'FTSY', N'Fantasy'),
-	(7, N'SCIFI', N'Sci-Fi'),
-	(8, N'HOR', N'Horror'), 
-	(9, N'MYST', N'Mystery'), 
-	(10, N'THRL', N'Thriller')
-	SET IDENTITY_INSERT [dbo].[Genre_Movie] OFF
-END
-
-GO
-
-IF NOT EXISTS (select * from [dbo].Genre_TVShow)
-BEGIN
-	SET IDENTITY_INSERT [dbo].[Genre_TVShow] ON 
-	INSERT [dbo].[Genre_TVShow] ([Genre_TVShow_ID], [Code], [Name]) VALUES 
-	(1, N'UNKNW', N'Unknow'),
-	(3, N'ACT', N'Action'),
-	(4, N'CMDY', N'Comedy'),
-	(5, N'DRAMA', N'Drama'),
-	(6, N'FTSY', N'Fantasy'),
-	(7, N'SCIFI', N'Sci-Fi'),
-	(8, N'HOR', N'Horror'),
-	(9, N'MYST', N'Mystery'),
-	(10, N'THRL', N'Thriller')
-	SET IDENTITY_INSERT [dbo].[Genre_TVShow] OFF
-END
-
-GO
-
 IF NOT EXISTS (select * from [dbo].Provider)
 BEGIN
 	SET IDENTITY_INSERT [dbo].[Provider] ON 
