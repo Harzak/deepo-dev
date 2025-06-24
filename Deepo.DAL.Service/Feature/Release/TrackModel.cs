@@ -1,4 +1,4 @@
-﻿namespace Deepo.DAL.Service.Feature.ReleaseAlbum;
+﻿namespace Deepo.DAL.Service.Feature.Release;
 
 public class TrackModel
 {

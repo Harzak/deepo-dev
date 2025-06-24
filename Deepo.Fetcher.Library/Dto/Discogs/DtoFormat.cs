@@ -3,7 +3,7 @@
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
 [Serializable]
-public sealed class Format
+public sealed class DtoFormat
 {
     [JsonPropertyName("name")]
     public string? Name { get; set; }

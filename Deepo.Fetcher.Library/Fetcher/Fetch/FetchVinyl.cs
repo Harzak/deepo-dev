@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Feature.ReleaseAlbum;
+﻿using Deepo.DAL.Service.Feature.Release;
 using Deepo.DAL.Service.Interfaces;
 using Deepo.Fetcher.Library.LogMessage;
 using Deepo.Fetcher.Library.Service;

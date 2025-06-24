@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Models = Deepo.DAL.EF.Models;
 
-namespace Deepo.DAL.Service.Feature.ReleaseAlbum;
+namespace Deepo.DAL.Service.Feature.Release;
 
 public class ReleaseAlbumDBService : IReleaseAlbumDBService
 {
@@ -14,17 +14,22 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
 
     private readonly DEEPOContext _dbContext;
     private readonly IAuthorDBService _authorDBService;
+    private readonly IGenreAlbumService _genreAlbumService;
 
-    public ReleaseAlbumDBService(DEEPOContext dbContext, IAuthorDBService authorDBService, ILogger<ReleaseAlbumDBService> logger)
+    public ReleaseAlbumDBService(DEEPOContext dbContext,
+        IAuthorDBService authorDBService,
+        IGenreAlbumService genreAlbumService,
+        ILogger<ReleaseAlbumDBService> logger)
     {
-        _authorDBService = authorDBService;
-        _logger = logger;
         _dbContext = dbContext;
+        _authorDBService = authorDBService;
+        _genreAlbumService = genreAlbumService;
+        _logger = logger;
     }
 
-    public async Task<DatabaseServiceResult> Insert(AlbumModel item, CancellationToken cancellationToken)
+    public async Task<DatabaseOperationResult> Insert(AlbumModel item, CancellationToken cancellationToken)
     {
-        DatabaseServiceResult result = new();
+        DatabaseOperationResult result = new();
 
         if (item is null || item.Artists is null || Exists(item))
         {
@@ -35,7 +40,7 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
         {
             if (!_authorDBService.Exists(author))
             {
-                DatabaseServiceResult innerResult = await _authorDBService.Insert(author, cancellationToken).ConfigureAwait(false);
+                DatabaseOperationResult innerResult = await _authorDBService.Insert(author, cancellationToken).ConfigureAwait(false);
                 if (!innerResult.IsSuccess)
                 {
                     return innerResult;
@@ -48,11 +53,11 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
         {
             author_Releases.Add(new Author_Release
             {
-                Author = _dbContext.Authors.First(x => x.Provider_Author_Identifier == artist.Provider_Identifier)
+                Author = _authorDBService.GetByProviderIdentifier(artist.Provider_Identifier)
             });
         }
 
-        Release newRelease = new()
+        Models.Release newRelease = new()
         {
             Creation_Date = DateTime.Now,
             Modification_Date = DateTime.Now,
@@ -92,17 +97,24 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
         List<Genre_Album> genres = [];
         foreach (var genreStr in item.Genres)
         {
-            Genre_Album? genre = _dbContext.Genre_Albums.FirstOrDefault(x => x.Name == genreStr);
-            if (genre is not null)
+            if (_genreAlbumService.TryFindGenre(genreStr, out Genre_Album genre))
             {
                 genres.Add(genre);
             }
+            else
+            {
+                await _genreAlbumService.Insert(genreStr, cancellationToken).ConfigureAwait(false);
+                if (_genreAlbumService.TryFindGenre(genreStr, out genre))
+                {
+                    genres.Add(genre);
+                }
+            }
         }
 
-        List<Tracklist_Album> tracklist = [];  
+        List<Tracklist_Album> tracklist = [];
         foreach (TrackModel track in item.Tracklist)
         {
-            tracklist.Add(new  Tracklist_Album
+            tracklist.Add(new Tracklist_Album
             {
                 Track_Album = new Track_Album
                 {
@@ -132,15 +144,13 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
         catch (DbUpdateException ex)
         {
             DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), _dbContext?.Database?.GetDbConnection()?.ConnectionString, ex);
+            return result;
         }
         catch (Exception ex)
         {
             DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), _dbContext?.Database?.GetDbConnection()?.ConnectionString, ex);
             throw;
         }
-
-        return result;
-
     }
 
     public int Count(string market)

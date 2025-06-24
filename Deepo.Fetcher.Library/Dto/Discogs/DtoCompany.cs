@@ -2,7 +2,7 @@
 
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
-public sealed class Label
+public sealed class DtoCompany
 {
     [JsonPropertyName("name")]
     public string? Name { get; set; }

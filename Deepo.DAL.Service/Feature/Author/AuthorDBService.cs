@@ -20,11 +20,11 @@ internal class AuthorDBService : IAuthorDBService
         _dbContext = dbContext;
     }
 
-    public async Task<DatabaseServiceResult> Insert(IAuthor item, CancellationToken cancellationToken)
+    public async Task<DatabaseOperationResult> Insert(IAuthor item, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(item, nameof(item));
 
-        DatabaseServiceResult result = new();
+        DatabaseOperationResult result = new();
 
         try
         {
@@ -57,5 +57,10 @@ internal class AuthorDBService : IAuthorDBService
         ArgumentNullException.ThrowIfNull(item, nameof(item));
 
         return _dbContext.Authors.Any(x => x.Provider.Code == item.Provider_Code && x.Provider_Author_Identifier == item.Provider_Identifier);
+    }
+
+    public Models.Author GetByProviderIdentifier(string identifier)
+    {
+        return _dbContext.Authors.First(x => x.Provider_Author_Identifier == identifier);
     }
 }

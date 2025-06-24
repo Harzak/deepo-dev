@@ -1,6 +1,6 @@
 ﻿using Deepo.DAL.Service.Interfaces;
 
-namespace Deepo.DAL.Service.Feature.ReleaseAlbum;
+namespace Deepo.DAL.Service.Feature.Release;
 
 public class AlbumModel
 {

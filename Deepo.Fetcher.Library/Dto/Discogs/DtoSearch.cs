@@ -6,9 +6,9 @@ namespace Deepo.Fetcher.Library.Dto.Discogs;
 public sealed class AlbumSearch
 {
     [JsonPropertyName("pagination")]
-    public Pagination? Pagination { get; set; }
+    public DtoPagination? Pagination { get; set; }
 
     [JsonPropertyName("results")]
-    public IEnumerable<Album>? Results { get; set; }
+    public IEnumerable<DtoAlbum>? Results { get; set; }
 }
 

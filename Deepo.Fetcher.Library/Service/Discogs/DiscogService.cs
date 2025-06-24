@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Feature.ReleaseAlbum;
+﻿using Deepo.DAL.Service.Feature.Release;
 using Deepo.DAL.Service.Interfaces;
 using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Mappers;
@@ -49,7 +49,7 @@ internal class DiscogService : HttpService, IDiscogService
             return result;
         }
 
-        bool isSearchParsed = _endPointSearch.TryParse(searchRequest.Content, out Dto.Discogs.Album? parsedAlbum) && parsedAlbum != null;
+        bool isSearchParsed = _endPointSearch.TryParse(searchRequest.Content, out Dto.Discogs.DtoAlbum? parsedAlbum) && parsedAlbum != null;
         if (!isSearchParsed || parsedAlbum is null)
         {
             return result.WithFailure();
@@ -61,13 +61,13 @@ internal class DiscogService : HttpService, IDiscogService
             return result.WithFailure();
         }
 
-        bool isMasterParsed = _endPointMasters.TryParse(masterRequest.Content, out Dto.Discogs.Master? parsedAlbum2);
+        bool isMasterParsed = _endPointMasters.TryParse(masterRequest.Content, out Dto.Discogs.DtoMaster? parsedAlbum2);
         if (!isMasterParsed || parsedAlbum2 is null)
         {
             return result.WithFailure();
         }
 
-        Dto.Discogs.Artist? artist = parsedAlbum2.Artists?.FirstOrDefault();
+        Dto.Discogs.DtoArtist? artist = parsedAlbum2.Artists?.FirstOrDefault();
         if (artist == null)
         {
             return result.WithFailure();
@@ -91,7 +91,7 @@ internal class DiscogService : HttpService, IDiscogService
             return result;
         }
 
-        bool areAlbumsParsed = _endPointArtistReleases.TryParse(lastReleaseRequest.Content, out IEnumerable<Dto.Discogs.Release>? parsedAlbums);
+        bool areAlbumsParsed = _endPointArtistReleases.TryParse(lastReleaseRequest.Content, out IEnumerable<Dto.Discogs.DtoRelease>? parsedAlbums);
         if (!areAlbumsParsed || parsedAlbums is null || !parsedAlbums.Any())
         {
             return result.WithFailure();
@@ -104,7 +104,7 @@ internal class DiscogService : HttpService, IDiscogService
             return result;
         }
 
-        bool isMasterParsed = _endPointMasters.TryParse(masterRequest.Content, out Dto.Discogs.Master? parsedAlbum2);
+        bool isMasterParsed = _endPointMasters.TryParse(masterRequest.Content, out Dto.Discogs.DtoMaster? parsedAlbum2);
         if (!isMasterParsed || parsedAlbum2 is null)
         {
             return result.WithFailure();

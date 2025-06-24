@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace Deepo.Fetcher.Library.Service.Discogs;
 
-internal class EndPointArtistReleases : MultipleResultEndpointConsumer<IEnumerable<Dto.Discogs.Release>?>
+internal class EndPointArtistReleases : MultipleResultEndpointConsumer<IEnumerable<Dto.Discogs.DtoRelease>?>
 {
     private readonly HttpServiceOption _options;
 
@@ -29,9 +29,9 @@ internal class EndPointArtistReleases : MultipleResultEndpointConsumer<IEnumerab
         throw new NotImplementedException();
     }
 
-    protected override IEnumerable<Dto.Discogs.Release>? Parse(string text)
+    protected override IEnumerable<Dto.Discogs.DtoRelease>? Parse(string text)
     {
-        return JsonSerializer.Deserialize<Dto.Discogs.Releases>(text)?
+        return JsonSerializer.Deserialize<Dto.Discogs.DtoReleases>(text)?
             .Items;
     }
 }

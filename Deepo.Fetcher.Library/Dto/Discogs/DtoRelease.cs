@@ -1,11 +1,11 @@
 ﻿using Deepo.DAL.Service.Feature.Author;
-using Deepo.DAL.Service.Feature.ReleaseAlbum;
+using Deepo.DAL.Service.Feature.Release;
 using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
-    public sealed class Release 
+public sealed class DtoRelease 
 {
     private int _id;
     [JsonPropertyName("id")]
@@ -57,7 +57,7 @@ namespace Deepo.Fetcher.Library.Dto.Discogs;
 
     public Dictionary<string, string> ProvidersIdentifier { get; }
 
-    public Release()
+    public DtoRelease()
     {
         ProvidersIdentifier = [];
     }

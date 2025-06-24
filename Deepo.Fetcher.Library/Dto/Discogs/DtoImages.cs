@@ -3,7 +3,7 @@
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
 [Serializable]
-public sealed class Images
+public sealed class DtoImages
 {
     [JsonPropertyName("type")]
     public string? Type { get; set; }

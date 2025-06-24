@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
-public sealed class Tracklist
+public sealed class DtoTracklist
 {
     [JsonPropertyName("position")]
     public string? Position { get; set; }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace Deepo.Fetcher.Library.Service.Discogs;
-internal class EndPointSearch : SingleResultEndpointConsumer<Dto.Discogs.Album?>
+internal class EndPointSearch : SingleResultEndpointConsumer<Dto.Discogs.DtoAlbum?>
 {
     private readonly HttpServiceOption _options;
 
@@ -44,7 +44,7 @@ internal class EndPointSearch : SingleResultEndpointConsumer<Dto.Discogs.Album?>
     }
     #endregion
 
-    protected override Dto.Discogs.Album? Parse(string text)
+    protected override Dto.Discogs.DtoAlbum? Parse(string text)
     {
         return JsonSerializer.Deserialize<Dto.Discogs.AlbumSearch>(text)?
             .Results?

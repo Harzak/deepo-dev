@@ -2,16 +2,16 @@
 
 namespace Deepo.DAL.Service.Result;
 
-public class DatabaseServiceResult : ResultBase
+public class DatabaseOperationResult : ResultBase
 {
     public int RowAffected { get; set; }
 
-    public DatabaseServiceResult()
+    public DatabaseOperationResult()
     {
 
     }
 
-    public DatabaseServiceResult(bool result) : base(result)
+    public DatabaseOperationResult(bool result) : base(result)
     {
 
     }

@@ -1,12 +1,12 @@
 ﻿using Deepo.DAL.EF.Models;
-using Deepo.DAL.Service.Feature.ReleaseAlbum;
+using Deepo.DAL.Service.Feature.Release;
 using Deepo.DAL.Service.Result;
 
 namespace Deepo.DAL.Service.Interfaces;
 
 public interface IReleaseAlbumDBService
 {
-    Task<DatabaseServiceResult> Insert(AlbumModel item, CancellationToken cancellationToken);
+    Task<DatabaseOperationResult> Insert(AlbumModel item, CancellationToken cancellationToken);
     int Count(string market);
     bool Exists(AlbumModel item);
     V_LastVinylRelease? GetLast();

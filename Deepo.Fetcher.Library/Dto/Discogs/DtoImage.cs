@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
-public sealed class Image
+public sealed class DtoImage
 {
     [JsonPropertyName("type")]
     public string? Type { get; set; }
