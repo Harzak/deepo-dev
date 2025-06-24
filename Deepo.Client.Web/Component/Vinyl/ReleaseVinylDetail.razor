@@ -1,10 +1,18 @@
 ﻿@if (_releaseResult == null)
 {
-    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    <MudGrid Justify="Justify.Center">
+        <MudItem lg="1">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="my-7" />
+        </MudItem>
+    </MudGrid>
 }
 else if (_releaseResult != null && _releaseResult.IsFailed)
 {
-    <MudText>@this.Localizer["Oops"]</MudText>
+    <MudGrid Class="mb-5" Justify="Justify.Center">
+        <MudItem lg="6">
+            <MudText>@this.Localizer["Oops"]</MudText>
+        </MudItem>
+    </MudGrid>
 }
 else if (_releaseResult != null && _releaseResult.Content != null)
 {
