@@ -1,6 +1,6 @@
 ﻿namespace Deepo.Client.Web.Component.Vinyl;
 
-public partial class ReleasesVinylFilter
+public partial class Filter
 {
     private DateTime? _selectedDate;
 

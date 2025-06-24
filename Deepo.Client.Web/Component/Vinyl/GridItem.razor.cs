@@ -4,7 +4,7 @@ using MudBlazor;
 
 namespace Deepo.Client.Web.Component.Vinyl;
 
-public partial class ReleasesVinylGridItem
+public partial class GridItem
 {
     [Inject]
     public IDialogService DialogService { get; set; } = default!;
@@ -28,6 +28,6 @@ public partial class ReleasesVinylGridItem
             FullWidth = true
             
         };
-        await DialogService.ShowAsync<ReleaseVinylDetailDialog>(string.Empty, parameters, options).ConfigureAwait(false);
+        await DialogService.ShowAsync<DetailDialog>(string.Empty, parameters, options).ConfigureAwait(false);
     }
 }

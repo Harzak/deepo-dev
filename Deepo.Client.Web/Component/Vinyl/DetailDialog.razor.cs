@@ -3,7 +3,7 @@ using MudBlazor;
 
 namespace Deepo.Client.Web.Component.Vinyl;
 
-public partial class ReleaseVinylDetailDialog
+public partial class DetailDialog
 {
     [CascadingParameter]
     private IMudDialogInstance MudDialog { get; set; } = default!;

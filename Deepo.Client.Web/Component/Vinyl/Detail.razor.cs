@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace Deepo.Client.Web.Component.Vinyl;
 
-public partial class ReleaseVinylDetail
+public partial class Detail
 {
     [Inject]
     private IHttpService HttpService { get; set; } = default!;

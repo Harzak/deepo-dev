@@ -10,7 +10,7 @@ using System.Globalization;
 
 namespace Deepo.Client.Web.Component.Vinyl;
 
-public partial class ReleasesVinylLazyGrid
+public partial class LazyGrid
 {
     [Inject]
     private IHttpService HttpService { get; set; } = default!;

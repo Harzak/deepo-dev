@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace Deepo.Client.Web.Component.Vinyl;
 
-public partial class ReleasesVinyl
+public partial class Page
 {
     [Inject]
     private IHttpService HttpService { get; set; } = default!;
