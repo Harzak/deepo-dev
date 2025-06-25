@@ -2,5 +2,5 @@
 
 public interface IVinylEventBusSubscriber
 {
-    void OnFilterChanged(VinylFilterEventArgs args);
+    Task OnFilterChangedAsync(VinylFilterEventArgs args);
 }

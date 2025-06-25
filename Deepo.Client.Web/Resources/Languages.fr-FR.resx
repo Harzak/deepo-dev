@@ -168,4 +168,7 @@
   <data name="SelectAllGenres" xml:space="preserve">
     <value>Sélectionnez tout les genres</value>
   </data>
+  <data name="More" xml:space="preserve">
+    <value>Plus</value>
+  </data>
 </root>

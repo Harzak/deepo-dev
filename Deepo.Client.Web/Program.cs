@@ -1,3 +1,4 @@
+using Deepo.Client.Web.Catalog;
 using Deepo.Client.Web.Configuration;
 using Deepo.Client.Web.EventBus.Vinyl;
 using Deepo.Client.Web.Theme;
@@ -27,6 +28,7 @@ internal static class Program
         builder.Services.AddSingleton<IThemeProvider, ThemeProvider>();
         builder.Services.AddTransient<IHttpService, HttpService>();
         builder.Services.AddSingleton<IVinylEventBus, VinylEventBus>();
+        builder.Services.AddSingleton<IVinylCatalog, VinylCatalog>();
 
         builder.Services.AddSingleton<IHttpClientOption>(e => new HttpClientOption()
         {

@@ -25,7 +25,7 @@ public class VinylEventBus : IVinylEventBus
 
         foreach (var subscriber in subscriberSnapshot)
         {
-            subscriber.OnFilterChanged(args);   
+            subscriber.OnFilterChangedAsync(args);   
         }
     }
 

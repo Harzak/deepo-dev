@@ -1,19 +1,36 @@
 ﻿@using Deepo.Client.Web.Dto
 
 <MudGrid Justify="Justify.Center">
-    @if (this.IsVisible && _releasesFetchResult == null)
-    {
-        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-    }
-    else if (_releasesFetchResult != null && _releasesFetchResult.IsFailed)
+    @if (this.VinylCatalog.IsInError)
     {
         <MudText> @this.Localizer["Oops"]</MudText>
     }
-    else if (this.IsVisible && _releasesFetchResult != null && _releasesFetchResult.Content != null && _releasesFetchResult.Content.Any())
+    else if (!this.VinylCatalog.IsLoaded)
     {
-        @foreach (ReleaseVinylDto release in _releasesFiltered)
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+    else if (this.VinylCatalog.HasContent)
+    {
+        @foreach (ReleaseVinylDto release in this.VinylCatalog.Items)
         {
             <Deepo.Client.Web.Component.Vinyl.GridItem Item="release" />
         }
     }
+    else
+    {
+        @foreach (ReleaseVinylDto release in this.VinylCatalog.Items)
+        {
+            <Deepo.Client.Web.Component.Vinyl.GridItem Item="release" />
+        }
+    }
+
+    <MudFlexBreak />
+
+    <MudItem Class="my-5">
+        @if (this.VinylCatalog.CanGetNext)
+        {
+            <MudFab Label="@this.Localizer["More"]" Color="Color.Tertiary" on OnClick=OnExpandMoreClick StartIcon="@Icons.Material.Filled.ExpandMore" Size="Size.Medium" />
+        }
+    </MudItem>
+
 </MudGrid>
