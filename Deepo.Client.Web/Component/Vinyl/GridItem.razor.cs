@@ -18,7 +18,7 @@ public partial class GridItem
     {
         DialogParameters<Guid> parameters = new()
         {
-            { "Vinyl_ID", Item?.Id ?? Guid.Empty}
+            { "VinylID", Item?.Id ?? Guid.Empty}
         };
         DialogOptions options = new()
         {

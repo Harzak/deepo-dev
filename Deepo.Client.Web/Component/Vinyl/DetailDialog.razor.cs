@@ -5,10 +5,7 @@ namespace Deepo.Client.Web.Component.Vinyl;
 
 public partial class DetailDialog
 {
-    [CascadingParameter]
-    private IMudDialogInstance MudDialog { get; set; } = default!;
-
     [Parameter]
-    public Guid Vinyl_ID { get; set; }
+    public Guid VinylID { get; set; }
 }
 

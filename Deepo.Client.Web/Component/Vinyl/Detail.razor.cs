@@ -23,7 +23,7 @@ public partial class Detail
     private IMudDialogInstance MudDialog { get; set; } = default!;
 
     [Parameter]
-    public Guid Vinyl_ID { get; set; }
+    public Guid VinylID { get; set; }
 
     private DtoResult<ReleaseVinylExDto>? _releaseResult;
 
@@ -34,7 +34,7 @@ public partial class Detail
 
     private async Task LoadReleaseAsync()
     {
-        string query = string.Format(CultureInfo.InvariantCulture, HttpRoute.VINYL_RELEASE_BY_ID_ROUTE, Vinyl_ID);
+        string query = string.Format(CultureInfo.InvariantCulture, HttpRoute.VINYL_RELEASE_BY_ID_ROUTE, VinylID);
         OperationResult<string> httpResult = await HttpService.GetAsync(query, CancellationToken.None).ConfigureAwait(false);
 
         if (httpResult.IsSuccess && httpResult.HasContent)
