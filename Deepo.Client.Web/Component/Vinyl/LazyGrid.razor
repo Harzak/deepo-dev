@@ -9,7 +9,7 @@
     {
         <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
     }
-    else if (this.VinylCatalog.HasContent)
+    else if (this.VinylCatalog.Items.Any())
     {
         @foreach (ReleaseVinylDto release in this.VinylCatalog.Items)
         {
@@ -27,7 +27,7 @@
     <MudFlexBreak />
 
     <MudItem Class="my-5">
-        @if (this.VinylCatalog.CanGetNext)
+        @if (this.VinylCatalog.CanGoNext)
         {
             <MudFab Label="@this.Localizer["More"]" Color="Color.Tertiary" on OnClick=OnExpandMoreClick StartIcon="@Icons.Material.Filled.ExpandMore" Size="Size.Medium" />
         }

@@ -26,12 +26,12 @@ public partial class LazyGrid
         if (firstRender)
         {
             this.VinylCatalog.OnPropertyChanged(StateHasChanged);
-            await this.VinylCatalog.GoNextPage().ConfigureAwait(false);
+            await this.VinylCatalog.GoNext().ConfigureAwait(false);
         }
     }
     private void OnExpandMoreClick(MouseEventArgs args)
     {
-        _ = this.VinylCatalog.GoNextPage().ConfigureAwait(false);
+        _ = this.VinylCatalog.GoNext().ConfigureAwait(false);
     }
 }
 

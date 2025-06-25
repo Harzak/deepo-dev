@@ -3,7 +3,6 @@ using Deepo.Client.Web.Dto;
 using Deepo.Client.Web.EventBus.Vinyl;
 using Framework.Common.Utils.Result;
 using Framework.Web.Http.Client.Service;
-using MudBlazor;
 using Newtonsoft.Json;
 using System.Globalization;
 
@@ -16,8 +15,8 @@ public sealed class VinylCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDis
     private readonly IHttpService _httpService;
     private readonly IVinylEventBus _eventBus;
 
-    private List<ReleaseVinylDto> _releasesFiltered;
-    private List<ReleaseVinylDto> _releasesFetched;
+    private readonly List<ReleaseVinylDto> _releasesFetched = [];
+    private List<ReleaseVinylDto> _releasesFiltered = [];
     private VinylFilterEventArgs? _filter;
     private Action? _onPropertyChanged;
     private int _nextOffset;
@@ -25,103 +24,89 @@ public sealed class VinylCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDis
     public IReadOnlyList<ReleaseVinylDto> Items => _releasesFiltered;
     public bool IsLoaded { get; private set; }
     public bool IsInError { get; private set; }
-    public bool HasContent => _releasesFiltered.Count > 0;
-    public bool CanGetNext { get; private set; }
-    public int CurrentPageIndex { get; set; }  
-    public int LastPageIndex => _releasesFiltered.Count / ITEM_PER_PAGE + (_releasesFiltered.Count % ITEM_PER_PAGE > 0 ? 1 : 0);  
+    public bool CanGoNext { get; private set; }
+    public int CurrentPageIndex { get; set; }
+    public int LastPageIndex => CalculateLastPageIndex();
 
     public VinylCatalog(IHttpService httpService, IVinylEventBus eventBus)
     {
         _httpService = httpService;
         _eventBus = eventBus;
-
-        _releasesFetched = [];
-        _releasesFiltered = [];
         _eventBus.Subscribe(this);
-        CanGetNext = true;
-        CurrentPageIndex = 0;
+
+        this.CanGoNext = true;
     }
 
-    public async Task GoNextPage()
+    public async Task GoNext()
     {
         CurrentPageIndex++;
-        await this.LoadReleasesAsync().ConfigureAwait(false);
-        await this.ApplyFiltersAsync().ConfigureAwait(false);
-
+        await LoadPageAsync(CurrentPageIndex).ConfigureAwait(false);
     }
 
-    public async Task LoadReleasesAsync()
+    private async Task LoadPageAsync(int pageIndex)
     {
-        List<ReleaseVinylDto>? lastFetch = await GetReleasesAsync(_nextOffset, limit: ITEM_PER_PAGE).ConfigureAwait(false);
-        if (this.IsInError || lastFetch == null)
+        int requiredItems = pageIndex * ITEM_PER_PAGE;
+
+        while (_releasesFiltered.Count < requiredItems && CanGoNext)
         {
+            await LoadNextReleasesAsync().ConfigureAwait(false);
+            ApplyFilter();
+            _onPropertyChanged?.Invoke();
+
+            if (!CanGoNext && _releasesFiltered.Count < requiredItems)
+            {
+                break;
+            }
+        }
+    }
+
+    private async Task LoadNextReleasesAsync()
+    {
+        string query = string.Format(CultureInfo.InvariantCulture, HttpRoute.VINYL_RELEASE_ROUTE, _nextOffset, ITEM_PER_PAGE);
+        OperationResult<string> httpResult = await _httpService.GetAsync(query, CancellationToken.None).ConfigureAwait(false);
+
+        if (httpResult.IsFailed || !httpResult.HasContent)
+        {
+            IsInError = true;
             return;
         }
-        else if (lastFetch.Count == 0)
-        {
-            CanGetNext = false;
-        }
-        else
-        {
-            _releasesFetched.AddRange(lastFetch);
-            _nextOffset += lastFetch.Count;   
-        }
-    }
 
-    private async Task<List<ReleaseVinylDto>?> GetReleasesAsync(int offset, int limit)
-    {
-        string query = string.Format(CultureInfo.InvariantCulture, HttpRoute.VINYL_RELEASE_ROUTE, offset, limit);
-
-        OperationResult<string> httpResult;
-        try
+        DtoResult<List<ReleaseVinylDto>>? operationResult = JsonConvert.DeserializeObject<DtoResult<List<ReleaseVinylDto>>>(httpResult.Content);
+        if (operationResult == null || operationResult.Content == null || operationResult.IsFailed)
         {
-            httpResult = await _httpService.GetAsync(query, CancellationToken.None).ConfigureAwait(false);
-        }
-        catch (HttpRequestException)
-        {
-            this.IsInError = true;
-            return null;
-        }
-        catch (Exception)
-        {
-            throw;
+            IsInError = true;
+            return;
         }
 
-        if (httpResult.IsSuccess && httpResult.HasContent)
+        if (operationResult.Content.Count == 0)
         {
-            DtoResult<List<ReleaseVinylDto>>? operationResult = JsonConvert.DeserializeObject<DtoResult<List<ReleaseVinylDto>>>(httpResult.Content);
-            if (operationResult?.Content != null && operationResult.IsSuccess)
-            {
-                this.IsLoaded = true;
-                return operationResult.Content;
-            }
-            else
-            {
-                return [];
-            }
+            CanGoNext = false;
+            return;
         }
-        this.IsInError = true;
-        return null;
+
+        _releasesFetched.AddRange(operationResult.Content);
+        _nextOffset += operationResult.Content.Count;
+        IsLoaded = true;
     }
 
     public async Task OnFilterChangedAsync(VinylFilterEventArgs args)
     {
         _filter = args;
-        await this.ApplyFiltersAsync().ConfigureAwait(false);
+        CurrentPageIndex = 1;
+        ApplyFilter();
+        await LoadPageAsync(CurrentPageIndex).ConfigureAwait(false);
     }
 
-    private async Task ApplyFiltersAsync()
+    private void ApplyFilter()
     {
-        ApplyFiltersInternal();
-        await CompletePage(this.CurrentPageIndex).ConfigureAwait(false);  
-        _onPropertyChanged?.Invoke();
-    }
-
-    private void ApplyFiltersInternal()
-    {
-        if (_filter != null)
+        if (_filter?.SelectedGenres?.Any() == true)
         {
-            _releasesFiltered = _releasesFetched.Where(release => _filter.SelectedGenres.Any(genre => release.Genres.Any(x => x.Identifier == genre.Identifier))).ToList() ?? [];
+            _releasesFiltered = _releasesFetched
+                .Where(release =>
+                    release.Genres.Any(releaseGenre =>
+                        _filter.SelectedGenres.Any(selectedGenre =>
+                            selectedGenre.Identifier == releaseGenre.Identifier)))
+                .ToList();
         }
         else
         {
@@ -129,13 +114,15 @@ public sealed class VinylCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDis
         }
     }
 
-    private async Task CompletePage(int page)
+    private int CalculateLastPageIndex()
     {
-        while (_releasesFiltered.Count < page * ITEM_PER_PAGE && CanGetNext)
+        if (_releasesFiltered.Count == 0)
         {
-            await LoadReleasesAsync().ConfigureAwait(false);
-            ApplyFiltersInternal();
+            return 0;
         }
+
+        int fullPages = _releasesFiltered.Count / ITEM_PER_PAGE;
+        return _releasesFiltered.Count % ITEM_PER_PAGE > 0 ? fullPages + 1 : fullPages;
     }
 
     public void OnPropertyChanged(Action action)
@@ -153,9 +140,8 @@ public interface ICatalog
 {
     bool IsLoaded { get; }
     bool IsInError { get; }
-    bool HasContent { get; }
-    bool CanGetNext { get; }
-    Task GoNextPage();
+    bool CanGoNext { get; }
+    Task GoNext();
     void OnPropertyChanged(Action action);
 }
 
