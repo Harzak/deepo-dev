@@ -1,9 +1,9 @@
 ﻿@using Deepo.Client.Web.Dto
 
 
-<MudGrid Class="mt-2" Justify="Justify.SpaceEvenly">
+<MudGrid Class="mt-2" Justify="Justify.SpaceAround">
 
-    <MudItem lg="5">
+    <MudItem lg="3" >
         <MudDatePicker Class="mt-1" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="_selectedDate" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMMM" />
     </MudItem>
 

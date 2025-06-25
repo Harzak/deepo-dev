@@ -1,17 +1,19 @@
 ﻿@using Deepo.Client.Web.Dto
 
-@if (this.IsVisible && _releasesFetchResult == null)
-{
-    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
-}
-else if (_releasesFetchResult != null && _releasesFetchResult.IsFailed)
-{
-    <MudText> @this.Localizer["Oops"]</MudText>
-}
-else if (this.IsVisible && _releasesFetchResult != null && _releasesFetchResult.Content != null && _releasesFetchResult.Content.Any())
-{
-    @foreach (ReleaseVinylDto release in _releasesFiltered)
+<MudGrid Justify="Justify.Center">
+    @if (this.IsVisible && _releasesFetchResult == null)
     {
-        <Deepo.Client.Web.Component.Vinyl.GridItem Item="release" />
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
     }
-}
+    else if (_releasesFetchResult != null && _releasesFetchResult.IsFailed)
+    {
+        <MudText> @this.Localizer["Oops"]</MudText>
+    }
+    else if (this.IsVisible && _releasesFetchResult != null && _releasesFetchResult.Content != null && _releasesFetchResult.Content.Any())
+    {
+        @foreach (ReleaseVinylDto release in _releasesFiltered)
+        {
+            <Deepo.Client.Web.Component.Vinyl.GridItem Item="release" />
+        }
+    }
+</MudGrid>
