@@ -11,7 +11,7 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Deepo.DAL.SQL", "Deepo.DAL.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.DAL.EF", "Deepo.DAL.EF\Deepo.DAL.EF.csproj", "{CFF1A021-5943-4855-B4D0-52498D4E6BC6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.Fetcher.WPF", "Deepo.Fetcher.WPF\Deepo.Fetcher.WPF.csproj", "{83F96ABC-B16F-4E4A-A757-D6FFD4B83433}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.Fetcher.Viewer", "Deepo.Fetcher.Viewer\Deepo.Fetcher.Viewer.csproj", "{83F96ABC-B16F-4E4A-A757-D6FFD4B83433}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.DAL.Service", "Deepo.DAL.Service\Deepo.DAL.Service.csproj", "{53027A3F-BE2F-4D08-8177-69415C5ACD46}"
 EndProject
@@ -21,19 +21,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.Mediator", "Deepo.Med
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.Dto", "Deepo.Dto\Deepo.Dto.csproj", "{AF4C8BF4-B854-4966-8EB4-E5F362712A2E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.Client.AndroidApp", "Deepo.Client.AndroidApp\Deepo.Client.AndroidApp.csproj", "{F8B3E35C-43FA-4135-8341-C786DCA26031}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.Client.App", "Deepo.Client.App\Deepo.Client.App.csproj", "{F8B3E35C-43FA-4135-8341-C786DCA26031}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.Client.Web", "Deepo.Client.Web\Deepo.Client.Web.csproj", "{937E6E72-FFB3-457B-89E4-B2ACC17EF876}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.API.Tests", "Deepo.API.Tests\Deepo.API.Tests.csproj", "{D41F18D2-3789-3D69-B253-7CB68D3F9832}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.API.Tests", "Tests\Deepo.API.Tests\Deepo.API.Tests.csproj", "{D41F18D2-3789-3D69-B253-7CB68D3F9832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.Client.AndroidApp.Tests", "Deepo.Client.AndroidApp.Tests\Deepo.Client.AndroidApp.Tests.csproj", "{D2FC07D8-C18A-0445-D3E8-7F77EF7B6D84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.Fetcher.Library.Tests", "Tests\Deepo.Fetcher.Library.Tests\Deepo.Fetcher.Library.Tests.csproj", "{CA3BBBFE-639D-BB5B-6298-DA8CA5FEAA24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.Fetcher.Library.Tests", "Deepo.Fetcher.Library.Tests\Deepo.Fetcher.Library.Tests.csproj", "{CA3BBBFE-639D-BB5B-6298-DA8CA5FEAA24}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.Mediator.Tests", "Deepo.Mediator.Tests\Deepo.Mediator.Tests.csproj", "{6AE32F4A-8A85-6C5F-605B-3C1D3968E328}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.Mediator.Tests", "Tests\Deepo.Mediator.Tests\Deepo.Mediator.Tests.csproj", "{6AE32F4A-8A85-6C5F-605B-3C1D3968E328}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,10 +91,6 @@ Global
 		{D41F18D2-3789-3D69-B253-7CB68D3F9832}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D41F18D2-3789-3D69-B253-7CB68D3F9832}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D41F18D2-3789-3D69-B253-7CB68D3F9832}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2FC07D8-C18A-0445-D3E8-7F77EF7B6D84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2FC07D8-C18A-0445-D3E8-7F77EF7B6D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2FC07D8-C18A-0445-D3E8-7F77EF7B6D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2FC07D8-C18A-0445-D3E8-7F77EF7B6D84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA3BBBFE-639D-BB5B-6298-DA8CA5FEAA24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA3BBBFE-639D-BB5B-6298-DA8CA5FEAA24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA3BBBFE-639D-BB5B-6298-DA8CA5FEAA24}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -111,7 +105,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D41F18D2-3789-3D69-B253-7CB68D3F9832} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{D2FC07D8-C18A-0445-D3E8-7F77EF7B6D84} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{CA3BBBFE-639D-BB5B-6298-DA8CA5FEAA24} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{6AE32F4A-8A85-6C5F-605B-3C1D3968E328} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
