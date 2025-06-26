@@ -351,3 +351,4 @@ MigrationBackup/
 /Deepo.API/appsettings.Development.json
 /Deepo.Fetcher.Host/appsettings.Development.json
 /Deepo.Fetcher.WPF/appsettings.Development.json
+/Deepo.Fetcher.Viewer/appsettings.Development.json
