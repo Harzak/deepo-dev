@@ -1,4 +1,5 @@
-﻿using Deepo.Fetcher.Library.Configuration.Setting;
+﻿using Deepo.Fetcher.Library.Configuration;
+using Deepo.Fetcher.Library.Configuration.Setting;
 using Framework.Common.Utils.Extension;
 using Framework.Web.Http.Client.Endpoint;
 using Framework.Web.Http.Client.Endpoint.Queries;
@@ -24,7 +25,7 @@ internal class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<
     #region HTTP Methods
     public override string Get(string query = "")
     {
-        return $"v1/search?market=FR&type=album&limit={LIMIT_MAX_RANGE}&q={query}";
+        return $"v1/search?market={Constants.DEFAULT_MARKET}&type=album&limit={LIMIT_MAX_RANGE}&q={query}";
     }
     public override string Options()
     {

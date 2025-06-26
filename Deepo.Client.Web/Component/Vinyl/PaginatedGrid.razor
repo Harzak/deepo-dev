@@ -1,7 +1,7 @@
-﻿@using Deepo.Client.Web.Dto
-@using Deepo.Client.Web.Navigation;
+﻿@using Deepo.Client.Web.Configuration
+@using Deepo.Client.Web.Dto
 
-@for (int i = (this.VinylCatalog.CurrentPageIndex -1) * NavigationConst.ITEM_PER_PAGE; i < this.VinylCatalog.CurrentPageIndex * NavigationConst.ITEM_PER_PAGE; i++)
+@for (int i = (this.VinylCatalog.CurrentPageIndex -1) * Constants.RELEASES_PER_PAGE; i < this.VinylCatalog.CurrentPageIndex * Constants.RELEASES_PER_PAGE; i++)
 {
     ReleaseVinylDto? item = this.VinylCatalog.Items.ElementAtOrDefault(i);
     @if (item != null)

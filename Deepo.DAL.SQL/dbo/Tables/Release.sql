@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [dbo].[Release] (
     [Release_ID]        INT IDENTITY (1, 1) NOT NULL,
     [Name]              NVARCHAR (500)      NOT NULL,
+    [Release_Date_UTC]      DATETIME            NOT NULL,
     [Description]       NVARCHAR (MAX)      NULL,
     [Type_Release_ID]   INT                 NOT NULL,
     [Creation_Date]     DATETIME            NOT NULL,

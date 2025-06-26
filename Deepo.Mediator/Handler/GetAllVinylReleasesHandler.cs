@@ -33,9 +33,8 @@ internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylRe
                 {
                     Id = !string.IsNullOrEmpty(vinylReleaseDB.ReleasGUID) ? Guid.Parse(vinylReleaseDB.ReleasGUID) : Guid.Empty,
                     Name = vinylReleaseDB.AlbumName ?? string.Empty,
-                    ReleaseDate = vinylReleaseDB.Creation_Date ?? DateTime.MinValue,
-                    AuthorsNames = vinylReleaseDB.ArtistsNames ?? string.Empty,
-                    ThumbUrl = vinylReleaseDB.Thumb_URL ?? string.Empty,
+                    ReleaseDate = vinylReleaseDB.Release_Date_UTC,
+                    Market = vinylReleaseDB.Market ?? string.Empty,
                     CoverUrl = vinylReleaseDB.Cover_URL ?? string.Empty
                 };
                 if (!string.IsNullOrEmpty(vinylReleaseDB.GenresIdentifier))
@@ -47,6 +46,14 @@ internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylRe
                         {
                             Identifier = Guid.Parse(genreDB)
                         });
+                    }
+                }
+                if(!string.IsNullOrEmpty(vinylReleaseDB.ArtistsNames))
+                {
+                    string[] artistsNames = vinylReleaseDB.ArtistsNames.Split(';');
+                    foreach (string artistName in artistsNames)
+                    {
+                        dto.AuthorsNames.Add(artistName);
                     }
                 }
                 result.Content.Add(dto);

@@ -7,4 +7,3 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Usage", "BL0007:Component parameters should be auto properties", Justification = "False positive", Scope = "member", Target = "~P:Deepo.Client.Web.Component.ReleaseFilterPanel.SelectedRelease")]
 [assembly: SuppressMessage("Usage", "BL0007:Component parameters should be auto properties", Justification = "False positive ", Scope = "member", Target = "~P:Deepo.Client.Web.Component.Release.ReleasePanel.SelectedRelease")]
-[assembly: SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>", Scope = "member", Target = "~F:Deepo.Client.Web.Navigation.NavigationConst.ITEM_PER_PAGE")]

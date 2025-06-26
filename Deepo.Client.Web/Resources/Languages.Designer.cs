@@ -133,11 +133,29 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last releases.
+        /// </summary>
+        public static string LastReleases {
+            get {
+                return ResourceManager.GetString("LastReleases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last vinyl releases.
         /// </summary>
         public static string LastVinylReleases {
             get {
                 return ResourceManager.GetString("LastVinylReleases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Market.
+        /// </summary>
+        public static string Market {
+            get {
+                return ResourceManager.GetString("Market", resourceCulture);
             }
         }
         
@@ -228,15 +246,6 @@ namespace Deepo.Client.Web.Resources {
         public static string Unknown {
             get {
                 return ResourceManager.GetString("Unknown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Upcoming releases.
-        /// </summary>
-        public static string UpcomingReleases {
-            get {
-                return ResourceManager.GetString("UpcomingReleases", resourceCulture);
             }
         }
         

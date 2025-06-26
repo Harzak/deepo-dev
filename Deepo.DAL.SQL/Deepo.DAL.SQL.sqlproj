@@ -219,4 +219,7 @@
   <ItemGroup>
     <RefactorLog Include="Deepo.DAL.SQL.refactorlog" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Script\Script.Utils.sql" />
+  </ItemGroup>
 </Project>

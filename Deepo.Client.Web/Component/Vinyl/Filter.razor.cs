@@ -23,15 +23,39 @@ public partial class Filter
     [Inject]
     private IVinylEventBus VinylEventBus { get; set; } = default!;
 
-    private DateTime? _selectedDate;
+    private DateTime? SelectedDate
+    {
+        get => _selectedDate;
+        set
+        {
+            if (value.HasValue)
+            {
+                if (_selectedDate != value)
+                {
+                    _selectedDate = value.Value;
+                    this.InvokeFilterChanged();
+                }
+            }
+            else
+            {
+                _selectedDate = DateTime.Now;
+                this.InvokeFilterChanged();
+            }
+        }
+    }
+
+    private DateTime _selectedDate;
     private DtoResult<List<GenreDto>>? _genreFetchResult;
     private List<GenreDto> _selectedGenres = [];
+    private List<string> _selectedMarket = [];
 
     protected override async Task OnInitializedAsync()
     {
-        _selectedDate = DateTime.Now;
         await this.LoadGenresAsync().ConfigureAwait(false);
         this.SelectAllGenres();
+        this.SelectAllMarkets();
+        _selectedDate = DateTime.Now;
+        this.InvokeFilterChanged();
     }
 
     private async Task LoadGenresAsync()
@@ -66,17 +90,38 @@ public partial class Filter
         this.InvokeFilterChanged();
     }
 
+    private void OnSelectedMarketChanged(IEnumerable<string> args)
+    {
+        List<string> markets = args.ToList();
+
+        if (markets.Count > 0)
+        {
+            _selectedMarket = markets;
+        }
+        else
+        {
+            this.SelectAllMarkets();
+        }
+        this.InvokeFilterChanged();
+    }
+
     private void SelectAllGenres()
     {
         _selectedGenres = _genreFetchResult?.Content?.ToList() ?? [];
+    }
+
+    private void SelectAllMarkets()
+    {
+        _selectedMarket = Constants.AVAILABLE_MARKETS.ToList();
     }
 
     private void InvokeFilterChanged()
     {
         VinylEventBus.FilterChanged(new VinylFilterEventArgs
         {
-            SelectedDate = _selectedDate,
-            SelectedGenres = _selectedGenres
+            Date = _selectedDate,
+            Genres = _selectedGenres,
+            Markets = _selectedMarket
         });
     }
 }

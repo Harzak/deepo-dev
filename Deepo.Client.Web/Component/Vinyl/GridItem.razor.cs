@@ -10,9 +10,9 @@ public partial class GridItem
     public IDialogService DialogService { get; set; } = default!;
 
     [Parameter]
-    public ReleaseVinylDto? Item { get; set; }
+    public ReleaseVinylDto Item { get; set; } = default!;
 
-    private const string TRUNCATION_TEXT = "...";
+    private const string TRUNCATION_CHARS = "...";
 
     private async Task OpenDialogAsync()
     {

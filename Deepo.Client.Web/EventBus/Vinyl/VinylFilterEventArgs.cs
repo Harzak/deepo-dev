@@ -4,7 +4,7 @@ namespace Deepo.Client.Web.EventBus.Vinyl;
 
 public class VinylFilterEventArgs : EventArgs
 {
-    public DateTime? SelectedDate { get; set; }
-    public IEnumerable<GenreDto> SelectedGenres { get; set; } = [];
-    public string Market { get; set; } = string.Empty;
+    public DateTime Date { get; set; }
+    public IEnumerable<GenreDto> Genres { get; set; } = [];
+    public IEnumerable<string> Markets { get; set; } = [];
 }

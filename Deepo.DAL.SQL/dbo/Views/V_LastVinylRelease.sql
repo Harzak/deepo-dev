@@ -3,7 +3,7 @@ AS
 WITH ReleaseAuthors AS (
     SELECT
         AR.Release_ID,
-        STRING_AGG(A.Name, ', ') AS 'ArtistsNames'
+        STRING_AGG(A.Name, ';') AS 'ArtistsNames'
     FROM
         [dbo].Author_Release AR
         INNER JOIN [dbo].Author A ON A.Author_ID = AR.Author_ID
@@ -32,9 +32,11 @@ ReleaseAssets AS (
 )
 SELECT
     R.Release_ID,
+    R.Release_Date_UTC,
     R.GUID AS 'ReleasGUID',
     R.Name AS 'AlbumName',
     RA.ArtistsNames,
+	RA1.Market,
     RG.GenresIdentifier,
     R.Creation_Date,
     AS1.Thumb_URL,

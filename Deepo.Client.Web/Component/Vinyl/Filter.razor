@@ -1,13 +1,14 @@
-﻿@using Deepo.Client.Web.Dto
+﻿@using Deepo.Client.Web.Configuration
+@using Deepo.Client.Web.Dto
 
 
-<MudGrid Class="mt-2" Justify="Justify.FlexEnd">
+<MudGrid Class="mt-2" Justify="Justify.FlexStart">
 
     <MudItem lg="3" >
-        <MudDatePicker ShowToolbar=false Class="mt-1" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="_selectedDate" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMMM" />
+        <MudDatePicker ShowToolbar=false Class="mt-1" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="SelectedDate" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMMM" />
     </MudItem>
 
-    <MudItem lg="3" />
+    <MudItem lg="3"/>
 
     <MudItem lg="3">
         <MudSelect AdornmentColor=Color.Primary AdornmentIcon="@Icons.Material.Outlined.LibraryMusic" Margin=Margin.Dense Variant=Variant.Outlined Label="@Localizer["Genre"]" SelectedValuesChanged=OnSelectedGenresChanged SelectAll="true" SelectAllText="@Localizer["SelectAllGenres"]" T=GenreDto MultiSelection=true Clearable=true>
@@ -22,10 +23,10 @@
     </MudItem>
 
     <MudItem lg="3">
-        <MudSelect AdornmentColor=Color.Primary AdornmentIcon="@Icons.Material.Outlined.LocationOn" Margin=Margin.Dense Variant=Variant.Outlined Label="Market" SelectAll="true" SelectAllText="@Localizer["SelectAllGenres"]" T=string MultiSelection=true Clearable=true>
-            @foreach (string genre in new List<string>(){"France","US"})
+        <MudSelect AdornmentColor=Color.Primary AdornmentIcon="@Icons.Material.Outlined.Sell" Margin=Margin.Dense Variant=Variant.Outlined Label=@this.Localizer["Market"] SelectedValuesChanged=OnSelectedMarketChanged SelectAll="true" SelectAllText=@Localizer["SelectAllGenres"] T=string MultiSelection=true Clearable=true>
+            @foreach (string market in Constants.AVAILABLE_MARKETS)
             {
-                <MudSelectItem T="string" Value="@genre">@genre</MudSelectItem>
+                <MudSelectItem T="string" Value="@market">@market</MudSelectItem>
             }
         </MudSelect>
     </MudItem>

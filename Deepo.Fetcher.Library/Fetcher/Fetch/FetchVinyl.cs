@@ -1,5 +1,6 @@
 ﻿using Deepo.DAL.Service.Feature.Release;
 using Deepo.DAL.Service.Interfaces;
+using Deepo.Fetcher.Library.Configuration;
 using Deepo.Fetcher.Library.LogMessage;
 using Deepo.Fetcher.Library.Service;
 using Deepo.Fetcher.Library.Service.Discogs;
@@ -70,6 +71,7 @@ internal class FetchVinyl : FetchBase
         await ContinueWithAsync(async () =>
         {
             _resultDiscogs2 = await _discogService.GetLastReleaseByArtistID(_resultDiscogs1.Content.Provider_Identifier, cancellationToken).ConfigureAwait(false);
+            _resultDiscogs2.Content.Market = Constants.DEFAULT_MARKET;
             return _resultDiscogs2;
         })
        .ConfigureAwait(false);

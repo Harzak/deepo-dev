@@ -9,6 +9,8 @@ public partial class Release
 
     public string Name { get; set; } = null!;
 
+    public DateTime Release_Date_UTC { get; set; }
+
     public string? Description { get; set; }
 
     public int Type_Release_ID { get; set; }
