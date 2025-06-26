@@ -3,12 +3,12 @@
     <MudToggleGroup Color="Color.Secondary" @bind-Value="_scrollMode" SelectionMode=SelectionMode.SingleSelection T="EGridScrollMode">
         <MudToggleItem Text="tes" Value="EGridScrollMode.InfiniteScroll">
             <MudTooltip Duration=0 Arrow=true Placement="Placement.Left"  Text="@this.Localizer["InfiniteScroll"]">
-                <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" />
+                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
             </MudTooltip>
         </MudToggleItem>
         <MudToggleItem Value="EGridScrollMode.Pagination">
             <MudTooltip Duration="0" Arrow=true Placement="Placement.Right" Text="@this.Localizer["Pagination"]">
-                <MudIcon Icon="@Icons.Material.Filled.LastPage" />
+                <MudIcon Icon="@Icons.Material.Filled.NavigateNext" />
             </MudTooltip>
         </MudToggleItem>
     </MudToggleGroup>
