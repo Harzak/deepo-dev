@@ -15,6 +15,8 @@ public partial class Release_Album
 
     public string? Country { get; set; }
 
+    public string? Market { get; set; }
+
     public virtual Release Release { get; set; }
 
     public virtual ICollection<Tracklist_Album> Tracklist_Albums { get; set; } = new List<Tracklist_Album>();

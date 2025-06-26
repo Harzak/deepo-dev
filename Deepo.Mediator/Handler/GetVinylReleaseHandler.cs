@@ -32,16 +32,15 @@ internal sealed class GetVinylReleaseHandler : IRequestHandler<GetVinylReleaseQu
         {
             Id = !string.IsNullOrEmpty(vinylReleaseDB.Release.GUID) ? Guid.Parse(vinylReleaseDB.Release.GUID) : Guid.Empty,
             Name = vinylReleaseDB.Release.Name ?? string.Empty,
-            ReleaseDate = vinylReleaseDB.Release.Creation_Date,
-            AuthorsNames = string.Join("-", vinylReleaseDB.Release.Author_Releases.Select(x => x.Author?.Name)) ?? string.Empty,
+            ReleaseDate = vinylReleaseDB.Release.Release_Date_UTC,
             Country = vinylReleaseDB.Country ?? string.Empty,
+            Market = vinylReleaseDB.Market ?? string.Empty,
             Label = vinylReleaseDB.Label ?? string.Empty,
         };
 
         foreach (Asset_Release asset in vinylReleaseDB.Release.Asset_Releases)
         {
             result.Content.CoverUrl = asset.Asset?.Content_URL ?? string.Empty;
-            result.Content.ThumbUrl = asset.Asset?.Content_Min_URL ?? string.Empty;
         }
 
         foreach (Genre_Album genre in vinylReleaseDB.Genre_Albums)
@@ -53,15 +52,23 @@ internal sealed class GetVinylReleaseHandler : IRequestHandler<GetVinylReleaseQu
             });
         }
 
+        foreach (string? artistName in vinylReleaseDB.Release.Author_Releases.Select(x => x.Author?.Name))
+        {
+            if (!string.IsNullOrEmpty(artistName))
+            {
+                result.Content.AuthorsNames.Add(artistName);
+            }
+        }
+
         foreach (var track in vinylReleaseDB.Tracklist_Albums)
         {
-            result.Content.Tracklist.Add(new  TrackVinyl()
+            result.Content.Tracklist.Add(new TrackVinyl()
             {
                 Title = track.Track_Album.Title ?? string.Empty,
                 Duration = track.Track_Album.Duration,
                 Position = track.Track_Album.Position
             });
-        }   
+        }
 
         result.WithSuccess();
 

@@ -7,11 +7,15 @@ public partial class V_LastVinylRelease
 {
     public int? Release_ID { get; set; }
 
+    public DateTime Release_Date_UTC { get; set; }
+
     public string? ReleasGUID { get; set; }
 
     public string? AlbumName { get; set; }
 
     public string? ArtistsNames { get; set; }
+
+    public string? Market { get; set; }
 
     public string? GenresIdentifier { get; set; }
 

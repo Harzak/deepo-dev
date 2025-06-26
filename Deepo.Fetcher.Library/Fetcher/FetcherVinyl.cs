@@ -40,7 +40,6 @@ internal class FetcherVinyl : CancellableWorker
         {
             using (IFetch fetch = _fetchFactory.CreateFetchVinyl(result.Content))
             {
-
                 await fetch.StartAsync(stoppingToken).ConfigureAwait(false);
 
                 if (fetch.Success)

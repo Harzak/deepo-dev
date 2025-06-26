@@ -57,7 +57,7 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
 
     private async Task LoadPageAsync(int pageIndex)
     {
-        int requiredItems = pageIndex * NavigationConst.ITEM_PER_PAGE;
+        int requiredItems = pageIndex * Constants.RELEASES_PER_PAGE;
 
         while (_releasesFiltered.Count < requiredItems && CanGoNext && !IsInError)
         {
@@ -68,7 +68,7 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
 
     private async Task LoadNextReleasesAsync()
     {
-        string query = string.Format(CultureInfo.InvariantCulture, HttpRoute.VINYL_RELEASE_ROUTE, _nextOffset, NavigationConst.ITEM_PER_PAGE);
+        string query = string.Format(CultureInfo.InvariantCulture, HttpRoute.VINYL_RELEASE_ROUTE, _nextOffset, Constants.RELEASES_PER_PAGE);
         OperationResult<string> httpResult = await _httpService.GetAsync(query, CancellationToken.None).ConfigureAwait(false);
 
         if (httpResult.ErrorCode == "204")
@@ -107,12 +107,13 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
 
     private void ApplyFilter()
     {
-        if (_filter?.SelectedGenres?.Any() == true)
+        if (_filter != null)
         {
             _releasesFiltered = _releasesFetched
                 .Where(release =>
-                    release.Genres.Any(releaseGenre =>
-                        _filter.SelectedGenres.Any(selectedGenre =>
+                    release.ReleaseDate.Month == _filter.Date.ToUniversalTime().Month 
+                    && release.Genres.Any(releaseGenre =>
+                        _filter.Genres.Any(selectedGenre =>
                             selectedGenre.Identifier == releaseGenre.Identifier)))
                 .ToList();
         }
@@ -130,8 +131,8 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
             return 0;
         }
 
-        int fullPages = _releasesFiltered.Count / NavigationConst.ITEM_PER_PAGE;
-        return _releasesFiltered.Count % NavigationConst.ITEM_PER_PAGE > 0 ? fullPages + 1 : fullPages;
+        int fullPages = _releasesFiltered.Count / Constants.RELEASES_PER_PAGE;
+        return _releasesFiltered.Count % Constants.RELEASES_PER_PAGE > 0 ? fullPages + 1 : fullPages;
     }
 
     public void OnPropertyChanged(Action action)

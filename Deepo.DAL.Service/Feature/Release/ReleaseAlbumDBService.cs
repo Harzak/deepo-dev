@@ -59,13 +59,14 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
 
         Models.Release newRelease = new()
         {
-            Creation_Date = DateTime.Now,
-            Modification_Date = DateTime.Now,
-            Creation_User = "Auto",
             Name = item.Title ?? string.Empty,
+            Release_Date_UTC = item.ReleaseDateUTC ?? DateTime.UtcNow,
             GUID = Guid.NewGuid().ToString(),
             Author_Releases = author_Releases,
-            Type_Release = _dbContext.Type_Releases.First(x => x.Code == "VINYL") // todo
+            Type_Release = _dbContext.Type_Releases.First(x => x.Code == "VINYL"), // todo
+            Creation_User = "Auto",
+            Creation_Date = DateTime.UtcNow,
+            Modification_Date = DateTime.UtcNow
         };
 
 
@@ -129,6 +130,7 @@ public class ReleaseAlbumDBService : IReleaseAlbumDBService
         {
             Release = newRelease,
             Country = item.Country ?? string.Empty,
+            Market = item.Market ?? string.Empty,
             Label = item.Label ?? string.Empty,
             Genre_Albums = genres,
             Tracklist_Albums = tracklist

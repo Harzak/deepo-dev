@@ -36,11 +36,11 @@ namespace Deepo.API.Tests.Controllers
             //Arrange
             var resultContent = new Dto.ReleaseVinylExDto()
             {
-                AuthorsNames = "names",
                 Id = Guid.NewGuid(),
                 Name ="name",
                 ReleaseDate = DateTime.Now
             };
+            resultContent.AuthorsNames.Add("test");
             OperationResult<Dto.ReleaseVinylExDto> result = new()
             {
                 IsSuccess = true,
@@ -127,13 +127,11 @@ namespace Deepo.API.Tests.Controllers
             //Arrange
             var resultContent = new List<Dto.ReleaseVinylDto>() {
                 new Dto.ReleaseVinylDto() {
-                    AuthorsNames = "names",
                     Id = Guid.NewGuid(),
                     Name ="name",
                     ReleaseDate = DateTime.Now
                 },
                 new Dto.ReleaseVinylDto() {
-                    AuthorsNames = "names",
                     Id = Guid.NewGuid(),
                     Name ="name",
                     ReleaseDate = DateTime.Now

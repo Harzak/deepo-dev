@@ -123,8 +123,8 @@
   <data name="Movie" xml:space="preserve">
     <value>Movie</value>
   </data>
-  <data name="UpcomingReleases" xml:space="preserve">
-    <value>Upcoming releases</value>
+  <data name="LastReleases" xml:space="preserve">
+    <value>Last releases</value>
   </data>
   <data name="ComingSoon" xml:space="preserve">
     <value>Coming soon</value>
@@ -166,7 +166,7 @@
     <value>All</value>
   </data>
   <data name="SelectAllGenres" xml:space="preserve">
-    <value>SelectAllGenres</value>
+    <value>Select all genres</value>
   </data>
   <data name="More" xml:space="preserve">
     <value>More</value>
@@ -182,5 +182,8 @@
   </data>
   <data name="NoReleasesFound" xml:space="preserve">
     <value>No releases found</value>
+  </data>
+  <data name="Market" xml:space="preserve">
+    <value>Market</value>
   </data>
 </root>

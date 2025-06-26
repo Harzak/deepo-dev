@@ -49,7 +49,6 @@ internal class EndPointMasters : SingleResultEndpointConsumer<Dto.Discogs.DtoMas
 
     protected override Dto.Discogs.DtoMaster? Parse(string text)
     {
-        var e = JsonSerializer.Deserialize<Dto.Discogs.DtoMaster>(text);
-        return e;
+        return JsonSerializer.Deserialize<Dto.Discogs.DtoMaster>(text);
     }
 }

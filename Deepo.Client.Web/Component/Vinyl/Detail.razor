@@ -1,4 +1,6 @@
-﻿@if (_releaseResult == null)
+﻿@using Deepo.Client.Web.Extension
+
+@if (_releaseResult == null)
 {
     <MudGrid Justify="Justify.Center">
         <MudItem lg="1">
@@ -26,7 +28,7 @@ else if (_releaseResult != null && _releaseResult.Content != null)
         </MudItem>
 
         <MudItem Class="pt-0" lg="12">
-            <MudText Color="Color.Secondary" Inline="true" Typo="Typo.h5">@_releaseResult.Content.AuthorsNames</MudText>
+            <MudText Color="Color.Secondary" Inline="true" Typo="Typo.h5">@String.Join(", ", _releaseResult.Content.AuthorsNames.TrimNumberSuffixe())</MudText>
         </MudItem>
 
         <MudItem Class="" lg="6">
@@ -41,27 +43,18 @@ else if (_releaseResult != null && _releaseResult.Content != null)
                     <MudText Color="Color.Secondary" Class="w-25">@this.Localizer["Release"]</MudText>
                 </MudItem>
                 <MudItem lg="8" Class="mt-2 d-flex align-start">
-                    <MudText>@_releaseResult.Content.ReleaseDate.ToShortDateString()</MudText>
+                    <MudText>@(_releaseResult.Content.ReleaseDate.ToShortDateString() ?? this.Localizer["Unknown"])</MudText>
                 </MudItem>
-                <MudSpacer />
 
-                <MudItem lg="4" Class="mt-2 pl-6 pt-0 d-flex align-start">
-                    <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.LocationOn" />
-                    <MudText Color="Color.Secondary" Class="w-25">@this.Localizer["Country"]</MudText>
-                </MudItem>
-                <MudItem lg="8" Class="mt-2 pl-6 pt-0 d-flex align-start">
-                    <MudText>@_releaseResult.Content.Country</MudText>
-                </MudItem>
-                <MudSpacer />
+                <MudFlexBreak Class="my-2" />
 
                 <MudItem lg="4" Class="mt-2 pl-6 pt-0 d-flex align-start">
                     <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.DoorBack" />
                     <MudText Color="Color.Secondary" Class="w-25"> @this.Localizer["Label"]</MudText>
                 </MudItem>
                 <MudItem lg="8" Class="mt-2 pl-6 pt-0 d-flex align-start">
-                    <MudText>@_releaseResult.Content.Label</MudText>
+                    <MudText>@(_releaseResult.Content.Label ?? this.Localizer["Unknown"])</MudText>
                 </MudItem>
-                <MudSpacer />
 
                 <MudItem lg="4" Class=" mt-2 pl-6 pt-0 d-flex align-start">
                     <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.LibraryMusic" />
@@ -70,7 +63,24 @@ else if (_releaseResult != null && _releaseResult.Content != null)
                 <MudItem lg="8" Class="mt-2 pl-6 pt-0 d-flex align-start">
                     <MudText>@((_releaseResult.Content.Genres?.Any() == true) ? String.Join(", ", _releaseResult.Content.Genres.Select(x => x.Name)) : this.Localizer["Unknown"])</MudText>
                 </MudItem>
-                <MudSpacer />
+
+                <MudFlexBreak Class="my-2" />
+
+                <MudItem lg="4" Class="mt-2 pl-6 pt-0 d-flex align-start">
+                    <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.LocationOn" />
+                    <MudText Color="Color.Secondary" Class="w-25">@this.Localizer["Country"]</MudText>
+                </MudItem>
+                <MudItem lg="8" Class="mt-2 pl-6 pt-0 d-flex align-start">
+                    <MudText>@(_releaseResult.Content.Country ?? this.Localizer["Unknown"])</MudText>
+                </MudItem>
+
+                <MudItem lg="4" Class="mt-2 pl-6 pt-0 d-flex align-start">
+                    <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.Sell" />
+                    <MudText Color="Color.Secondary" Class="w-25"> @this.Localizer["Market"]</MudText>
+                </MudItem>
+                <MudItem lg="8" Class="mt-2 pl-6 pt-0 d-flex align-start">
+                    <MudText>@(_releaseResult.Content.Market ?? this.Localizer["Unknown"])</MudText>
+                </MudItem>
 
             </MudGrid>
 
@@ -78,7 +88,7 @@ else if (_releaseResult != null && _releaseResult.Content != null)
 
         <MudItem Class=" my-2 mt-4  d-flex align-start" lg="12">
             <MudIcon Size=" Size.Small" Class="mr-2" Color="Color.Secondary" Icon="@Icons.Material.Outlined.QueueMusic" />
-            <MudText Color="Color.Secondary">@this.Localizer["Tracklist"]</MudText>
+            <MudText Class="w-25" Color="Color.Secondary">@this.Localizer["Tracklist"]</MudText>
         </MudItem>
         @for (int i = 0; i < _releaseResult.Content.Tracklist.Count; i++)
         {

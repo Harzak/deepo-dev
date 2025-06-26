@@ -17,6 +17,7 @@ public static class AlbumMapper
         AlbumModel model = new()
         {
             Title = master.Title,
+            ReleaseDateUTC = TryParseToDate(master.Released),
             Artists = master.Artists,
             CoverURL = master.Images?.ElementAtOrDefault(0)?.Uri,
             Country = master.Country,
@@ -45,6 +46,18 @@ public static class AlbumMapper
         }
 
         return model;
+    }
+
+    private static DateTime TryParseToDate(string? dateStr)
+    {
+        if (!DateTime.TryParse(dateStr, out DateTime dateParsed))
+        {
+            if(int.TryParse(dateStr, out int parsedYear))
+            {
+                dateParsed = new DateTime(parsedYear, 0, 0);    
+            }
+        }
+        return dateParsed;
     }
 }
 
