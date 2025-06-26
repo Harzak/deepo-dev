@@ -24,6 +24,7 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
     public IReadOnlyList<ReleaseVinylDto> Items => _releasesFiltered;
     public bool IsLoaded { get; private set; }
     public bool IsInError { get; private set; }
+    public string ErrorMessage { get; private set; }
     public bool CanGoNext { get; private set; }
     public int CurrentPageIndex { get; private set; }
     public int LastPageIndex => CalculateLastPageIndex();
@@ -35,6 +36,7 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
         _eventBus.Subscribe(this);
 
         this.CanGoNext = true;
+        this.ErrorMessage = string.Empty;
     }
 
     public async Task NextAsync()
@@ -78,6 +80,7 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
         if (httpResult.IsFailed || !httpResult.HasContent)
         {
             IsInError = true;
+            ErrorMessage = httpResult.ErrorMessage;
             return;
         }
 
@@ -85,6 +88,7 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
         if (operationResult == null || operationResult.Content == null || operationResult.IsFailed)
         {
             IsInError = true;
+            ErrorMessage = operationResult?.ErrorMessage ?? string.Empty;  
             return;
         }
 
@@ -145,6 +149,7 @@ public interface ICatalog
 {
     bool IsLoaded { get; }
     bool IsInError { get; }
+    string ErrorMessage { get; }
 
     bool CanGoNext { get; }
     int CurrentPageIndex { get; }

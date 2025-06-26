@@ -28,10 +28,14 @@
 
     @if (this.VinylCatalog.IsInError)
     {
-        <MudStack Class="mt-20" Row=true>
-            <MudIcon Color="Color.Error" Icon="@Icons.Material.Outlined.ErrorOutline" />
-            <MudText Color="Color.Error">@this.Localizer["Oops"]</MudText>
-        </MudStack>
+        <MudGrid Class="mt-20" Justify="Justify.Center">
+            <MudStack Row=true>
+                <MudIcon Color="Color.Error" Icon="@Icons.Material.Outlined.ErrorOutline" />
+                <MudText Color="Color.Error">@this.Localizer["Oops"]</MudText>
+            </MudStack>
+            <MudFlexBreak />
+            <MudText Style="opacity:75%;" Color="Color.Error">@this.VinylCatalog.ErrorMessage</MudText>
+        </MudGrid>
     }
     else if (!this.VinylCatalog.IsLoaded)
     {

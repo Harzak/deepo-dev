@@ -2,16 +2,19 @@
 {
     <MudGrid Justify="Justify.Center">
         <MudItem lg="1">
-            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            <MudProgressCircular Rounded=true Size="Size.Large" Color="Color.Primary" Indeterminate="true" Class="my-7" />
         </MudItem>
     </MudGrid>
 }
 else if (_releaseResult != null && _releaseResult.IsFailed)
 {
-    <MudGrid Class="mb-5" Justify="Justify.Center">
-        <MudItem lg="6">
-            <MudText>@this.Localizer["Oops"]</MudText>
-        </MudItem>
+    <MudGrid Class="my-10" Justify="Justify.Center">
+        <MudStack Row=true>
+            <MudIcon Color="Color.Error" Icon="@Icons.Material.Outlined.ErrorOutline" />
+            <MudText Color="Color.Error">@this.Localizer["Oops"]</MudText>
+        </MudStack>
+        <MudFlexBreak />
+        <MudText Style="opacity:75%;" Color="Color.Error">@_releaseResult?.ErrorMessage</MudText>
     </MudGrid>
 }
 else if (_releaseResult != null && _releaseResult.Content != null)
