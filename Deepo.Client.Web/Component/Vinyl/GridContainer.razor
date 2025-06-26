@@ -1,0 +1,43 @@
+﻿
+<MudItem Class="mb-4" md="2" lg="2">
+    <MudToggleGroup Color="Color.Secondary" @bind-Value="_scrollMode" SelectionMode=SelectionMode.SingleSelection T="EGridScrollMode">
+        <MudToggleItem Text="tes" Value="EGridScrollMode.InfiniteScroll">
+            <MudTooltip Duration=0 Arrow=true Placement="Placement.Left"  Text="@this.Localizer["InfiniteScroll"]">
+                <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" />
+            </MudTooltip>
+        </MudToggleItem>
+        <MudToggleItem Value="EGridScrollMode.Pagination">
+            <MudTooltip Duration="0" Arrow=true Placement="Placement.Right" Text="@this.Localizer["Pagination"]">
+                <MudIcon Icon="@Icons.Material.Filled.LastPage" />
+            </MudTooltip>
+        </MudToggleItem>
+    </MudToggleGroup>
+</MudItem>
+
+<MudGrid Justify="Justify.Center">
+
+    @if (this.VinylCatalog.IsInError)
+    {
+        <MudText>@this.Localizer["Oops"]</MudText>
+    }
+    else if (!this.VinylCatalog.IsLoaded)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+    else if (this.VinylCatalog.Items.Any())
+    {
+        @if (_scrollMode == EGridScrollMode.Pagination)
+        {
+            <Deepo.Client.Web.Component.Vinyl.PaginatedGrid />
+        }
+        else if (_scrollMode == EGridScrollMode.InfiniteScroll)
+        {
+            <Deepo.Client.Web.Component.Vinyl.InfiniteScrollGid />
+        }
+    }
+    else
+    {
+        <span>no item</span>
+    }
+
+</MudGrid>

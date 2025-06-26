@@ -5,13 +5,13 @@ using Framework.Common.Utils.Result;
 using Framework.Web.Http.Client.Service;
 using Newtonsoft.Json;
 using System.Globalization;
+using Deepo.Client.Web.Navigation;
+using System.Net;
 
 namespace Deepo.Client.Web.Catalog;
 
-public sealed class VinylCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDisposable
+public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDisposable
 {
-    private const int ITEM_PER_PAGE = 4;
-
     private readonly IHttpService _httpService;
     private readonly IVinylEventBus _eventBus;
 
@@ -25,10 +25,10 @@ public sealed class VinylCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDis
     public bool IsLoaded { get; private set; }
     public bool IsInError { get; private set; }
     public bool CanGoNext { get; private set; }
-    public int CurrentPageIndex { get; set; }
+    public int CurrentPageIndex { get; private set; }
     public int LastPageIndex => CalculateLastPageIndex();
 
-    public VinylCatalog(IHttpService httpService, IVinylEventBus eventBus)
+    public VinylLazyCatalog(IHttpService httpService, IVinylEventBus eventBus)
     {
         _httpService = httpService;
         _eventBus = eventBus;
@@ -37,33 +37,43 @@ public sealed class VinylCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDis
         this.CanGoNext = true;
     }
 
-    public async Task GoNext()
+    public async Task NextAsync()
     {
         CurrentPageIndex++;
         await LoadPageAsync(CurrentPageIndex).ConfigureAwait(false);
+        await LoadPageAsync(CurrentPageIndex + 1).ConfigureAwait(false);
+    }
+
+    public async Task PreviousAsync()
+    {
+        if (CurrentPageIndex > 1)
+        {
+            CurrentPageIndex--;
+            await LoadPageAsync(CurrentPageIndex).ConfigureAwait(false);
+        }
     }
 
     private async Task LoadPageAsync(int pageIndex)
     {
-        int requiredItems = pageIndex * ITEM_PER_PAGE;
+        int requiredItems = pageIndex * NavigationConst.ITEM_PER_PAGE;
 
-        while (_releasesFiltered.Count < requiredItems && CanGoNext)
+        while (_releasesFiltered.Count < requiredItems && CanGoNext && !IsInError)
         {
             await LoadNextReleasesAsync().ConfigureAwait(false);
             ApplyFilter();
-            _onPropertyChanged?.Invoke();
-
-            if (!CanGoNext && _releasesFiltered.Count < requiredItems)
-            {
-                break;
-            }
         }
     }
 
     private async Task LoadNextReleasesAsync()
     {
-        string query = string.Format(CultureInfo.InvariantCulture, HttpRoute.VINYL_RELEASE_ROUTE, _nextOffset, ITEM_PER_PAGE);
+        string query = string.Format(CultureInfo.InvariantCulture, HttpRoute.VINYL_RELEASE_ROUTE, _nextOffset, NavigationConst.ITEM_PER_PAGE);
         OperationResult<string> httpResult = await _httpService.GetAsync(query, CancellationToken.None).ConfigureAwait(false);
+
+        if (httpResult.ErrorCode == "204")
+        {
+            CanGoNext = false;
+            return;
+        }
 
         if (httpResult.IsFailed || !httpResult.HasContent)
         {
@@ -75,12 +85,6 @@ public sealed class VinylCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDis
         if (operationResult == null || operationResult.Content == null || operationResult.IsFailed)
         {
             IsInError = true;
-            return;
-        }
-
-        if (operationResult.Content.Count == 0)
-        {
-            CanGoNext = false;
             return;
         }
 
@@ -112,6 +116,7 @@ public sealed class VinylCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDis
         {
             _releasesFiltered = _releasesFetched;
         }
+        _onPropertyChanged?.Invoke();
     }
 
     private int CalculateLastPageIndex()
@@ -121,8 +126,8 @@ public sealed class VinylCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDis
             return 0;
         }
 
-        int fullPages = _releasesFiltered.Count / ITEM_PER_PAGE;
-        return _releasesFiltered.Count % ITEM_PER_PAGE > 0 ? fullPages + 1 : fullPages;
+        int fullPages = _releasesFiltered.Count / NavigationConst.ITEM_PER_PAGE;
+        return _releasesFiltered.Count % NavigationConst.ITEM_PER_PAGE > 0 ? fullPages + 1 : fullPages;
     }
 
     public void OnPropertyChanged(Action action)
@@ -140,8 +145,13 @@ public interface ICatalog
 {
     bool IsLoaded { get; }
     bool IsInError { get; }
+
     bool CanGoNext { get; }
-    Task GoNext();
+    int CurrentPageIndex { get; }
+    int LastPageIndex { get; }
+
+    Task NextAsync();
+    Task PreviousAsync();
     void OnPropertyChanged(Action action);
 }
 

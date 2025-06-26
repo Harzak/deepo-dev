@@ -1,0 +1,17 @@
+﻿@using Deepo.Client.Web.Dto
+@using Deepo.Client.Web.Navigation;
+
+@for (int i = (this.VinylCatalog.CurrentPageIndex -1) * NavigationConst.ITEM_PER_PAGE; i < this.VinylCatalog.CurrentPageIndex * NavigationConst.ITEM_PER_PAGE; i++)
+{
+    ReleaseVinylDto? item = this.VinylCatalog.Items.ElementAtOrDefault(i);
+    @if (item != null)
+    {
+        <Deepo.Client.Web.Component.Vinyl.GridItem Item="@item" />
+    }
+}
+
+<MudFlexBreak />
+
+<MudItem Class="my-5">
+    <MudPagination ShowPageButtons="false" Count="@this.VinylCatalog.LastPageIndex" Color="Color.Primary" @bind-Selected="@this.CurrentPageIndex" />
+</MudItem>

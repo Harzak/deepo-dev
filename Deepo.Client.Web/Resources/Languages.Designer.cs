@@ -115,6 +115,15 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Infinite scroll.
+        /// </summary>
+        public static string InfiniteScroll {
+            get {
+                return ResourceManager.GetString("InfiniteScroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Label.
         /// </summary>
         public static string Label {
@@ -156,6 +165,15 @@ namespace Deepo.Client.Web.Resources {
         public static string Oops {
             get {
                 return ResourceManager.GetString("Oops", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pagination.
+        /// </summary>
+        public static string Pagination {
+            get {
+                return ResourceManager.GetString("Pagination", resourceCulture);
             }
         }
         

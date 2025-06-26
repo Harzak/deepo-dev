@@ -148,7 +148,7 @@
     <value>Sortie</value>
   </data>
   <data name="Label" xml:space="preserve">
-    <value>Maison de diques</value>
+    <value>Maison de disques</value>
   </data>
   <data name="Genre" xml:space="preserve">
     <value>Genre</value>
@@ -170,5 +170,11 @@
   </data>
   <data name="More" xml:space="preserve">
     <value>Plus</value>
+  </data>
+  <data name="Pagination" xml:space="preserve">
+    <value>Pagination</value>
+  </data>
+  <data name="InfiniteScroll" xml:space="preserve">
+    <value>Scroll Infini</value>
   </data>
 </root>

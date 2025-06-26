@@ -28,7 +28,7 @@ internal static class Program
         builder.Services.AddSingleton<IThemeProvider, ThemeProvider>();
         builder.Services.AddTransient<IHttpService, HttpService>();
         builder.Services.AddSingleton<IVinylEventBus, VinylEventBus>();
-        builder.Services.AddSingleton<IVinylCatalog, VinylCatalog>();
+        builder.Services.AddSingleton<IVinylCatalog, VinylLazyCatalog>();
 
         builder.Services.AddSingleton<IHttpClientOption>(e => new HttpClientOption()
         {

@@ -2,6 +2,7 @@
 using Deepo.Client.Web.Configuration;
 using Deepo.Client.Web.Dto;
 using Deepo.Client.Web.EventBus.Vinyl;
+using Deepo.Client.Web.Navigation;
 using Deepo.Client.Web.Resources;
 using Framework.Common.Utils.Result;
 using Framework.Web.Http.Client.Service;
@@ -13,7 +14,7 @@ using System.Globalization;
 
 namespace Deepo.Client.Web.Component.Vinyl;
 
-public partial class LazyGrid 
+public partial class GridContainer
 {
     [Inject]
     private IStringLocalizer<Languages> Localizer { get; set; } = default!;
@@ -21,17 +22,16 @@ public partial class LazyGrid
     [Inject]
     private IVinylCatalog VinylCatalog { get; set; } = default!;
 
+    private EGridScrollMode _scrollMode = EGridScrollMode.InfiniteScroll;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             this.VinylCatalog.OnPropertyChanged(StateHasChanged);
-            await this.VinylCatalog.GoNext().ConfigureAwait(false);
+            await this.VinylCatalog.NextAsync().ConfigureAwait(false);
         }
     }
-    private void OnExpandMoreClick(MouseEventArgs args)
-    {
-        _ = this.VinylCatalog.GoNext().ConfigureAwait(false);
-    }
+
 }
 

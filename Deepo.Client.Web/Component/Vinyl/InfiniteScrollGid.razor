@@ -1,0 +1,15 @@
+﻿@using Deepo.Client.Web.Dto
+
+@foreach (ReleaseVinylDto release in this.VinylCatalog.Items)
+{
+    <Deepo.Client.Web.Component.Vinyl.GridItem Item="release" />
+}
+
+<MudFlexBreak />
+
+<MudItem Class="my-5">
+    @if (this.VinylCatalog.CanGoNext)
+    {
+        <MudFab Label="@this.Localizer["More"]" Color="Color.Tertiary" on OnClick=OnExpandMoreClick StartIcon="@Icons.Material.Filled.ExpandMore" Size="Size.Medium" />
+    }
+</MudItem>
