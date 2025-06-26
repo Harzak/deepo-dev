@@ -14,9 +14,27 @@ public partial class InfiniteScrollGid
     [Inject]
     private IVinylCatalog VinylCatalog { get; set; } = default!;
 
+    private bool _loadingMore;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            this.VinylCatalog.OnPropertyChanged(StateHasChanged);
+        }
+    }
+
     private void OnExpandMoreClick(MouseEventArgs args)
     {
-        _ = this.VinylCatalog.NextAsync().ConfigureAwait(false);
+        _loadingMore = true;
+        _ = this.LoadMoreAsync();
+    }
+
+    private async Task LoadMoreAsync()
+    {
+        await this.VinylCatalog.NextAsync().ConfigureAwait(false);
+        _loadingMore = false;
+        StateHasChanged();
     }
 }
 

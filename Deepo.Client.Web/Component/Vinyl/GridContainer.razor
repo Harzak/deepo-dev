@@ -1,28 +1,41 @@
 ﻿
-<MudItem Class="mb-4" md="2" lg="2">
-    <MudToggleGroup Color="Color.Secondary" @bind-Value="_scrollMode" SelectionMode=SelectionMode.SingleSelection T="EGridScrollMode">
-        <MudToggleItem Text="tes" Value="EGridScrollMode.InfiniteScroll">
-            <MudTooltip Duration=0 Arrow=true Placement="Placement.Left"  Text="@this.Localizer["InfiniteScroll"]">
-                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
-            </MudTooltip>
-        </MudToggleItem>
-        <MudToggleItem Value="EGridScrollMode.Pagination">
-            <MudTooltip Duration="0" Arrow=true Placement="Placement.Right" Text="@this.Localizer["Pagination"]">
-                <MudIcon Icon="@Icons.Material.Filled.NavigateNext" />
-            </MudTooltip>
-        </MudToggleItem>
-    </MudToggleGroup>
-</MudItem>
+<MudGrid Class="mb-6" Justify="Justify.FlexEnd">
+    <MudItem lg="1">
+        <MudButton Size=Size.Small Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@(() => _scrollModePopupIsOpen = !_scrollModePopupIsOpen)">
+            <MudIcon Icon="@Icons.Material.Filled.GridView" />
+        </MudButton>
+        <MudPopover Open="@_scrollModePopupIsOpen" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter">
+            <MudText Color=Color.Primary Class="m-2">@this.Localizer["View"]</MudText>
+            <MudToggleGroup Class="pt-0" Vertical=true Color="Color.Secondary" @bind-Value="_scrollMode" SelectionMode=SelectionMode.SingleSelection T="EGridScrollMode">
+                <MudToggleItem Value="EGridScrollMode.InfiniteScroll">
+                    <MudStack Row=true>
+                        <MudIcon Icon="@Icons.Material.Outlined.ArrowDownward" />
+                        <MudText>@this.Localizer["InfiniteScroll"]</MudText>
+                    </MudStack>
+                </MudToggleItem>
+                <MudToggleItem Value="EGridScrollMode.Pagination">
+                    <MudStack Row=true>
+                        <MudIcon Class="mr-3" Icon="@Icons.Material.Outlined.LastPage" />
+                        <MudText>@this.Localizer["Pagination"]</MudText>
+                    </MudStack>
+                </MudToggleItem>
+            </MudToggleGroup>
+        </MudPopover>
+    </MudItem>
+</MudGrid>
 
 <MudGrid Justify="Justify.Center">
 
     @if (this.VinylCatalog.IsInError)
     {
-        <MudText>@this.Localizer["Oops"]</MudText>
+        <MudStack Class="mt-20" Row=true>
+            <MudIcon Color="Color.Error" Icon="@Icons.Material.Outlined.ErrorOutline" />
+            <MudText Color="Color.Error">@this.Localizer["Oops"]</MudText>
+        </MudStack>
     }
     else if (!this.VinylCatalog.IsLoaded)
     {
-        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+        <MudProgressCircular Rounded=true Size="Size.Large" Color="Color.Primary" Indeterminate="true" Class="mt-20" />
     }
     else if (this.VinylCatalog.Items.Any())
     {
@@ -37,7 +50,10 @@
     }
     else
     {
-        <span>no item</span>
+        <MudStack Class="mt-20" Row=true>
+            <MudIcon Color="Color.Secondary" Icon="@Icons.Material.Outlined.Info" />
+            <MudText Color="Color.Secondary">@this.Localizer["NoReleasesFound"]</MudText>
+        </MudStack>
     }
 
 </MudGrid>

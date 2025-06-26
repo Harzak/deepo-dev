@@ -6,7 +6,7 @@ public class ThemeProvider : IThemeProvider
 {
     private const string YELLOW_DARK = "#d2b770";
 
-    public MudTheme BuildMudTheme() => new MudTheme()
+    public MudTheme BuildMudTheme() => new()
     {
         PaletteLight = new PaletteLight()
         {
@@ -24,8 +24,6 @@ public class ThemeProvider : IThemeProvider
             Tertiary = Colors.Gray.Default,
             Background = Colors.Gray.Darken4
         },
-
-
         LayoutProperties = new LayoutProperties()
         {
             DrawerWidthLeft = "260px",

@@ -78,14 +78,14 @@ a, .btn-link {
 
     .loading-progress circle {
         fill: none;
-        stroke: #575757;
+        stroke: #BDBDBD;
         stroke-width: 0.6rem;
         transform-origin: 50% 50%;
         transform: rotate(-90deg);
     }
 
         .loading-progress circle:last-child {
-            stroke: #FAFAFA;
+            stroke: #d2b770;
             stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
             transition: stroke-dasharray 0.05s ease-in-out;
         }
@@ -93,7 +93,7 @@ a, .btn-link {
 .loading-progress-text {
     position: absolute;
     text-align: center;
-    color: #B3B3B3;
+    color: #d2b770;
     font-weight: bold;
     inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
 }

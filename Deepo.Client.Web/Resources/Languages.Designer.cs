@@ -160,6 +160,15 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No releases found.
+        /// </summary>
+        public static string NoReleasesFound {
+            get {
+                return ResourceManager.GetString("NoReleasesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Oops, something went wrong.
         /// </summary>
         public static string Oops {
@@ -228,6 +237,15 @@ namespace Deepo.Client.Web.Resources {
         public static string UpcomingReleases {
             get {
                 return ResourceManager.GetString("UpcomingReleases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
             }
         }
         

@@ -14,4 +14,5 @@
 
 <MudItem Class="my-5">
     <MudPagination ShowPageButtons="false" Count="@this.VinylCatalog.LastPageIndex" Color="Color.Primary" @bind-Selected="@this.CurrentPageIndex" />
+    <MudText Class="ml-8" Color="Color.Primary" Align="Align.Center">Page: @this.VinylCatalog.CurrentPageIndex</MudText>
 </MudItem>

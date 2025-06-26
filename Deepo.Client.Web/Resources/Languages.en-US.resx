@@ -177,4 +177,10 @@
   <data name="InfiniteScroll" xml:space="preserve">
     <value>Infinite scroll</value>
   </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="NoReleasesFound" xml:space="preserve">
+    <value>No releases found</value>
+  </data>
 </root>

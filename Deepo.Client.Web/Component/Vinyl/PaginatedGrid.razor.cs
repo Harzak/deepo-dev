@@ -10,6 +10,14 @@ public partial class PaginatedGrid
     [Inject]
     private IVinylCatalog VinylCatalog { get; set; } = default!;
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            this.VinylCatalog.OnPropertyChanged(StateHasChanged);
+        }
+    }
+
     public int CurrentPageIndex
     {
         get => this.VinylCatalog.CurrentPageIndex;

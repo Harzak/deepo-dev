@@ -2,6 +2,6 @@
 
 public static class NavigationConst
 {
-    public const int ITEM_PER_PAGE = 4;
+    public const int ITEM_PER_PAGE = 20;
 }
 

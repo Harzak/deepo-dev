@@ -24,6 +24,8 @@ public partial class GridContainer
 
     private EGridScrollMode _scrollMode = EGridScrollMode.InfiniteScroll;
 
+    private bool _scrollModePopupIsOpen;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -32,6 +34,5 @@ public partial class GridContainer
             await this.VinylCatalog.NextAsync().ConfigureAwait(false);
         }
     }
-
 }
 

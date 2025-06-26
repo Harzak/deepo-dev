@@ -7,7 +7,7 @@
         <MudDatePicker Class="mt-1" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="_selectedDate" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMMM" />
     </MudItem>
 
-    <MudItem >
+    <MudItem>
         <MudSelect FitContent=true Margin=Margin.Dense Variant=Variant.Outlined Label="@Localizer["Genre"]" SelectedValuesChanged=OnSelectedGenresChanged SelectAll="true" SelectAllText="@Localizer["SelectAllGenres"]" T=GenreDto MultiSelection=true Clearable=true>
             @if (_genreFetchResult?.Content != null)
             {
@@ -19,7 +19,7 @@
         </MudSelect>
     </MudItem>
 
-    <MudItem >
+    <MudItem>
         <MudSelect FitContent=true Margin=Margin.Dense Variant=Variant.Outlined Label="Market" SelectAll="true" SelectAllText="@Localizer["SelectAllGenres"]" T=string MultiSelection=true Clearable=true>
             @foreach (string genre in new List<string>(){"France","US"})
             {
