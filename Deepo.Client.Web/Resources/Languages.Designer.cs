@@ -196,7 +196,7 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SelectAllGenres.
+        ///   Looks up a localized string similar to Select all genres.
         /// </summary>
         public static string SelectAllGenres {
             get {
