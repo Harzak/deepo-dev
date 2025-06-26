@@ -1,4 +1,6 @@
+using Deepo.Client.Web.Catalog;
 using Deepo.Client.Web.Configuration;
+using Deepo.Client.Web.EventBus.Vinyl;
 using Deepo.Client.Web.Theme;
 using Framework.Common.Utils.Time.Provider;
 using Framework.Web.Http.Client.Service;
@@ -25,6 +27,8 @@ internal static class Program
         builder.Services.AddTransient<ITimeProvider, Framework.Common.Utils.Time.Provider.TimeProvider>();
         builder.Services.AddSingleton<IThemeProvider, ThemeProvider>();
         builder.Services.AddTransient<IHttpService, HttpService>();
+        builder.Services.AddSingleton<IVinylEventBus, VinylEventBus>();
+        builder.Services.AddSingleton<IVinylCatalog, VinylLazyCatalog>();
 
         builder.Services.AddSingleton<IHttpClientOption>(e => new HttpClientOption()
         {

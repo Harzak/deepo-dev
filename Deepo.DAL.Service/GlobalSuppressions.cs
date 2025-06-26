@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Performance", "CA1852:Seal internal types", Justification = "<Pending>", Scope = "type", Target = "~T:Deepo.DAL.Service.Feature.Author.AuthorDBService")]
+[assembly: SuppressMessage("Globalization", "CA1308:Normalize strings to uppercase", Justification = "<Pending>", Scope = "member", Target = "~M:Deepo.DAL.Service.Feature.Genre.GenreAlbumService.PretifyGenreName(System.String)~System.String")]

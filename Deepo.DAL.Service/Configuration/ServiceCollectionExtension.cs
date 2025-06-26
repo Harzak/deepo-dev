@@ -1,7 +1,8 @@
 ﻿using Deepo.DAL.EF.Models;
 using Deepo.DAL.Service.Feature.Author;
 using Deepo.DAL.Service.Feature.Fetcher;
-using Deepo.DAL.Service.Feature.ReleaseAlbum;
+using Deepo.DAL.Service.Feature.Genre;
+using Deepo.DAL.Service.Feature.Release;
 using Deepo.DAL.Service.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,5 +23,6 @@ public static class ServiceCollectionExtension
         services.AddTransient<IFetcherDBService, FetcherDBService>();
         services.AddTransient<IPlanificationDBService, PlanificationDBService>();
         services.AddTransient<IReleaseAlbumDBService, ReleaseAlbumDBService>();
+        services.AddTransient<IGenreAlbumService, GenreAlbumService>();
     }
 }

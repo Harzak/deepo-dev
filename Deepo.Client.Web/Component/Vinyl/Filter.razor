@@ -1,0 +1,32 @@
+﻿@using Deepo.Client.Web.Dto
+
+
+<MudGrid Class="mt-2" Justify="Justify.SpaceAround">
+
+    <MudItem lg="3" >
+        <MudDatePicker Class="mt-1" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="_selectedDate" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMMM" />
+    </MudItem>
+
+    <MudItem>
+        <MudSelect FitContent=true Margin=Margin.Dense Variant=Variant.Outlined Label="@Localizer["Genre"]" SelectedValuesChanged=OnSelectedGenresChanged SelectAll="true" SelectAllText="@Localizer["SelectAllGenres"]" T=GenreDto MultiSelection=true Clearable=true>
+            @if (_genreFetchResult?.Content != null)
+            {
+                @foreach (GenreDto genre in _genreFetchResult.Content)
+                {
+                    <MudSelectItem T="GenreDto" Value="@genre">@genre</MudSelectItem>
+                }
+            }
+        </MudSelect>
+    </MudItem>
+
+    <MudItem>
+        <MudSelect FitContent=true Margin=Margin.Dense Variant=Variant.Outlined Label="Market" SelectAll="true" SelectAllText="@Localizer["SelectAllGenres"]" T=string MultiSelection=true Clearable=true>
+            @foreach (string genre in new List<string>(){"France","US"})
+            {
+                <MudSelectItem T="string" Value="@genre">@genre</MudSelectItem>
+            }
+
+        </MudSelect>
+    </MudItem>
+
+</MudGrid>

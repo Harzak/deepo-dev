@@ -23,21 +23,33 @@ internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylRe
             Content = []
         };
 
-        IReadOnlyCollection<V_LastVinylRelease> releases = _db.GetAll(request.Market, request.Offset, request.Limit);
+        IReadOnlyCollection<V_LastVinylRelease> allVinylReleasesDB = _db.GetAll(request.Market, request.Offset, request.Limit);
 
-        if (releases != null)
+        if (allVinylReleasesDB != null)
         {
-            foreach (V_LastVinylRelease release in releases)
+            foreach (V_LastVinylRelease vinylReleaseDB in allVinylReleasesDB)
             {
-                result.Content.Add(new()
+                ReleaseVinylDto dto = new()
                 {
-                    Id = !string.IsNullOrEmpty(release.ReleasGUID) ? Guid.Parse(release.ReleasGUID) : Guid.Empty,
-                    Name = release.AlbumName ?? string.Empty,
-                    ReleaseDate = release.Creation_Date ?? DateTime.MinValue,
-                    AuthorsNames = release.ArtistsNames ?? string.Empty,
-                    ThumbUrl = release.Thumb_URL ?? string.Empty,
-                    CoverUrl = release.Cover_URL ?? string.Empty
-                });
+                    Id = !string.IsNullOrEmpty(vinylReleaseDB.ReleasGUID) ? Guid.Parse(vinylReleaseDB.ReleasGUID) : Guid.Empty,
+                    Name = vinylReleaseDB.AlbumName ?? string.Empty,
+                    ReleaseDate = vinylReleaseDB.Creation_Date ?? DateTime.MinValue,
+                    AuthorsNames = vinylReleaseDB.ArtistsNames ?? string.Empty,
+                    ThumbUrl = vinylReleaseDB.Thumb_URL ?? string.Empty,
+                    CoverUrl = vinylReleaseDB.Cover_URL ?? string.Empty
+                };
+                if (!string.IsNullOrEmpty(vinylReleaseDB.GenresIdentifier))
+                {
+                    string[] genresDB = vinylReleaseDB.GenresIdentifier.Split(';');
+                    foreach (string genreDB in genresDB)
+                    {
+                        dto.Genres.Add(new GenreDto()
+                        {
+                            Identifier = Guid.Parse(genreDB)
+                        });
+                    }
+                }
+                result.Content.Add(dto);
             }
         }
         result.WithSuccess();

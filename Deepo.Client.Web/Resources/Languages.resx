@@ -162,4 +162,25 @@
   <data name="Tracklist" xml:space="preserve">
     <value>Tracklist</value>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="SelectAllGenres" xml:space="preserve">
+    <value>SelectAllGenres</value>
+  </data>
+  <data name="More" xml:space="preserve">
+    <value>More</value>
+  </data>
+  <data name="Pagination" xml:space="preserve">
+    <value>Pagination</value>
+  </data>
+  <data name="InfiniteScroll" xml:space="preserve">
+    <value>Infinite scroll</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="NoReleasesFound" xml:space="preserve">
+    <value>No releases found</value>
+  </data>
 </root>

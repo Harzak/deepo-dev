@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Feature.ReleaseAlbum;
+﻿using Deepo.DAL.Service.Feature.Release;
 using Deepo.DAL.Service.Interfaces;
 
 namespace Deepo.Fetcher.Library.Service.Discogs;

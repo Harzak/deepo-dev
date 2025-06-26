@@ -1,0 +1,30 @@
+﻿@using Deepo.Client.Web.Dto
+
+@foreach (ReleaseVinylDto release in this.VinylCatalog.Items)
+{
+    <Deepo.Client.Web.Component.Vinyl.GridItem Item="release" />
+}
+
+<MudFlexBreak />
+
+<MudItem Class="my-5">
+    @if (this.VinylCatalog.CanGoNext)
+    {
+        <MudButton Disabled=_loadingMore Size="Size.Large" Variant=Variant.Outlined Color=Color.Primary OnClick=OnExpandMoreClick>
+            @if (_loadingMore)
+            {
+                <MudStack Row=true>
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Loading</MudText>
+                </MudStack>
+            }
+            else
+            {
+                <MudStack Row=true>
+                    <MudIcon Icon="@Icons.Material.Filled.ExpandMore" />
+                    <MudText>@this.Localizer["More"]</MudText>
+                </MudStack>
+            }
+        </MudButton>
+    }
+</MudItem>

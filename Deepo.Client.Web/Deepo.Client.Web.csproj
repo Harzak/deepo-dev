@@ -56,4 +56,12 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Workspaces\Deepo-dev\Deepo.Client.Web\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Workspaces\Deepo-dev\Deepo.Client.Web\.editorconfig" />
+	</ItemGroup>
+
 </Project>

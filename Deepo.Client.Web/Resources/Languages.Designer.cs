@@ -70,6 +70,15 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Artist.
         /// </summary>
         public static string Artist {
@@ -106,6 +115,15 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Infinite scroll.
+        /// </summary>
+        public static string InfiniteScroll {
+            get {
+                return ResourceManager.GetString("InfiniteScroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Label.
         /// </summary>
         public static string Label {
@@ -124,11 +142,29 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to More.
+        /// </summary>
+        public static string More {
+            get {
+                return ResourceManager.GetString("More", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Movie.
         /// </summary>
         public static string Movie {
             get {
                 return ResourceManager.GetString("Movie", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No releases found.
+        /// </summary>
+        public static string NoReleasesFound {
+            get {
+                return ResourceManager.GetString("NoReleasesFound", resourceCulture);
             }
         }
         
@@ -142,11 +178,29 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pagination.
+        /// </summary>
+        public static string Pagination {
+            get {
+                return ResourceManager.GetString("Pagination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Release.
         /// </summary>
         public static string Release {
             get {
                 return ResourceManager.GetString("Release", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SelectAllGenres.
+        /// </summary>
+        public static string SelectAllGenres {
+            get {
+                return ResourceManager.GetString("SelectAllGenres", resourceCulture);
             }
         }
         
@@ -183,6 +237,15 @@ namespace Deepo.Client.Web.Resources {
         public static string UpcomingReleases {
             get {
                 return ResourceManager.GetString("UpcomingReleases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        public static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
             }
         }
         

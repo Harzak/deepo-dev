@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Feature.ReleaseAlbum;
+﻿using Deepo.DAL.Service.Feature.Release;
 using Deepo.Fetcher.Library.Dto.Discogs;
 using System;
 using System.Collections.Generic;
@@ -11,16 +11,16 @@ namespace Deepo.Fetcher.Library.Mappers;
 
 public static class AlbumMapper
 {
-    public static AlbumModel MapToAlbum(this Master master)
+    public static AlbumModel MapToAlbum(this DtoMaster master)
     {
         ArgumentNullException.ThrowIfNull(master, nameof(master));
         AlbumModel model = new()
         {
             Title = master.Title,
             Artists = master.Artists,
-            CoverURL = master.Images?.ElementAt(0)?.Uri,
+            CoverURL = master.Images?.ElementAtOrDefault(0)?.Uri,
             Country = master.Country,
-            Label = master.Labels?.ElementAt(0)?.Name,  
+            Label = master.Labels?.ElementAtOrDefault(0)?.Name,  
             Genres = master.Genres ?? [],
             ThumbURL = master.ThumbsURL           
         };

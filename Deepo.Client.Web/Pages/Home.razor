@@ -9,14 +9,14 @@
     <MudFlexBreak />
 
     <MudItem xs="12" sm="12" md="10" lg="8" xxl="10">
-        <ReleaseFilterPanel @bind-SelectedRelease="_selectedReleaseType" />
+        <ReleasePanel @bind-SelectedRelease="_selectedReleaseType" />
     </MudItem>
 
     <MudItem xs="12" sm="12" md="10" lg="7" xxl="9">
         @switch (_selectedReleaseType)
         {
             case EReleaseType.Vinyl:
-                <Deepo.Client.Web.Component.Vinyl.ReleasesVinyl />
+                <Deepo.Client.Web.Component.Vinyl.GridContainer />
                 break;
             default:
                 break;
