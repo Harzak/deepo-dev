@@ -20,7 +20,10 @@ public partial class InfiniteScrollGid
     {
         if (firstRender)
         {
-            this.VinylCatalog.OnPropertyChanged(StateHasChanged);
+            this.VinylCatalog.OnPropertyChanged(() => {
+                StateHasChanged();
+            }
+            );
         }
     }
 

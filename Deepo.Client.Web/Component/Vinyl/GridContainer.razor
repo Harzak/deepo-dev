@@ -41,7 +41,7 @@
     {
         <MudProgressCircular Rounded=true Size="Size.Large" Color="Color.Primary" Indeterminate="true" Class="mt-20" />
     }
-    else if (this.VinylCatalog.Items.Any())
+    else if (this.VinylCatalog.Items.Count() > 0)
     {
         @if (_scrollMode == EGridScrollMode.Pagination)
         {

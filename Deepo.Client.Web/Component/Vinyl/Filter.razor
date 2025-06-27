@@ -4,27 +4,24 @@
 
 <MudGrid Class="mt-2" Justify="Justify.FlexStart">
 
-    <MudItem lg="3" >
-        <MudDatePicker ShowToolbar=false Class="mt-1" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Date="SelectedDate" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMMM" />
+    <MudItem lg="3">
+        <MudDatePicker ShowToolbar=false Class="mt-1" Variant="Variant.Outlined" Margin="Margin.Dense" Date="this.Filtering.SearchDate" DateChanged="OnSelectedDateChanged" OpenTo="OpenTo.Month" FixYear="@DateTime.Today.Year" FixDay="@DateTime.Today.Day" DateFormat="MMMM" />
     </MudItem>
 
-    <MudItem lg="3"/>
+    <MudItem lg="3" />
 
     <MudItem lg="3">
         <MudSelect AdornmentColor=Color.Primary AdornmentIcon="@Icons.Material.Outlined.LibraryMusic" Margin=Margin.Dense Variant=Variant.Outlined Label="@Localizer["Genre"]" SelectedValuesChanged=OnSelectedGenresChanged SelectAll="true" SelectAllText="@Localizer["SelectAllGenres"]" T=GenreDto MultiSelection=true Clearable=true>
-            @if (_genreFetchResult?.Content != null)
+            @foreach (GenreDto genre in this.Filtering.AvailableGenres)
             {
-                @foreach (GenreDto genre in _genreFetchResult.Content)
-                {
-                    <MudSelectItem T="GenreDto" Value="@genre">@genre</MudSelectItem>
-                }
+                <MudSelectItem T="GenreDto" Value="@genre">@genre</MudSelectItem>
             }
         </MudSelect>
     </MudItem>
 
     <MudItem lg="3">
         <MudSelect AdornmentColor=Color.Primary AdornmentIcon="@Icons.Material.Outlined.Sell" Margin=Margin.Dense Variant=Variant.Outlined Label=@this.Localizer["Market"] SelectedValuesChanged=OnSelectedMarketChanged SelectAll="true" SelectAllText=@Localizer["SelectAllGenres"] T=string MultiSelection=true Clearable=true>
-            @foreach (string market in Constants.AVAILABLE_MARKETS)
+            @foreach (string market in this.Filtering.AvailableMarkets)
             {
                 <MudSelectItem T="string" Value="@market">@market</MudSelectItem>
             }

@@ -1,27 +1,22 @@
 ﻿using Deepo.Client.Web.Configuration;
 using Deepo.Client.Web.Dto;
-using Deepo.Client.Web.EventBus.Vinyl;
 using Framework.Common.Utils.Result;
 using Framework.Web.Http.Client.Service;
 using Newtonsoft.Json;
 using System.Globalization;
-using Deepo.Client.Web.Navigation;
-using System.Net;
+using Deepo.Client.Web.Filtering;
+using Deepo.Client.Web.Interfaces;
 
 namespace Deepo.Client.Web.Catalog;
 
-public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, IDisposable
+public sealed class VinylLazyCatalog : IVinylCatalog
 {
     private readonly IHttpService _httpService;
-    private readonly IVinylEventBus _eventBus;
 
-    private readonly List<ReleaseVinylDto> _releasesFetched = [];
-    private List<ReleaseVinylDto> _releasesFiltered = [];
-    private VinylFilterEventArgs? _filter;
     private Action? _onPropertyChanged;
     private int _nextOffset;
 
-    public IReadOnlyList<ReleaseVinylDto> Items => _releasesFiltered;
+    public IFilteredCollection<ReleaseVinylDto> Items {get;set;}
     public bool IsLoaded { get; private set; }
     public bool IsInError { get; private set; }
     public string ErrorMessage { get; private set; }
@@ -29,11 +24,13 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
     public int CurrentPageIndex { get; private set; }
     public int LastPageIndex => CalculateLastPageIndex();
 
-    public VinylLazyCatalog(IHttpService httpService, IVinylEventBus eventBus)
+    public VinylLazyCatalog(IHttpService httpService, IFilter<ReleaseVinylDto> filter)
     {
         _httpService = httpService;
-        _eventBus = eventBus;
-        _eventBus.Subscribe(this);
+        Items = new FilteredCollection<ReleaseVinylDto>()
+        {
+            Filter = filter,
+        };
 
         this.CanGoNext = true;
         this.ErrorMessage = string.Empty;
@@ -59,11 +56,11 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
     {
         int requiredItems = pageIndex * Constants.RELEASES_PER_PAGE;
 
-        while (_releasesFiltered.Count < requiredItems && CanGoNext && !IsInError)
+        while (Items.Count < requiredItems && CanGoNext && !IsInError)
         {
             await LoadNextReleasesAsync().ConfigureAwait(false);
-            ApplyFilter();
         }
+        _onPropertyChanged?.Invoke();
     }
 
     private async Task LoadNextReleasesAsync()
@@ -88,80 +85,29 @@ public sealed class VinylLazyCatalog : IVinylCatalog, IVinylEventBusSubscriber, 
         if (operationResult == null || operationResult.Content == null || operationResult.IsFailed)
         {
             IsInError = true;
-            ErrorMessage = operationResult?.ErrorMessage ?? string.Empty;  
+            ErrorMessage = operationResult?.ErrorMessage ?? string.Empty;
             return;
         }
 
-        _releasesFetched.AddRange(operationResult.Content);
+        operationResult.Content.ForEach(Items.Add);
         _nextOffset += operationResult.Content.Count;
         IsLoaded = true;
     }
 
-    public async Task OnFilterChangedAsync(VinylFilterEventArgs args)
-    {
-        _filter = args;
-        CurrentPageIndex = 1;
-        ApplyFilter();
-        await LoadPageAsync(CurrentPageIndex).ConfigureAwait(false);
-    }
-
-    private void ApplyFilter()
-    {
-        if (_filter != null)
-        {
-            _releasesFiltered = _releasesFetched
-                .Where(release =>
-                    release.ReleaseDate.Month == _filter.Date.ToUniversalTime().Month 
-                    && release.Genres.Any(releaseGenre =>
-                        _filter.Genres.Any(selectedGenre =>
-                            selectedGenre.Identifier == releaseGenre.Identifier)))
-                .ToList();
-        }
-        else
-        {
-            _releasesFiltered = _releasesFetched;
-        }
-        _onPropertyChanged?.Invoke();
-    }
-
     private int CalculateLastPageIndex()
     {
-        if (_releasesFiltered.Count == 0)
+        if (!Items.Any())
         {
             return 0;
         }
 
-        int fullPages = _releasesFiltered.Count / Constants.RELEASES_PER_PAGE;
-        return _releasesFiltered.Count % Constants.RELEASES_PER_PAGE > 0 ? fullPages + 1 : fullPages;
+        int fullPages = Items.Count / Constants.RELEASES_PER_PAGE;
+        return Items.Count % Constants.RELEASES_PER_PAGE > 0 ? fullPages + 1 : fullPages;
     }
 
     public void OnPropertyChanged(Action action)
     {
         _onPropertyChanged = action;
+        Items.CollectionChanged += (e, ee) => _onPropertyChanged.Invoke();
     }
-
-    public void Dispose()
-    {
-        _eventBus.Unsubscribe(this);
-    }
-}
-
-public interface ICatalog
-{
-    bool IsLoaded { get; }
-    bool IsInError { get; }
-    string ErrorMessage { get; }
-
-    bool CanGoNext { get; }
-    int CurrentPageIndex { get; }
-    int LastPageIndex { get; }
-
-    Task NextAsync();
-    Task PreviousAsync();
-    void OnPropertyChanged(Action action);
-}
-
-public interface IVinylCatalog : ICatalog
-{
-    IReadOnlyList<ReleaseVinylDto> Items { get; }
 }
