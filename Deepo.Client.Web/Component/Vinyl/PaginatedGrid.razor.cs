@@ -1,7 +1,9 @@
 ﻿using Deepo.Client.Web.Catalog;
+using Deepo.Client.Web.Interfaces;
 using Deepo.Client.Web.Resources;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
+using System.ComponentModel;
 
 namespace Deepo.Client.Web.Component.Vinyl;
 
@@ -14,8 +16,13 @@ public partial class PaginatedGrid
     {
         if (firstRender)
         {
-            this.VinylCatalog.OnPropertyChanged(StateHasChanged);
+            this.VinylCatalog.Items.PropertyChanged += OnVinylCatalogChanged;
         }
+    }
+
+    private void OnVinylCatalogChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        StateHasChanged();
     }
 
     public int CurrentPageIndex

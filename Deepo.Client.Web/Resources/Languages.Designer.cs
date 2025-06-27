@@ -223,6 +223,15 @@ namespace Deepo.Client.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select all markets.
+        /// </summary>
+        public static string SelectAllMarkets {
+            get {
+                return ResourceManager.GetString("SelectAllMarkets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tracklist.
         /// </summary>
         public static string Tracklist {

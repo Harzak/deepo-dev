@@ -6,6 +6,6 @@ namespace Deepo.Client.Web.Interfaces;
 
 public interface IFilter<T> where T : class
 {
-    public event EventHandler? FilterChanged;
+    public event EventHandler<FilterEventArgs>? FilterChanged;
     public Collection<Func<T, bool>> Predicates { get; }
 }

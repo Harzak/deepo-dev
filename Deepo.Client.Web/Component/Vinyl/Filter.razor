@@ -20,7 +20,7 @@
     </MudItem>
 
     <MudItem lg="3">
-        <MudSelect AdornmentColor=Color.Primary AdornmentIcon="@Icons.Material.Outlined.Sell" Margin=Margin.Dense Variant=Variant.Outlined Label=@this.Localizer["Market"] SelectedValuesChanged=OnSelectedMarketChanged SelectAll="true" SelectAllText=@Localizer["SelectAllGenres"] T=string MultiSelection=true Clearable=true>
+        <MudSelect AdornmentColor=Color.Primary AdornmentIcon="@Icons.Material.Outlined.Sell" Margin=Margin.Dense Variant=Variant.Outlined Label=@this.Localizer["Market"] SelectedValuesChanged=OnSelectedMarketChanged SelectAll="true" SelectAllText=@Localizer["SelectAllMarkets"] T=string MultiSelection=true Clearable=true>
             @foreach (string market in this.Filtering.AvailableMarkets)
             {
                 <MudSelectItem T="string" Value="@market">@market</MudSelectItem>

@@ -12,5 +12,4 @@ public interface ICatalog
 
     Task NextAsync();
     Task PreviousAsync();
-    void OnPropertyChanged(Action action);
 }

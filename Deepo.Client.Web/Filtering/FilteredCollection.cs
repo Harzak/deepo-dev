@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Deepo.Client.Web.Filtering;
 
-public sealed class FilteredCollection<T> : ObservableCollection<T>, IFilteredCollection<T> where T : class
+public sealed class FilteredCollection<T> : ObservableCollection<T>, IFilteredCollection<T> , IDisposable where T : class
 {
     private readonly List<T> _allItems;
     private IFilter<T>? _filter;
@@ -76,26 +76,69 @@ public sealed class FilteredCollection<T> : ObservableCollection<T>, IFilteredCo
 
     private void ApplyFilters()
     {
-        if (_isFiltering) return;
+        if (_isFiltering)
+        {
+            return;
+        }
 
         _isFiltering = true;
-        try
-        {
-            base.ClearItems();
+        HashSet<T> currentVisibleItems = [.. this];
+        List<T> itemsToAdd = [];
+        List<T> itemsToRemove = [];
 
-            foreach (T item in _allItems.Where(MatchesFilters))
+        foreach (T item in _allItems)
+        {
+            bool shouldBeVisible = MatchesFilters(item);
+            bool isCurrentlyVisible = currentVisibleItems.Contains(item);
+
+            if (shouldBeVisible && !isCurrentlyVisible)
             {
-                base.InsertItem(base.Count, item);
+                itemsToAdd.Add(item);
+            }
+            else if (!shouldBeVisible && isCurrentlyVisible)
+            {
+                itemsToRemove.Add(item);
             }
         }
-        finally
+
+        foreach (T item in itemsToRemove)
         {
-            _isFiltering = false;
+            int index = this.IndexOf(item);
+            if (index >= 0)
+            {
+                base.RemoveItem(index);
+            }
         }
+
+        int insertIndex = 0;
+        foreach (T item in _allItems.Where(MatchesFilters))
+        {
+            if (itemsToAdd.Contains(item))
+            {
+                base.InsertItem(insertIndex, item);
+            }
+
+            if (this.Count > insertIndex && this[insertIndex] == item)
+            {
+                insertIndex++;
+            }
+        }
+        _isFiltering = false;
     }
 
-    private void OnFilterChanged(object? sender, EventArgs e)
+    private void OnFilterChanged(object? sender, FilterEventArgs e)
     {
         ApplyFilters();
+    }
+
+    public void Dispose()
+    {
+        if (_filter != null)
+        {
+            _filter.FilterChanged -= OnFilterChanged;
+            _filter = null;
+        }
+        _allItems.Clear();
+        ClearItems();
     }
 }

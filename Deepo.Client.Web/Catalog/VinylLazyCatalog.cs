@@ -12,8 +12,6 @@ namespace Deepo.Client.Web.Catalog;
 public sealed class VinylLazyCatalog : IVinylCatalog
 {
     private readonly IHttpService _httpService;
-
-    private Action? _onPropertyChanged;
     private int _nextOffset;
 
     public IFilteredCollection<ReleaseVinylDto> Items {get;set;}
@@ -60,7 +58,6 @@ public sealed class VinylLazyCatalog : IVinylCatalog
         {
             await LoadNextReleasesAsync().ConfigureAwait(false);
         }
-        _onPropertyChanged?.Invoke();
     }
 
     private async Task LoadNextReleasesAsync()
@@ -103,11 +100,5 @@ public sealed class VinylLazyCatalog : IVinylCatalog
 
         int fullPages = Items.Count / Constants.RELEASES_PER_PAGE;
         return Items.Count % Constants.RELEASES_PER_PAGE > 0 ? fullPages + 1 : fullPages;
-    }
-
-    public void OnPropertyChanged(Action action)
-    {
-        _onPropertyChanged = action;
-        Items.CollectionChanged += (e, ee) => _onPropertyChanged.Invoke();
     }
 }

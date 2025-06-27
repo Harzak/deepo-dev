@@ -9,23 +9,23 @@ using System.Collections.ObjectModel;
 
 namespace Deepo.Client.Web.Filtering.Vinyl;
 
-public class VinylFiltersStore : IVinylFiltersStore
+public sealed class VinylFiltersStore : IVinylFiltersStore
 {
-   public event EventHandler? FilterChanged;
+    public event EventHandler<FilterEventArgs>? FilterChanged;
 
     private readonly IHttpService _httpService;
 
-    private DateTime _searchedDate;
-    private Collection<GenreDto> _searchedGenres;
+    private readonly Collection<GenreDto> _searchedGenres;
+    private readonly Collection<string> _searchedMarkets;
     private Collection<GenreDto> _availableGenres;
-    private Collection<string> _searchedMarkets;
     private Collection<string> _availableMarkets;
+    private DateTime _searchedDate;
 
     public DateTime SearchDate => _searchedDate;
-    public IReadOnlyCollection<GenreDto> SearchedGenres => _searchedGenres.AsReadOnly();
-    public IReadOnlyCollection<GenreDto> AvailableGenres => _availableGenres.AsReadOnly();
-    public IReadOnlyCollection<string> SearchedMarkets => _searchedMarkets.AsReadOnly();
-    public IReadOnlyCollection<string> AvailableMarkets => _availableMarkets.AsReadOnly();
+    public IEnumerable<GenreDto> SearchedGenres => _searchedGenres;
+    public IEnumerable<GenreDto> AvailableGenres => _availableGenres;
+    public IEnumerable<string> SearchedMarkets => _searchedMarkets;
+    public IEnumerable<string> AvailableMarkets => _availableMarkets;
 
     public VinylFiltersStore(IHttpService httpService)
     {
@@ -48,47 +48,65 @@ public class VinylFiltersStore : IVinylFiltersStore
             DtoResult<List<GenreDto>>? result = JsonConvert.DeserializeObject<DtoResult<List<GenreDto>>>(httpResult.Content);
             if (result?.IsSuccess == true && result.Content is not null)
             {
-                _availableGenres = [..result.Content];
+                _availableGenres = [.. result.Content];
             }
         }
 
-        _searchedGenres = _availableGenres;
-        _searchedMarkets = _availableMarkets;
-        _searchedDate = DateTime.Now;
-        InvokeFilterChanged();
+        this.SetSearchedGenres(_availableGenres);
+        this.SetSearchedMarkets(_availableMarkets);
+        this.SetSearchedDate(DateTime.Now);
+        this.InvokeFilterChanged();
     }
 
     public void SetSearchedGenres(IEnumerable<GenreDto> genres)
     {
-        IEnumerable<GenreDto> genreList = [.. genres];
-        if (!_searchedGenres.SequenceEqual(genreList))
+        GenreDto[] genreArray = genres as GenreDto[] ?? genres.ToArray();
+
+        if (_searchedGenres.Count != genreArray.Length || !_searchedGenres.SequenceEqual(genreArray))
         {
-            if (genreList.Any())
+            _searchedGenres.Clear();
+
+            if (genreArray.Length > 0)
             {
-                _searchedGenres = [.. genres];
+                foreach (GenreDto genre in genreArray)
+                {
+                    _searchedGenres.Add(genre);
+                }
             }
             else
             {
-                _searchedGenres = _availableGenres;
+                foreach (GenreDto genre in _availableGenres)
+                {
+                    _searchedGenres.Add(genre);
+                }
             }
-            InvokeFilterChanged();
+            this.InvokeFilterChanged();
         }
     }
 
     public void SetSearchedMarkets(IEnumerable<string> markets)
     {
-        IEnumerable<string> marketList = [.. markets];
-        if (!_searchedMarkets.SequenceEqual(markets))
+        string[] marketsArray = markets as string[] ?? markets.ToArray();
+
+        if (_searchedMarkets.Count != marketsArray.Length || !_searchedMarkets.SequenceEqual(marketsArray))
         {
-            if (marketList.Any())
+            _searchedMarkets.Clear();
+
+            if (marketsArray.Length > 0)
             {
-                _searchedMarkets = [.. markets];
+                foreach (string market in marketsArray)
+                {
+                    _searchedMarkets.Add(market);
+                }
             }
             else
             {
-                _searchedMarkets = _availableMarkets;
+                foreach (string market in _availableMarkets)
+                {
+                    _searchedMarkets.Add(market);
+                }
             }
-            InvokeFilterChanged();
+            this.InvokeFilterChanged();
         }
     }
 
@@ -97,12 +115,12 @@ public class VinylFiltersStore : IVinylFiltersStore
         if (_searchedDate != date)
         {
             _searchedDate = date;
-            InvokeFilterChanged();
+            this.InvokeFilterChanged();
         }
     }
 
     private void InvokeFilterChanged()
     {
-        FilterChanged?.Invoke(this, EventArgs.Empty);
+        FilterChanged?.Invoke(this, new FilterEventArgs(this.SearchDate, this.SearchedGenres, this.SearchedMarkets));
     }
 }
