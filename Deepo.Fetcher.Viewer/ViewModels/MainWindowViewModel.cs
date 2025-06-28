@@ -21,8 +21,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(IThemeService themeService,
         IFetcherDBService fetcherDBService,
         IFetcherExecutionDBService fetcherExecutionDBService,
-        IFetcherGridProviderFactory fetcherGridProviderFactory,
-        IFetcherHttpRequestProviderFactory fetcherHttpRequestProviderFactory)
+        IFetcherListenerFactory fetcherListenerFactory)
     {
         _themeService = themeService;
 
@@ -30,7 +29,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
         ApplicationName = Assembly.GetEntryAssembly()?.GetName()?.Name ?? string.Empty;
         ApplicationTitle = string.Format(CultureInfo.CurrentCulture, "{0} - {1}", ApplicationName, ApplicationVersion);
 
-        FetcherListViewModel = new FetcherListViewModel(fetcherDBService, fetcherGridProviderFactory, fetcherHttpRequestProviderFactory);
+        FetcherListViewModel = new FetcherListViewModel(fetcherDBService, fetcherListenerFactory);
         AppOverviewViewModel = new AppOverviewViewModel(fetcherExecutionDBService);
     }
 }

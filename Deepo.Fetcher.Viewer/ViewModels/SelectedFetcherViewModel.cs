@@ -13,8 +13,7 @@ namespace Deepo.Fetcher.Viewer.ViewModels
     internal sealed class SelectedFetcherViewModel : ViewModelBase
     {
         private readonly Models.V_FetcherExtended? _model;
-        private readonly IFetcherGridProvider _fetcherGridProvider;
-        private readonly IFetcherHttpRequestProvider _httpRequestProvider;
+        private readonly IFetcherListener _fetcherListener;
 
         public ObservableCollection<GridModel> FetcherRows { get; set; }
 
@@ -42,17 +41,16 @@ namespace Deepo.Fetcher.Viewer.ViewModels
 
         public SelectedFetcherViewModel(Models.Fetcher model, 
             IFetcherDBService fetcherDBService, 
-            IFetcherGridProvider fetcherGridProvider,
-            IFetcherHttpRequestProvider httpRequestProvider)
+            IFetcherListener fetcherListener)
         {
-            _fetcherGridProvider = fetcherGridProvider;
-            _httpRequestProvider = httpRequestProvider;
-            _fetcherGridProvider.RowAdded += FetcherGridProvider_RowAdded;
-            _httpRequestProvider.RowAdded += FetcherHttpRequestProvider_RowAdded;
+            _fetcherListener = fetcherListener;
+            _fetcherListener.VinylReleaseRowAdded += FetcherGridProvider_RowAdded;
+            _fetcherListener.HttpRequestRowAdded += FetcherHttpRequestProvider_RowAdded;
             _model = fetcherDBService.GetExtended(model.Fetcher_GUID);
 
             FetcherRows = [];
             LastRequestedURI = string.Empty;
+            _fetcherListener.StartListener();
         }
 
         private void FetcherGridProvider_RowAdded(object? sender, GridModelEventArgs e)
@@ -75,7 +73,7 @@ namespace Deepo.Fetcher.Viewer.ViewModels
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            _fetcherGridProvider.Dispose();
+            _fetcherListener.Dispose();
         }
     }
 }

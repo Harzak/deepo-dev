@@ -1,7 +1,7 @@
 ﻿using Deepo.DAL.Service.Configuration;
 using Deepo.Fetcher.Host.WPF.Extensions;
+using Deepo.Fetcher.Viewer.Features;
 using Deepo.Fetcher.Viewer.Interfaces;
-using Deepo.Fetcher.Viewer.Features.FetcherGrid.Provider;
 using Deepo.Fetcher.Viewer.ViewModels;
 using Framework.Common.Utils.Time;
 using Framework.Common.Utils.Time.Provider;
@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using System.Windows;
 using Wpf.Ui;
-using Deepo.Fetcher.Viewer.Features.FetcherHttpRequest.Provider;
 
 namespace Deepo.Fetcher.Host.WPF;
 
@@ -44,8 +43,7 @@ public partial class App : Application
                 services.AddSingleton<ISnackbarService, SnackbarService>();
                 services.AddSingleton<IContentDialogService, ContentDialogService>();
                 services.AddSingleton<INavigationService, NavigationService>();
-                services.AddSingleton<IFetcherGridProviderFactory, FetcherGridProviderFactory>();
-                services.AddSingleton<IFetcherHttpRequestProviderFactory, FetcherHttpRequestProviderFactory>();
+                services.AddSingleton<IFetcherListenerFactory, FetcherListenerFactory>();
                 services.AddTransient<ITimeProvider, TimeProvider>();
                 services.AddTransient<ITimer, Timer>();
                 services.AddSingleton<NavigationState>();
