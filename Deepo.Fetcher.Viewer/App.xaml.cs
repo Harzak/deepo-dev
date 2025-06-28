@@ -1,6 +1,6 @@
 ﻿using Deepo.DAL.Service.Configuration;
 using Deepo.Fetcher.Host.WPF.Extensions;
-using Deepo.Fetcher.Viewer.Features;
+using Deepo.Fetcher.Viewer.Features.Listener;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Deepo.Fetcher.Viewer.ViewModels;
 using Framework.Common.Utils.Time;

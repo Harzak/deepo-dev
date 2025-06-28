@@ -3,7 +3,7 @@ using Deepo.Fetcher.Viewer.Interfaces;
 using Framework.WPF.Behavior.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
-using Models = Deepo.DAL.EF.Models;
+using EF = Deepo.DAL.EF.Models;
 
 namespace Deepo.Fetcher.Viewer.ViewModels;
 
@@ -14,10 +14,10 @@ internal sealed class FetcherListViewModel : ViewModelBase
 
     public SelectedFetcherViewModel? SelectedFetcherViewModel { get; private set; }
 
-    public IEnumerable<Models.Fetcher> Fetchers { get; }
+    public IEnumerable<EF.Fetcher> Fetchers { get; }
 
-    private Models.Fetcher? _selectedFetcher;
-    public Models.Fetcher? SelectedFetcher
+    private EF.Fetcher? _selectedFetcher;
+    public EF.Fetcher? SelectedFetcher
     {
         get => _selectedFetcher;
         set
@@ -41,7 +41,7 @@ internal sealed class FetcherListViewModel : ViewModelBase
 
         var fetchers = _fetcherDBService.GetAll();
 
-        this.Fetchers = fetchers != null ? fetchers : new List<Models.Fetcher>();
+        this.Fetchers = fetchers != null ? fetchers : new List<EF.Fetcher>();
 
         if (Fetchers.Any())
         {

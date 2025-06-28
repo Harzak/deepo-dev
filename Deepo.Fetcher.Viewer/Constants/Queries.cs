@@ -1,6 +1,6 @@
-﻿namespace Deepo.Fetcher.Viewer.Features;
+﻿namespace Deepo.Fetcher.Viewer.Constants;
 
-internal static class QueriesConstants
+internal static class Queries
 {
     public const string MovieSubscriptionQuery = "SELECT [Release_Movie_ID] FROM [dbo].[Release_Movie]";
     public const string VinyleSubscriptionQuery = "SELECT [Release_Album_ID] FROM [dbo].[Release_Album]";

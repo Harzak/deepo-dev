@@ -1,18 +1,18 @@
 ﻿using Deepo.DAL.Service.Feature.Fetcher;
 using Deepo.Fetcher.Host.WPF;
 using Deepo.Fetcher.Viewer.Interfaces;
-using Deepo.Fetcher.Viewer.Features.FetcherGrid.Model;
 using Framework.WPF.Behavior.ViewModel;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using Models = Deepo.DAL.EF.Models;
+using EF = Deepo.DAL.EF.Models;
+using Deepo.Fetcher.Viewer.Models;
 
 namespace Deepo.Fetcher.Viewer.ViewModels
 {
     internal sealed class SelectedFetcherViewModel : ViewModelBase
     {
-        private readonly Models.V_FetcherExtended? _model;
+        private readonly EF.V_FetcherExtended? _model;
         private readonly IFetcherListener _fetcherListener;
 
         public ObservableCollection<GridModel> FetcherRows { get; set; }
@@ -39,7 +39,7 @@ namespace Deepo.Fetcher.Viewer.ViewModels
             get => (_model?.LastStart ?? DateTime.MinValue).ToString(CultureInfo.CurrentCulture);
         }
 
-        public SelectedFetcherViewModel(Models.Fetcher model, 
+        public SelectedFetcherViewModel(EF.Fetcher model, 
             IFetcherDBService fetcherDBService, 
             IFetcherListener fetcherListener)
         {
