@@ -1,5 +1,5 @@
 ﻿using Deepo.DAL.EF.Models;
-using Deepo.DAL.Service.Interfaces;
+using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Viewer.Constants;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Deepo.Fetcher.Viewer.Models;
@@ -15,19 +15,19 @@ internal sealed class FetcherListener : IFetcherListener
     private readonly SQLListener _releaseVinyListener;
     private readonly SQLListener _requestListener;
 
-    private readonly IReleaseAlbumDBService _releaseAlbumDBService;
-    private readonly IFetcherHttpRequestDBService _httpRequestService;
+    private readonly IReleaseAlbumRepository _releaseAlbumRepository;
+    private readonly IFetcherHttpRequestRepository _httpRequestRepository;
 
     public event EventHandler<string>? HttpRequestRowAdded;
     public event EventHandler<GridModelEventArgs>? VinylReleaseRowAdded;
 
     public FetcherListener(string connectionString, 
-        IReleaseAlbumDBService releaseAlbumDBService,
-        IFetcherHttpRequestDBService httpRequestService,
+        IReleaseAlbumRepository releaseAlbumRepository,
+        IFetcherHttpRequestRepository httpRequestRepository,
         ILogger logger)
     {
-        _httpRequestService = httpRequestService;
-        _releaseAlbumDBService = releaseAlbumDBService;
+        _httpRequestRepository = httpRequestRepository;
+        _releaseAlbumRepository = releaseAlbumRepository;
         _releaseVinyListener = new SQLListener(connectionString, Queries.VinyleSubscriptionQuery, logger);
         _requestListener = new SQLListener(connectionString, Queries.HttpRequestSubscriptionQuery, logger);
     }
@@ -43,7 +43,7 @@ internal sealed class FetcherListener : IFetcherListener
 
     private void OnInsertReleaseVinyl(object? sender, EventArgs e)
     {
-        V_LastVinylRelease? lastrow = _releaseAlbumDBService.GetLast();
+        V_LastVinylRelease? lastrow = _releaseAlbumRepository.GetLast();
         if (lastrow is null)
         {
             return;
@@ -61,7 +61,7 @@ internal sealed class FetcherListener : IFetcherListener
 
     private void OnInsertHttpRequest(object? sender, EventArgs e)
     {
-        HttpRequest? lastrow = _httpRequestService.GetLast();
+        HttpRequest? lastrow = _httpRequestRepository.GetLast();
         if (lastrow is null)
         {
             return;

@@ -1,5 +1,5 @@
-﻿using Deepo.DAL.Service.Feature.Release;
-using Deepo.DAL.Service.Interfaces;
+﻿using Deepo.DAL.Repository.Feature.Release;
+using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Configuration;
 using Deepo.Fetcher.Library.LogMessage;
 using Deepo.Fetcher.Library.Service;
@@ -20,7 +20,7 @@ internal class FetchVinyl : FetchBase
 
     private readonly IDiscogService _discogService;
     private readonly ISpotifyService _spotifyService;
-    private readonly IReleaseAlbumDBService _releaseAlbumDBService;
+    private readonly IReleaseAlbumRepository _releaseAlbumRepository;
 
     private readonly Dto.Spotify.Album _initialData;
     private readonly string _artistName;
@@ -31,13 +31,13 @@ internal class FetchVinyl : FetchBase
     public FetchVinyl(Dto.Spotify.Album newRelease,
         IDiscogService discogService,
         ISpotifyService spotifyService,
-        IReleaseAlbumDBService releaseAlbumDBService,
+        IReleaseAlbumRepository releaseAlbumRepository,
         ILogger logger)
     {
         _logger = logger;
         _discogService = discogService;
         _spotifyService = spotifyService;
-        _releaseAlbumDBService = releaseAlbumDBService;
+        _releaseAlbumRepository = releaseAlbumRepository;
         _initialData = newRelease;
         _artistName = _initialData.Artists?.First().Name ?? string.Empty;
         _resultDiscogs1 = null!;
@@ -78,7 +78,7 @@ internal class FetchVinyl : FetchBase
 
         await EndWith(async () =>
         {
-            return await _releaseAlbumDBService.Insert(_resultDiscogs2.Content, cancellationToken).ConfigureAwait(false);
+            return await _releaseAlbumRepository.Insert(_resultDiscogs2.Content, cancellationToken).ConfigureAwait(false);
         })
         .ConfigureAwait(false);
 

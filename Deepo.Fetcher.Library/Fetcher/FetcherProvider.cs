@@ -1,4 +1,5 @@
-﻿using Deepo.DAL.Service.Feature.Fetcher;
+﻿using Deepo.DAL.Repository.Feature.Fetcher;
+using Deepo.DAL.Repository.Interfaces;
 using Framework.Common.Worker.Interfaces;
 using Framework.Common.Worker.Schedule.Planification;
 using System.Collections.ObjectModel;
@@ -10,24 +11,24 @@ internal class FetcherProvider : IFetcherProvider
 {
     private readonly IFetcherFactory _fetcherFactory;
     private readonly IPlanningFactory _planningFactory;
-    private readonly IFetcherDBService _fetcherdbservice;
-    private readonly IPlanificationDBService _planificationDBService;
+    private readonly IFetcherRepository _fetcherRepository;
+    private readonly IPlanificationRepository _planificationRepository;
 
     public FetcherProvider(IFetcherFactory fetcherFactory,
         IPlanningFactory planningFactory,
-        IFetcherDBService fetcherdbservice,
-        IPlanificationDBService planificationDBService)
+        IFetcherRepository fetcherRepository,
+        IPlanificationRepository planificationRepository)
     {
         _fetcherFactory = fetcherFactory;
         _planningFactory = planningFactory;
-        _fetcherdbservice = fetcherdbservice;
-        _planificationDBService = planificationDBService;
+        _fetcherRepository = fetcherRepository;
+        _planificationRepository = planificationRepository;
     }
 
     public IEnumerable<IWorker> GetAllFetcher()
     {
         List<IWorker> workers = [];
-        ReadOnlyCollection<Models.Fetcher>? fetchersDb = _fetcherdbservice.GetAll();
+        ReadOnlyCollection<Models.Fetcher>? fetchersDb = _fetcherRepository.GetAll();
 
         if (fetchersDb is null || fetchersDb.Count == 0)
         {
@@ -46,7 +47,7 @@ internal class FetcherProvider : IFetcherProvider
     {
         Dictionary<IWorker, IPlanning> plannedWorkers = [];
 
-        IEnumerable<Models.V_FetcherPlannification>? plannificationFetchers = _planificationDBService.GetAll();
+        IEnumerable<Models.V_FetcherPlannification>? plannificationFetchers = _planificationRepository.GetAll();
 
         if (plannificationFetchers is null || !plannificationFetchers.Any())
         {
@@ -68,7 +69,7 @@ internal class FetcherProvider : IFetcherProvider
 
     public IWorker? GetFetcherByName(string name)
     {
-        Models.Fetcher? fetcherDb = _fetcherdbservice.GetByName(name);
+        Models.Fetcher? fetcherDb = _fetcherRepository.GetByName(name);
 
         if (fetcherDb is null)
         {

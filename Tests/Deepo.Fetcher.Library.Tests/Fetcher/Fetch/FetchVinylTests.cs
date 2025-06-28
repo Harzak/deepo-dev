@@ -1,5 +1,5 @@
-﻿using Deepo.DAL.Service.Feature.Release;
-using Deepo.DAL.Service.Interfaces;
+﻿using Deepo.DAL.Repository.Feature.Release;
+using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Fetcher.Fetch;
 using Deepo.Fetcher.Library.Service.Discogs;
 using Deepo.Fetcher.Library.Service.Spotify;
@@ -20,7 +20,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
     {
         private Mock<IDiscogService> _discogsServiceMock;
         private Mock<ISpotifyService> _spotifyServiceMock;
-        private Mock<IReleaseAlbumDBService> _releaseAlbumDBServiceMock;
+        private Mock<IReleaseAlbumRepository> _releaseAlbumRepositoryMock;
         private Mock<ILogger> _loggerMock;
         private Mock<IResult> _positiveResultMock; //=> in framework
 
@@ -29,7 +29,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
         {
             _discogsServiceMock = new Mock<IDiscogService>();
             _spotifyServiceMock = new Mock<ISpotifyService>();
-            _releaseAlbumDBServiceMock = new Mock<IReleaseAlbumDBService>();
+            _releaseAlbumRepositoryMock = new Mock<IReleaseAlbumRepository>();
             _positiveResultMock = new Mock<IResult>();
             _positiveResultMock.Setup(x => x.IsSuccess).Returns(true);
             _loggerMock = new Mock<ILogger>();
@@ -55,7 +55,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
                 ],
                 Name = "Sandstorm"
             };
-            FetchVinyl fetch = new(release, _discogsServiceMock.Object, _spotifyServiceMock.Object, _releaseAlbumDBServiceMock.Object, _loggerMock.Object)
+            FetchVinyl fetch = new(release, _discogsServiceMock.Object, _spotifyServiceMock.Object, _releaseAlbumRepositoryMock.Object, _loggerMock.Object)
             {
                 //Act
                 MinReleaseDate = DateTime.UtcNow.AddDays(-15)
@@ -63,7 +63,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
             await fetch.StartAsync(new CancellationToken());
 
             //Assert
-            _releaseAlbumDBServiceMock.Verify(x => x.Insert(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Never);
+            _releaseAlbumRepositoryMock.Verify(x => x.Insert(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Never);
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
                 ],
                 Name = "Sandstorm"
             };
-            FetchVinyl fetch = new(release, _discogsServiceMock.Object, _spotifyServiceMock.Object, _releaseAlbumDBServiceMock.Object, _loggerMock.Object)
+            FetchVinyl fetch = new(release, _discogsServiceMock.Object, _spotifyServiceMock.Object, _releaseAlbumRepositoryMock.Object, _loggerMock.Object)
             {
                 //Act
 
@@ -95,7 +95,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
             await fetch.StartAsync(new CancellationToken());
 
             //Assert
-            _releaseAlbumDBServiceMock.Verify(x => x.Insert(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Once);
+            _releaseAlbumRepositoryMock.Verify(x => x.Insert(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Once);
         }
     }
 }

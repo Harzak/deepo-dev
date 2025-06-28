@@ -1,5 +1,5 @@
 ﻿using Deepo.DAL.EF.Models;
-using Deepo.DAL.Service.Interfaces;
+using Deepo.DAL.Repository.Interfaces;
 using Deepo.Dto;
 using Deepo.Mediator.Query;
 using Framework.Common.Utils.Result;
@@ -9,11 +9,11 @@ namespace Deepo.Mediator.Handler;
 
 internal sealed class GetAllVinylGenresHandler : IRequestHandler<GetAllVinylGenresQuery, OperationResultList<GenreDto>>
 {
-    private readonly IGenreAlbumService _db;
+    private readonly IGenreAlbumRepository _repository;
 
-    public GetAllVinylGenresHandler(IGenreAlbumService dbService)
+    public GetAllVinylGenresHandler(IGenreAlbumRepository _repository)
     {
-        _db = dbService;
+        this._repository = _repository;
     }
 
     public async Task<OperationResultList<GenreDto>> Handle(GetAllVinylGenresQuery request, CancellationToken cancellationToken)
@@ -23,7 +23,7 @@ internal sealed class GetAllVinylGenresHandler : IRequestHandler<GetAllVinylGenr
             Content = []
         };
 
-        IReadOnlyCollection<Genre_Album> genres = _db.GetAll();
+        IReadOnlyCollection<Genre_Album> genres = _repository.GetAll();
 
         if (genres != null)
         {

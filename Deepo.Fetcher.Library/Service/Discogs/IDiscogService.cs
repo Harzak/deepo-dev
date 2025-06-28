@@ -1,5 +1,5 @@
-﻿using Deepo.DAL.Service.Feature.Release;
-using Deepo.DAL.Service.Interfaces;
+﻿using Deepo.DAL.Repository.Feature.Release;
+using Deepo.DAL.Repository.Interfaces;
 
 namespace Deepo.Fetcher.Library.Service.Discogs;
 

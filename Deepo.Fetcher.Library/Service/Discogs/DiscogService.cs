@@ -1,5 +1,5 @@
-﻿using Deepo.DAL.Service.Feature.Release;
-using Deepo.DAL.Service.Interfaces;
+﻿using Deepo.DAL.Repository.Feature.Release;
+using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Mappers;
 using Framework.Common.Utils.Result;

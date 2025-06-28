@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Interfaces;
+﻿using Deepo.DAL.Repository.Interfaces;
 using System.Globalization;
 using System.Text.Json.Serialization;
 

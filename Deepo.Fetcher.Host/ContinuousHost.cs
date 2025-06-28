@@ -1,4 +1,5 @@
-﻿using Deepo.DAL.Service.Feature.Fetcher;
+﻿using Deepo.DAL.Repository.Feature.Fetcher;
+using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Fetcher;
 using Framework.Common.Worker.Hosting;
 using Framework.Common.Worker.Interfaces;
@@ -9,10 +10,10 @@ namespace Deepo.Fetcher.Host;
 internal sealed class ContinuousHost : HostPlannedWorker
 {
     private readonly IFetcherProvider _fetcherProvider;
-    private readonly IFetcherExecutionDBService _fetcherHistory;
+    private readonly IFetcherExecutionRepository _fetcherHistory;
 
     public ContinuousHost(IFetcherProvider fetcherProvider, 
-        IFetcherExecutionDBService fetcherHistory,
+        IFetcherExecutionRepository fetcherHistory,
         IScheduler scheduler, 
         ILogger<ContinuousHost> logger)
     : base(Constants.HOST_NAME, Guid.Parse(Constants.HOST_ID), scheduler, logger)

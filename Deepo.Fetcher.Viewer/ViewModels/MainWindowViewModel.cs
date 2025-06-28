@@ -1,4 +1,5 @@
-﻿using Deepo.DAL.Service.Feature.Fetcher;
+﻿using Deepo.DAL.Repository.Feature.Fetcher;
+using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Framework.WPF.Behavior.ViewModel;
 using System.Globalization;
@@ -19,8 +20,8 @@ internal sealed class MainWindowViewModel : ViewModelBase
     public AppOverviewViewModel AppOverviewViewModel { get; }
 
     public MainWindowViewModel(IThemeService themeService,
-        IFetcherDBService fetcherDBService,
-        IFetcherExecutionDBService fetcherExecutionDBService,
+        IFetcherRepository fetcherRepository,
+        IFetcherExecutionRepository fetcherExecutionRepository,
         IFetcherListenerFactory fetcherListenerFactory)
     {
         _themeService = themeService;
@@ -29,7 +30,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
         ApplicationName = Assembly.GetEntryAssembly()?.GetName()?.Name ?? string.Empty;
         ApplicationTitle = string.Format(CultureInfo.CurrentCulture, "{0} - {1}", ApplicationName, ApplicationVersion);
 
-        FetcherListViewModel = new FetcherListViewModel(fetcherDBService, fetcherListenerFactory);
-        AppOverviewViewModel = new AppOverviewViewModel(fetcherExecutionDBService);
+        FetcherListViewModel = new FetcherListViewModel(fetcherRepository, fetcherListenerFactory);
+        AppOverviewViewModel = new AppOverviewViewModel(fetcherExecutionRepository);
     }
 }
