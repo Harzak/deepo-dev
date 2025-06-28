@@ -1,13 +1,14 @@
 ﻿using Deepo.DAL.EF.Models;
 using Deepo.DAL.Service.Interfaces;
-using Deepo.Fetcher.Viewer.Features.FetcherGrid.Model;
+using Deepo.Fetcher.Viewer.Constants;
 using Deepo.Fetcher.Viewer.Interfaces;
+using Deepo.Fetcher.Viewer.Models;
 using Framework.Common.Data.SQLServer.ServiceBroker;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 
-namespace Deepo.Fetcher.Viewer.Features;
+namespace Deepo.Fetcher.Viewer.Features.Listener;
 
 internal sealed class FetcherListener : IFetcherListener
 {
@@ -27,8 +28,8 @@ internal sealed class FetcherListener : IFetcherListener
     {
         _httpRequestService = httpRequestService;
         _releaseAlbumDBService = releaseAlbumDBService;
-        _releaseVinyListener = new SQLListener(connectionString, QueriesConstants.VinyleSubscriptionQuery, logger);
-        _requestListener = new SQLListener(connectionString, QueriesConstants.HttpRequestSubscriptionQuery, logger);
+        _releaseVinyListener = new SQLListener(connectionString, Queries.VinyleSubscriptionQuery, logger);
+        _requestListener = new SQLListener(connectionString, Queries.HttpRequestSubscriptionQuery, logger);
     }
 
     public void StartListener()

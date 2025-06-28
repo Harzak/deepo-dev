@@ -4,7 +4,7 @@ using Deepo.Fetcher.Viewer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Deepo.Fetcher.Viewer.Features;
+namespace Deepo.Fetcher.Viewer.Features.Listener;
 
 internal sealed class FetcherListenerFactory : IFetcherListenerFactory
 {

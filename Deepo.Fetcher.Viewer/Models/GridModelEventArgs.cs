@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Deepo.Fetcher.Viewer.Features.FetcherGrid.Model;
+namespace Deepo.Fetcher.Viewer.Models;
 
-public class GridModelEventArgs : EventArgs
+internal sealed class GridModelEventArgs : EventArgs
 {
     public GridModel Row { get; set; }
 

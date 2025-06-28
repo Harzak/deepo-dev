@@ -1,6 +1,6 @@
-﻿namespace Deepo.Fetcher.Viewer.Features.FetcherGrid.Model;
+﻿namespace Deepo.Fetcher.Viewer.Models;
 
-public class GridModel
+internal sealed class GridModel
 {
     public int ID { get; set; }
     public string? GUID_ID { get; set; }

@@ -1,4 +1,4 @@
-﻿using Deepo.Fetcher.Viewer.Features.FetcherGrid.Model;
+﻿using Deepo.Fetcher.Viewer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
