@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Deepo.Fetcher.WPF.Views;
+namespace Deepo.Fetcher.Viewer.Views;
 
 public partial class AppOverviewView : UserControl
 {

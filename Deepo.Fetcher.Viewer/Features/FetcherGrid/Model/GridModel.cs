@@ -1,4 +1,4 @@
-﻿namespace Deepo.Fetcher.WPF.Features.FetcherGrid.Model;
+﻿namespace Deepo.Fetcher.Viewer.Features.FetcherGrid.Model;
 
 public class GridModel
 {

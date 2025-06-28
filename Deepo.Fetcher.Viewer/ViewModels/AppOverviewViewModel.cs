@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Models = Deepo.DAL.EF.Models;
 
-namespace Deepo.Fetcher.WPF.ViewModels;
+namespace Deepo.Fetcher.Viewer.ViewModels;
 
 public class AppOverviewViewModel : ViewModelBase
 {

@@ -38,6 +38,7 @@ public static class ServiceCollectionExtension
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:Discogs:Name") ?? string.Empty)
                     .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(2), new TimeProvider()))
+                    .AddHttpMessageHandler((x) => x.GetRequiredService<LoggingHandler>())
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddTransient<IFetchFactory, FetchFactory>();

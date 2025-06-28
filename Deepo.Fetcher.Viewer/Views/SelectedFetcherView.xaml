@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="Deepo.Fetcher.WPF.Views.SelectedFetcherView"
+﻿<UserControl x:Class="Deepo.Fetcher.Viewer.Views.SelectedFetcherView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:local="clr-namespace:Deepo.Fetcher.WPF.Views"
-             xmlns:viewmodels="clr-namespace:Deepo.Fetcher.WPF.ViewModels"
+             xmlns:local="clr-namespace:Deepo.Fetcher.Viewer.Views"
+             xmlns:viewmodels="clr-namespace:Deepo.Fetcher.Viewer.ViewModels"
              d:DataContext="{d:DesignInstance Type=viewmodels:SelectedFetcherViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="450"
@@ -86,7 +86,7 @@
                        TextAlignment="Right"
                        TextWrapping="NoWrap"
                        TextTrimming="CharacterEllipsis"
-                       Text="https://api.spotify.com/v1/search?query=year%3A2022+tag%3Anewtype=albumoffsettype=al" />
+                       Text="{Binding LastRequestedURI, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
         </Border>
 
         <DataGrid Grid.Row="2"
