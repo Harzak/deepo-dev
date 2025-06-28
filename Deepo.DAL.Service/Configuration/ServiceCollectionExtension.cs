@@ -24,5 +24,6 @@ public static class ServiceCollectionExtension
         services.AddTransient<IPlanificationDBService, PlanificationDBService>();
         services.AddTransient<IReleaseAlbumDBService, ReleaseAlbumDBService>();
         services.AddTransient<IGenreAlbumService, GenreAlbumService>();
+        services.AddTransient<IFetcherHttpRequestDBService, FetcherHttpRequestDBService>();
     }
 }

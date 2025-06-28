@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Deepo.Fetcher.WPF.Control;
+namespace Deepo.Fetcher.Viewer.Control;
 
 /// <summary>
 /// Interaction logic for GridReleaseVinyle.xaml

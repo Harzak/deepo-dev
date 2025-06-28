@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Deepo.Fetcher.WPF.Views
+namespace Deepo.Fetcher.Viewer.Views
 {
     /// <summary>
     /// Logique d'interaction pour FetcherViewModel.xaml

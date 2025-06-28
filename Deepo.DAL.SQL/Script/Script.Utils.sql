@@ -6,7 +6,6 @@ delete from Asset
 delete from Author_Release
 delete from Author
 delete from Tracklist_Album
-delete from Tracklist_Album
 delete from Provider_Release
 delete from Release_Album
 delete from Release
