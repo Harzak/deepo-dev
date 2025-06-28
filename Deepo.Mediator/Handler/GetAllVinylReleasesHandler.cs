@@ -1,5 +1,5 @@
 ﻿using Deepo.DAL.EF.Models;
-using Deepo.DAL.Service.Interfaces;
+using Deepo.DAL.Repository.Interfaces;
 using Deepo.Dto;
 using Deepo.Mediator.Query;
 using Framework.Common.Utils.Result;
@@ -9,11 +9,11 @@ namespace Deepo.Mediator.Handler;
 
 internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylReleasesWithPaginationQuery, OperationResultList<ReleaseVinylDto>>
 {
-    private readonly IReleaseAlbumDBService _db;
+    private readonly IReleaseAlbumRepository _repository;
 
-    public GetAllVinylReleasesHandler(IReleaseAlbumDBService dbService)
+    public GetAllVinylReleasesHandler(IReleaseAlbumRepository repository)
     {
-        _db = dbService;
+        _repository = repository;
     }
 
     public async Task<OperationResultList<ReleaseVinylDto>> Handle(GetAllVinylReleasesWithPaginationQuery request, CancellationToken cancellationToken)
@@ -23,7 +23,7 @@ internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylRe
             Content = []
         };
 
-        IReadOnlyCollection<V_LastVinylRelease> allVinylReleasesDB = _db.GetAll(request.Market, request.Offset, request.Limit);
+        IReadOnlyCollection<V_LastVinylRelease> allVinylReleasesDB = _repository.GetAll(request.Market, request.Offset, request.Limit);
 
         if (allVinylReleasesDB != null)
         {

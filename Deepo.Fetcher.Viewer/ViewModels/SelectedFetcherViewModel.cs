@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Feature.Fetcher;
+﻿using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.Fetcher.Host.WPF;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Framework.WPF.Behavior.ViewModel;
@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using EF = Deepo.DAL.EF.Models;
 using Deepo.Fetcher.Viewer.Models;
+using Deepo.DAL.Repository.Interfaces;
 
 namespace Deepo.Fetcher.Viewer.ViewModels
 {
@@ -40,13 +41,13 @@ namespace Deepo.Fetcher.Viewer.ViewModels
         }
 
         public SelectedFetcherViewModel(EF.Fetcher model, 
-            IFetcherDBService fetcherDBService, 
+            IFetcherRepository fetcherRepository, 
             IFetcherListener fetcherListener)
         {
             _fetcherListener = fetcherListener;
             _fetcherListener.VinylReleaseRowAdded += FetcherGridProvider_RowAdded;
             _fetcherListener.HttpRequestRowAdded += FetcherHttpRequestProvider_RowAdded;
-            _model = fetcherDBService.GetExtended(model.Fetcher_GUID);
+            _model = fetcherRepository.GetExtended(model.Fetcher_GUID);
 
             FetcherRows = [];
             LastRequestedURI = string.Empty;

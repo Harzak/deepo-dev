@@ -20,4 +20,12 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Workspaces\Deepo-dev\Deepo.DAL.EF\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Workspaces\Deepo-dev\Deepo.DAL.EF\.editorconfig" />
+	</ItemGroup>
+
 </Project>

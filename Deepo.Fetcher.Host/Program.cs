@@ -1,4 +1,4 @@
-using Deepo.DAL.Service.Configuration;
+using Deepo.DAL.Repository.Configuration;
 using Deepo.Fetcher.Library.Configuration;
 using NLog.Extensions.Logging;
 

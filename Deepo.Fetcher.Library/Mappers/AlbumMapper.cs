@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Feature.Release;
+﻿using Deepo.DAL.Repository.Feature.Release;
 using Deepo.Fetcher.Library.Dto.Discogs;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Configuration;
+﻿using Deepo.DAL.Repository.Configuration;
 using Deepo.Fetcher.Host.WPF.Extensions;
 using Deepo.Fetcher.Viewer.Features.Listener;
 using Deepo.Fetcher.Viewer.Interfaces;

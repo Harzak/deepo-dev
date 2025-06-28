@@ -1,5 +1,5 @@
-﻿using Deepo.DAL.Service.Feature.Author;
-using Deepo.DAL.Service.Feature.Release;
+﻿using Deepo.DAL.Repository.Feature.Author;
+using Deepo.DAL.Repository.Feature.Release;
 using System.Globalization;
 using System.Text.Json.Serialization;
 

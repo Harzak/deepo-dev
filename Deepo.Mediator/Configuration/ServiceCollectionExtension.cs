@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Configuration;
+﻿using Deepo.DAL.Repository.Configuration;
 using Framework.Common.Utils.Time.Provider;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

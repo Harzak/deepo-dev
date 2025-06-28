@@ -1,5 +1,6 @@
 ﻿using Deepo.DAL.EF.Models;
-using Deepo.DAL.Service.Feature.Fetcher;
+using Deepo.DAL.Repository.Feature.Fetcher;
+using Deepo.DAL.Repository.Interfaces;
 using Framework.WPF.Behavior.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +9,14 @@ namespace Deepo.Fetcher.Viewer.ViewModels;
 
 public class AppOverviewViewModel : ViewModelBase
 {
-    private readonly IFetcherExecutionDBService _fetcherExecutionDBService;
+    private readonly IFetcherExecutionRepository _fetcherExecutionRepository;
 
     private readonly List<V_FetchersLastExecution> _fetcherExecutions;
 
-    public AppOverviewViewModel(IFetcherExecutionDBService fetcherExecutionDBService)
+    public AppOverviewViewModel(IFetcherExecutionRepository fetcherExecutionRepository)
     {
-        _fetcherExecutionDBService = fetcherExecutionDBService;
-        _fetcherExecutions = _fetcherExecutionDBService.GetFetcherExecutions().ToList();
+        _fetcherExecutionRepository = fetcherExecutionRepository;
+        _fetcherExecutions = _fetcherExecutionRepository.GetFetcherExecutions().ToList();
     }
 
     public int ActiveFetcherCount

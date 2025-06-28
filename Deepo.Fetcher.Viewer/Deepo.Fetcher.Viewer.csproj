@@ -67,7 +67,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Deepo.DAL.Service\Deepo.DAL.Service.csproj" />
+	  <ProjectReference Include="..\Deepo.DAL.Repository\Deepo.DAL.Repository.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

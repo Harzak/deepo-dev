@@ -1,4 +1,4 @@
-﻿using Deepo.DAL.Service.Feature.Fetcher;
+﻿using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.Fetcher.Library.Fetcher;
 using Framework.Common.Worker.Interfaces;
 using Framework.Common.Worker.Hosting;
@@ -11,18 +11,19 @@ using System.Threading.Tasks;
 using Deepo.Fetcher.Library.Configuration.Setting;
 using Microsoft.Extensions.Options;
 using Framework.Common.Worker.EventArg;
+using Deepo.DAL.Repository.Interfaces;
 
 namespace Deepo.Fetcher.Host;
 
 public class TriggeredHost : HostWorker
 {
     private readonly IFetcherProvider _fetcherProvider;
-    private readonly IFetcherExecutionDBService _fetcherHistory;
+    private readonly IFetcherExecutionRepository _fetcherHistory;
     private readonly IHostApplicationLifetime _lifeTime;
     private readonly IOptions<FetcherOptions> _config;
 
     public TriggeredHost(IFetcherProvider fetcherProvider,
-        IFetcherExecutionDBService fetcherHistory,
+        IFetcherExecutionRepository fetcherHistory,
         IHostApplicationLifetime lifeTime,
         IOptions<FetcherOptions> config,
         ILogger<TriggeredHost> logger)

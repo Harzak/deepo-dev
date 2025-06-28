@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.DAL.EF", "Deepo.DAL.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.Fetcher.Viewer", "Deepo.Fetcher.Viewer\Deepo.Fetcher.Viewer.csproj", "{83F96ABC-B16F-4E4A-A757-D6FFD4B83433}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.DAL.Service", "Deepo.DAL.Service\Deepo.DAL.Service.csproj", "{53027A3F-BE2F-4D08-8177-69415C5ACD46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.DAL.Repository", "Deepo.DAL.Repository\Deepo.DAL.Repository.csproj", "{53027A3F-BE2F-4D08-8177-69415C5ACD46}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Deepo.API", "Deepo.API\Deepo.API.csproj", "{5D6C7C87-CBBD-4DC7-B9AC-CF988F20F1DD}"
 EndProject
