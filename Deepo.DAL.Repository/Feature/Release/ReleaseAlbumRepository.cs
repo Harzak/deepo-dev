@@ -27,7 +27,7 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
         _logger = logger;
     }
 
-    public async Task<DatabaseOperationResult> Insert(AlbumModel item, CancellationToken cancellationToken)
+    public async Task<DatabaseOperationResult> InsertAsync(AlbumModel item, CancellationToken cancellationToken)
     {
         DatabaseOperationResult result = new();
 

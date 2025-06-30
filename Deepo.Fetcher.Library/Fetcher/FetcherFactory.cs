@@ -9,19 +9,16 @@ namespace Deepo.Fetcher.Library.Fetcher;
 internal class FetcherFactory : IFetcherFactory
 {
     private readonly ILogger _logger;
-    private readonly IFetchFactory _fetchFactory;
-    private readonly ISpotifyRepository _spotifyService;
     private readonly IOptions<FetcherOptions> _fetcherOptions;
+    private readonly IVynilStrategy _vinylStrategy;
 
-    public FetcherFactory(IFetchFactory fetchFactory,
-        ISpotifyRepository spotifyService,
-        IOptions<FetcherOptions> fetcherOptions,
+    public FetcherFactory(IOptions<FetcherOptions> fetcherOptions,
+        IVynilStrategy vinylStrategy,
         ILogger<FetcherFactory> logger)
     {
         _logger = logger;
-        _fetchFactory = fetchFactory;
         _fetcherOptions = fetcherOptions;
-        _spotifyService = spotifyService;
+        _vinylStrategy = vinylStrategy;
     }
 
     public IWorker CreateFetcher(string code)
@@ -29,7 +26,7 @@ internal class FetcherFactory : IFetcherFactory
         switch (code)
         {
             case "FETCHER_VINYL":
-                return new FetcherVinyl(_fetchFactory, _spotifyService, _logger)
+                return new FetcherVinyl(_vinylStrategy, _logger)
                 {
                     ID = Guid.Parse(_fetcherOptions.Value.FetcherVinyleId),
                     Name  = _fetcherOptions.Value.FetcherVinyleName

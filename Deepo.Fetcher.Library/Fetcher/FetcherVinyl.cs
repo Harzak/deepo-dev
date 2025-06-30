@@ -1,26 +1,27 @@
 ﻿using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.LogMessage;
-using Deepo.Fetcher.Library.Repositories;
+using Deepo.Fetcher.Library.Strategies.Vinyl;
+using Deepo.Fetcher.Library.Utils;
+using Framework.Common.Utils.Result;
 using Framework.Common.Worker;
 using Microsoft.Extensions.Logging;
+using System.Threading;
 
 namespace Deepo.Fetcher.Library.Fetcher;
 
 internal class FetcherVinyl : CancellableWorker
 {
     private readonly ILogger _logger;
-    private readonly IFetchFactory _fetchFactory;
-    private readonly ISpotifyRepository _spotifyService;
+    private readonly IVynilStrategy _strategy;
 
     public int FetchSucced { get; private set; }
     public int TotalFetch { get; private set; }
 
-    public FetcherVinyl(IFetchFactory fetchFactory, ISpotifyRepository spotifyService, ILogger logger)
+    public FetcherVinyl(IVynilStrategy strategy, ILogger logger)
     : base(logger)
     {
+        _strategy = strategy;
         _logger = logger;
-        _fetchFactory = fetchFactory;
-        _spotifyService = spotifyService;
     }
 
     protected override bool CanStop()
@@ -35,34 +36,12 @@ internal class FetcherVinyl : CancellableWorker
 
     protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
     {
-        //await foreach (HttpServiceResult<Dto.Spotify.Album> result in _spotifyService.GetNewReleasesViaSearch("FR", stoppingToken).ConfigureAwait(false))
-        //{
-        //    using (IFetch fetch = _fetchFactory.CreateFetchVinyl(result.Content))
-        //    {
-        //        await fetch.StartAsync(stoppingToken).ConfigureAwait(false);
-
-        //        if (fetch.Success)
-        //        {
-        //            FetchSucced++;
-        //        }
-
-        //        TotalFetch++;
-        //    }
-        //}
-        await foreach (HttpServiceResult<Dto.Spotify.DtoSpotifyAlbum> result in _spotifyService.GetNewReleasesViaSearch("US", stoppingToken).ConfigureAwait(false))
+        _strategy.OnSuccess(() =>
         {
-            using (IFetch fetch = _fetchFactory.CreateFetchVinyl(result.Content))
-            {
-                await fetch.StartAsync(stoppingToken).ConfigureAwait(false);
+            FetchSucced++;
+        });
+        await _strategy.StartAsync(stoppingToken).ConfigureAwait(false);
 
-                if (fetch.Success)
-                {
-                    FetchSucced++;
-                }
-
-                TotalFetch++;
-            }
-        }
         FetcherLogs.FetchFailed(_logger, TotalFetch - FetchSucced);
         FetcherLogs.FetchSucceed(_logger, FetchSucced);
     }

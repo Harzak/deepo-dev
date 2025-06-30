@@ -1,4 +1,4 @@
-﻿using Deepo.Fetcher.Library.Repositories;
+﻿using Deepo.Fetcher.Library.Utils;
 
 namespace Deepo.Fetcher.Library.Interfaces;
 

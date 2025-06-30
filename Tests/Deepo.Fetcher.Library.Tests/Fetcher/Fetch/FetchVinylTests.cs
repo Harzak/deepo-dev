@@ -62,7 +62,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
             await fetch.StartAsync(new CancellationToken());
 
             //Assert
-            _releaseAlbumRepositoryMock.Verify(x => x.Insert(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Never);
+            _releaseAlbumRepositoryMock.Verify(x => x.InsertAsync(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Never);
         }
 
         [TestMethod]
@@ -94,7 +94,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
             await fetch.StartAsync(new CancellationToken());
 
             //Assert
-            _releaseAlbumRepositoryMock.Verify(x => x.Insert(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Once);
+            _releaseAlbumRepositoryMock.Verify(x => x.InsertAsync(It.IsAny<AlbumModel>(), new CancellationToken()), Times.Once);
         }
     }
 }

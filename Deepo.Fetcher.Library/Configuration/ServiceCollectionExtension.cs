@@ -1,10 +1,10 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Fetcher;
-using Deepo.Fetcher.Library.Fetcher.Fetch;
 using Deepo.Fetcher.Library.Fetcher.Planification;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Repositories.Discogs;
 using Deepo.Fetcher.Library.Repositories.Spotify;
+using Deepo.Fetcher.Library.Strategies.Vinyl;
 using Framework.Common.Utils.Time.Provider;
 using Framework.Common.Worker.Schedule;
 using Framework.Common.Worker.Schedule.Planification;
@@ -42,7 +42,6 @@ public static class ServiceCollectionExtension
                     .AddHttpMessageHandler((x) => x.GetRequiredService<LoggingHandler>())
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
-        services.AddTransient<IFetchFactory, FetchFactory>();
         services.AddTransient<ISpotifyRepository, SpotifyRepository>();
         services.AddTransient<IDiscogRepository, DiscogRepository>();
         services.AddTransient<ITimeProvider, TimeProvider>();
@@ -51,6 +50,8 @@ public static class ServiceCollectionExtension
         services.AddTransient<IFetcherFactory, FetcherFactory>();
         services.AddTransient<IFetcherProvider, FetcherProvider>();
         services.AddTransient<IPlanningFactory, PlanningFactory>();
+        services.AddTransient<IVinylStrategiesFactory, VinylStrategiesFactory>();
+        services.AddTransient<IVynilStrategy, VinylStrategy>();
     }
 }
 

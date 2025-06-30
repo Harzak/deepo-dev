@@ -16,7 +16,6 @@ class Program
             services.AddLogging(loggingBuilder =>
             {
                 loggingBuilder.ClearProviders();
-                loggingBuilder.AddConsole();
                 loggingBuilder.AddNLog("NLog.config");
             });
 
