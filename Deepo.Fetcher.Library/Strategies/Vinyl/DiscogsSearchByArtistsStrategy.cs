@@ -5,6 +5,7 @@ using Deepo.Fetcher.Library.LogMessage;
 using Framework.Common.Utils.Result;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
+using System.Web;
 
 namespace Deepo.Fetcher.Library.Strategies.Vinyl;
 
@@ -29,7 +30,8 @@ internal class DiscogsSearchByArtistsStrategy
             return result.WithError($"Empty required argument: {nameof(artistName)}");
         }
 
-        OperationResult<IEnumerable<DtoDiscogsAlbum>> releasesResult = await _discogRepository.GetSearchByArtistNameAndYear(artistName, cancellationToken).ConfigureAwait(false);
+        string sanitizedName = HttpUtility.UrlEncode(artistName.Trim());
+        OperationResult<IEnumerable<DtoDiscogsAlbum>> releasesResult = await _discogRepository.GetSearchByArtistNameAndYear(sanitizedName, cancellationToken).ConfigureAwait(false);
 
         if (releasesResult.IsFailed)
         {
