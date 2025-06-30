@@ -1,7 +1,7 @@
 ﻿using Framework.Common.Utils.Result;
 using System.Net;
 
-namespace Deepo.Fetcher.Library.Service;
+namespace Deepo.Fetcher.Library.Repositories;
 
 public class HttpServiceResult<T> : OperationResult<T>
 {

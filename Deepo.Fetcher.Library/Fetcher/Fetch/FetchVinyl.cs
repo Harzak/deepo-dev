@@ -3,7 +3,8 @@ using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Configuration;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.LogMessage;
-using Deepo.Fetcher.Library.Service;
+using Deepo.Fetcher.Library.Repositories;
+using Deepo.Fetcher.Library.Strategies;
 using Framework.Common.Utils.Extension;
 using Framework.Common.Utils.Result;
 using Microsoft.Extensions.Logging;
@@ -17,17 +18,15 @@ internal class FetchVinyl : FetchBase
 {
     private readonly ILogger _logger;
 
-    private readonly IDiscogService _discogService;
-    private readonly ISpotifyService _spotifyService;
+    private readonly IDiscogRepository _discogService;
+    private readonly ISpotifyRepository _spotifyService;
     private readonly IReleaseAlbumRepository _releaseAlbumRepository;
 
     private readonly Dto.Spotify.Album _initialData;
 
-    private HttpServiceResult<AlbumModel> _resultDiscogs;
-
     public FetchVinyl(Dto.Spotify.Album newRelease,
-        IDiscogService discogService,
-        ISpotifyService spotifyService,
+        IDiscogRepository discogService,
+        ISpotifyRepository spotifyService,
         IReleaseAlbumRepository releaseAlbumRepository,
         ILogger logger)
     {
@@ -36,7 +35,6 @@ internal class FetchVinyl : FetchBase
         _spotifyService = spotifyService;
         _releaseAlbumRepository = releaseAlbumRepository;
         _initialData = newRelease;
-        _resultDiscogs = null!;
     }
 
     protected override bool CanStart()
@@ -50,41 +48,14 @@ internal class FetchVinyl : FetchBase
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
-        OnSucces(() =>
+
+        DiscogsSearchByReleaseTitleStrategy discogsSearchByReleaseTitleStrategy = new(_discogService, _releaseAlbumRepository, _logger);
+        OperationResult result = await discogsSearchByReleaseTitleStrategy.StartAsync(_initialData?.Name, cancellationToken).ConfigureAwait(false);
+        if (result.IsFailed)
         {
-            FetcherLogs.Success(_logger, nameof(FetchVinyl));
-        });
+            DiscogsSearchByArtistsStrategy discogsSearchByArtistsStrategy = new(_discogService, _releaseAlbumRepository, _logger);
+            result = await discogsSearchByArtistsStrategy.StartAsync(_initialData?.Artists?.FirstOrDefault()?.Name ?? string.Empty, cancellationToken).ConfigureAwait(false);
+        }
 
-        await StartWithAsync(async () =>
-        {
-            string? releaseTitle = _initialData.Name?.Trim();
-            if (!releaseTitle.IsNullOrEmpty())
-            {
-                _resultDiscogs = await _discogService.GetReleaseByName(releaseTitle, cancellationToken).ConfigureAwait(false);
-                if (_resultDiscogs.IsFailed)
-                {
-                    string? artistName = _initialData.Artists?.FirstOrDefault()?.Name?.Trim();
-                    if (!artistName.IsNullOrEmpty())
-                    {
-                        _resultDiscogs = await _discogService.GetReleaseByArtist(artistName, cancellationToken).ConfigureAwait(false);
-                    }
-                }
-            }
-                return _resultDiscogs;
-        })
-        .ConfigureAwait(false);
-
-        await EndWith(async () =>
-        {
-            return await _releaseAlbumRepository.Insert(_resultDiscogs.Content, cancellationToken).ConfigureAwait(false);
-        })
-        .ConfigureAwait(false);
-
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        _resultDiscogs = null!;
-        base.Dispose(disposing);
     }
 }

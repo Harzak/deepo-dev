@@ -3,8 +3,8 @@ using Deepo.Fetcher.Library.Fetcher;
 using Deepo.Fetcher.Library.Fetcher.Fetch;
 using Deepo.Fetcher.Library.Fetcher.Planification;
 using Deepo.Fetcher.Library.Interfaces;
-using Deepo.Fetcher.Library.Service.Discogs;
-using Deepo.Fetcher.Library.Service.Spotify;
+using Deepo.Fetcher.Library.Repositories.Discogs;
+using Deepo.Fetcher.Library.Repositories.Spotify;
 using Framework.Common.Utils.Time.Provider;
 using Framework.Common.Worker.Schedule;
 using Framework.Common.Worker.Schedule.Planification;
@@ -43,8 +43,8 @@ public static class ServiceCollectionExtension
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddTransient<IFetchFactory, FetchFactory>();
-        services.AddTransient<ISpotifyService, SpotifyService>();
-        services.AddTransient<IDiscogService, DiscogService>();
+        services.AddTransient<ISpotifyRepository, SpotifyRepository>();
+        services.AddTransient<IDiscogRepository, DiscogRepository>();
         services.AddTransient<ITimeProvider, TimeProvider>();
         services.AddTransient<ITimer>(x => new Framework.Common.Utils.Time.Timer(1000));
         services.AddTransient<IScheduler, FetchersScheduler>();

@@ -1,20 +1,21 @@
-﻿using Deepo.Fetcher.Library.Configuration.Setting;
+﻿using Deepo.Fetcher.Library.Authentication;
+using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Interfaces;
-using Deepo.Fetcher.Library.Service.Spotify.Endpoint;
+using Deepo.Fetcher.Library.Repositories.Spotify.Endpoint;
 using Framework.Web.Http.Client.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Runtime.CompilerServices;
 using TimeProvider = Framework.Common.Utils.Time.Provider.TimeProvider;
 
-namespace Deepo.Fetcher.Library.Service.Spotify;
+namespace Deepo.Fetcher.Library.Repositories.Spotify;
 
-internal class SpotifyService : AuthenticatedHttpService, ISpotifyService
+internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
 {
     private readonly HttpServiceOption _options;
     private readonly EndPointSearchAlbum _searchAlbumEndpoint;
 
-    public SpotifyService(IHttpClientFactory httpClientFactory, IOptions<HttpServicesOption> options, ILogger<SpotifyService> logger)
+    public SpotifyRepository(IHttpClientFactory httpClientFactory, IOptions<HttpServicesOption> options, ILogger<SpotifyRepository> logger)
     : base(httpClientFactory,
         new TimeProvider(),
 #pragma warning disable CA2000 // Dispose objects before losing scope

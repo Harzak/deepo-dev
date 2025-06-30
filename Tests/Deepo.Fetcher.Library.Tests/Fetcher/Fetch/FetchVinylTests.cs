@@ -17,8 +17,8 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
     [TestClass]
     public class FetchVinylTests
     {
-        private Mock<IDiscogService> _discogsServiceMock;
-        private Mock<ISpotifyService> _spotifyServiceMock;
+        private Mock<IDiscogRepository> _discogsServiceMock;
+        private Mock<ISpotifyRepository> _spotifyServiceMock;
         private Mock<IReleaseAlbumRepository> _releaseAlbumRepositoryMock;
         private Mock<ILogger> _loggerMock;
         private Mock<IResult> _positiveResultMock; //=> in framework
@@ -26,8 +26,8 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
         [TestInitialize]
         public void Initialize()
         {
-            _discogsServiceMock = new Mock<IDiscogService>();
-            _spotifyServiceMock = new Mock<ISpotifyService>();
+            _discogsServiceMock = new Mock<IDiscogRepository>();
+            _spotifyServiceMock = new Mock<ISpotifyRepository>();
             _releaseAlbumRepositoryMock = new Mock<IReleaseAlbumRepository>();
             _positiveResultMock = new Mock<IResult>();
             _positiveResultMock.Setup(x => x.IsSuccess).Returns(true);
@@ -39,9 +39,9 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
         {
             //Arrange
             _discogsServiceMock.Setup(x => x.GetArtist(It.IsAny<string>(), new CancellationToken()))
-              .ReturnsAsync(new Service.HttpServiceResult<IAuthor>(new Mock<IAuthor>().Object, true));
+              .ReturnsAsync(new Repositories.HttpServiceResult<IAuthor>(new Mock<IAuthor>().Object, true));
             _discogsServiceMock.Setup(x => x.GetLastReleaseByArtistID(It.IsAny<string>(), new CancellationToken()))
-             .ReturnsAsync(new Service.HttpServiceResult<AlbumModel>(new Mock<AlbumModel>().Object, true));
+             .ReturnsAsync(new Repositories.HttpServiceResult<AlbumModel>(new Mock<AlbumModel>().Object, true));
             Dto.Spotify.Album release = new()
             {
                 ReleaseDate = DateTime.UtcNow.AddDays(-15).ToString(),
@@ -70,9 +70,9 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
         {
             //Arrange
             _discogsServiceMock.Setup(x => x.GetArtist(It.IsAny<string>(), new CancellationToken()))
-                .ReturnsAsync(new Service.HttpServiceResult<IAuthor>(new Mock<IAuthor>().Object, true));
+                .ReturnsAsync(new Repositories.HttpServiceResult<IAuthor>(new Mock<IAuthor>().Object, true));
             _discogsServiceMock.Setup(x => x.GetLastReleaseByArtistID(It.IsAny<string>(), new CancellationToken()))
-             .ReturnsAsync(new Service.HttpServiceResult<AlbumModel>(new Mock<AlbumModel>().Object, true));
+             .ReturnsAsync(new Repositories.HttpServiceResult<AlbumModel>(new Mock<AlbumModel>().Object, true));
             Dto.Spotify.Album release = new()
             {
                 ReleaseDate = DateTime.UtcNow.AddDays(-5).ToString(),

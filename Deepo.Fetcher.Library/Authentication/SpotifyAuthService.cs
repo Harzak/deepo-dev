@@ -10,7 +10,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using TimeProvider = Framework.Common.Utils.Time.Provider.TimeProvider;
 
-namespace Deepo.Fetcher.Library.Service.Spotify;
+namespace Deepo.Fetcher.Library.Authentication;
 
 internal class SpotifyAuthService : HttpService, IAuthenticationHttpService
 {
