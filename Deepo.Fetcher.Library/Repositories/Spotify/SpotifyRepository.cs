@@ -1,5 +1,6 @@
 ﻿using Deepo.Fetcher.Library.Authentication;
 using Deepo.Fetcher.Library.Configuration.Setting;
+using Deepo.Fetcher.Library.Dto.Spotify;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Repositories.Spotify.Endpoint;
 using Framework.Web.Http.Client.Service;
@@ -32,12 +33,12 @@ internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
 
     #region Public 
 
-    public async IAsyncEnumerable<HttpServiceResult<Dto.Spotify.Album>> GetNewReleasesViaSearch(string market, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<HttpServiceResult<DtoSpotifyAlbum>> GetNewReleasesViaSearch(string market, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         await foreach (string item in GetNewReleasesViaSearchJson(market, cancellationToken).ConfigureAwait(false))
         {
-            HttpServiceResult<Dto.Spotify.Album> result = new();
-            if (_searchAlbumEndpoint.TryParse(item, out IEnumerable<Dto.Spotify.Album>? parsedReleases))
+            HttpServiceResult<DtoSpotifyAlbum> result = new();
+            if (_searchAlbumEndpoint.TryParse(item, out IEnumerable<DtoSpotifyAlbum>? parsedReleases))
             {
                 if (parsedReleases is null)
                 {

@@ -3,13 +3,13 @@
 namespace Deepo.Fetcher.Library.Dto.Spotify;
 
 [Serializable]
-public sealed class Album
+public sealed class DtoSpotifyAlbum
 {
     [JsonPropertyName("album_type")]
     public string? AlbumType { get; set; }
 
     [JsonPropertyName("artists")]
-    public IEnumerable<Artist>? Artists { get; set; }
+    public IEnumerable<DtoSpotifyArtist>? Artists { get; set; }
 
     [JsonPropertyName("href")]
     public string? Href { get; set; }

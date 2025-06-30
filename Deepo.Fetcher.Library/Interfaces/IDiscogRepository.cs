@@ -8,7 +8,7 @@ namespace Deepo.Fetcher.Library.Interfaces;
 
 public interface IDiscogRepository
 {
-    Task<OperationResult<IEnumerable<Dto.Discogs.DtoAlbum>?>> GetSearchByReleaseTitleAndYear(string releaseTitle, int year, CancellationToken cancellationToken);
-    Task<OperationResult<IEnumerable<Dto.Discogs.DtoAlbum>?>> GetSearchByArtistNameAndYear(string nameArtist, CancellationToken cancellationToken);
-    Task<OperationResult<Dto.Discogs.DtoMaster?>> GetReleaseByID(string id, CancellationToken cancellationToken);
+    Task<OperationResult<IEnumerable<Dto.Discogs.DtoDiscogsAlbum>?>> GetSearchByReleaseTitleAndYear(string releaseTitle, int year, CancellationToken cancellationToken);
+    Task<OperationResult<IEnumerable<Dto.Discogs.DtoDiscogsAlbum>?>> GetSearchByArtistNameAndYear(string nameArtist, CancellationToken cancellationToken);
+    Task<OperationResult<Dto.Discogs.DtoDiscogsRelease?>> GetReleaseByID(string id, CancellationToken cancellationToken);
 }

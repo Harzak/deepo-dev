@@ -49,7 +49,7 @@ internal class FetcherVinyl : CancellableWorker
         //        TotalFetch++;
         //    }
         //}
-        await foreach (HttpServiceResult<Dto.Spotify.Album> result in _spotifyService.GetNewReleasesViaSearch("US", stoppingToken).ConfigureAwait(false))
+        await foreach (HttpServiceResult<Dto.Spotify.DtoSpotifyAlbum> result in _spotifyService.GetNewReleasesViaSearch("US", stoppingToken).ConfigureAwait(false))
         {
             using (IFetch fetch = _fetchFactory.CreateFetchVinyl(result.Content))
             {

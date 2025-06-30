@@ -3,7 +3,7 @@
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
 [Serializable]
-public sealed class DtoPagination
+public sealed class DtoDiscogsPagination
 {
     [JsonPropertyName("page")]
     public int Page { get; set; }

@@ -3,8 +3,8 @@
 namespace Deepo.Fetcher.Library.Dto.Spotify;
 
 [Serializable]
-public sealed class Albums
+public sealed class DtoSpotifyAlbums
 {
     [JsonPropertyName("albums")]
-    public ResultSpotify<Album>? Result { get; set; }
+    public ResultSpotify<DtoSpotifyAlbum>? Result { get; set; }
 }

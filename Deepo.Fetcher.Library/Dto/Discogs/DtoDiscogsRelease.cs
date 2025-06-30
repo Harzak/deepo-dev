@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
-public sealed class DtoMaster 
+public sealed class DtoDiscogsRelease 
 {
     private int _id;
     [JsonPropertyName("id")]
@@ -32,19 +32,19 @@ public sealed class DtoMaster
     public string? Uri { get; set; }
 
     [JsonPropertyName("artists")]
-    public IEnumerable<DtoArtist>? Artists { get; set; }
+    public IEnumerable<DtoDiscogsArtist>? Artists { get; set; }
 
     [JsonPropertyName("artists_sort")]
     public string? ArtistsSort { get; set; }
 
     [JsonPropertyName("labels")]
-    public IEnumerable<DtoLabel>? Labels { get; set; }
+    public IEnumerable<DtoDiscogsLabel>? Labels { get; set; }
 
     [JsonPropertyName("companies")]
-    public IEnumerable<DtoCompany>? Companies { get; set; }
+    public IEnumerable<DtoDiscogsCompany>? Companies { get; set; }
 
     [JsonPropertyName("formats")]
-    public IEnumerable<DtoFormat>? Formats { get; set; }
+    public IEnumerable<DtoDiscogsFormat>? Formats { get; set; }
 
     [JsonPropertyName("data_quality")]
     public string? DataQuality { get; set; }
@@ -81,10 +81,10 @@ public sealed class DtoMaster
     public IEnumerable<string>? Styles { get; set; }
 
     [JsonPropertyName("tracklist")]
-    public IEnumerable<DtoTracklist>? Tracklist { get; set; }
+    public IEnumerable<DtoDiscogsTracklist>? Tracklist { get; set; }
 
     [JsonPropertyName("images")]
-    public IEnumerable<DtoImage>? Images { get; set; }
+    public IEnumerable<DtoDiscogsImage>? Images { get; set; }
 
     [JsonPropertyName("thumb")]
     public string? ThumbsURL { get; set; }
@@ -92,7 +92,7 @@ public sealed class DtoMaster
     public Dictionary<string, string> ProvidersIdentifier { get; }
 
 
-    public DtoMaster()
+    public DtoDiscogsRelease()
     {
         ProvidersIdentifier = [];
     }

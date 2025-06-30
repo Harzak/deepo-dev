@@ -1,10 +1,11 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
+using Deepo.Fetcher.Library.Dto.Discogs;
 using Framework.Web.Http.Client.Endpoint;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace Deepo.Fetcher.Library.Repositories.Discogs.Endpoint;
-internal class EndPointSearch : MultipleResultEndpointConsumer<IEnumerable<Dto.Discogs.DtoAlbum>?>
+internal class EndPointSearch : MultipleResultEndpointConsumer<IEnumerable<DtoDiscogsAlbum>?>
 {
     private readonly HttpServiceOption _options;
 
@@ -28,8 +29,8 @@ internal class EndPointSearch : MultipleResultEndpointConsumer<IEnumerable<Dto.D
     }
     #endregion
 
-    protected override IEnumerable<Dto.Discogs.DtoAlbum>? Parse(string text)
+    protected override IEnumerable<DtoDiscogsAlbum>? Parse(string text)
     {
-        return JsonSerializer.Deserialize<Dto.Discogs.AlbumSearch>(text)?.Results;
+        return JsonSerializer.Deserialize<AlbumSearch>(text)?.Results;
     }
 }

@@ -42,12 +42,12 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
               .ReturnsAsync(new Repositories.HttpServiceResult<IAuthor>(new Mock<IAuthor>().Object, true));
             _discogsServiceMock.Setup(x => x.GetLastReleaseByArtistID(It.IsAny<string>(), new CancellationToken()))
              .ReturnsAsync(new Repositories.HttpServiceResult<AlbumModel>(new Mock<AlbumModel>().Object, true));
-            Dto.Spotify.Album release = new()
+            Dto.Spotify.DtoSpotifyAlbum release = new()
             {
                 ReleaseDate = DateTime.UtcNow.AddDays(-15).ToString(),
                 Artists =
                 [
-                    new Dto.Spotify.Artist()
+                    new Dto.Spotify.DtoSpotifyArtist()
                     {
                          Name = "Darude"
                     }
@@ -73,12 +73,12 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher.Fetch
                 .ReturnsAsync(new Repositories.HttpServiceResult<IAuthor>(new Mock<IAuthor>().Object, true));
             _discogsServiceMock.Setup(x => x.GetLastReleaseByArtistID(It.IsAny<string>(), new CancellationToken()))
              .ReturnsAsync(new Repositories.HttpServiceResult<AlbumModel>(new Mock<AlbumModel>().Object, true));
-            Dto.Spotify.Album release = new()
+            Dto.Spotify.DtoSpotifyAlbum release = new()
             {
                 ReleaseDate = DateTime.UtcNow.AddDays(-5).ToString(),
                 Artists =
                 [
-                    new Dto.Spotify.Artist()
+                    new Dto.Spotify.DtoSpotifyArtist()
                     {
                          Name = "Darude"
                     }
