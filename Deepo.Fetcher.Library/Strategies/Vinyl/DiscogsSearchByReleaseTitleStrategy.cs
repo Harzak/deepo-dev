@@ -4,10 +4,11 @@ using Deepo.Fetcher.Library.LogMessage;
 using Framework.Common.Utils.Result;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
+using System.Web;
 
 namespace Deepo.Fetcher.Library.Strategies.Vinyl;
 
-public class DiscogsSearchByReleaseTitleStrategy 
+public class DiscogsSearchByReleaseTitleStrategy
 {
     private readonly ILogger _logger;
     private readonly IDiscogRepository _discogService;
@@ -28,7 +29,8 @@ public class DiscogsSearchByReleaseTitleStrategy
             return result.WithError($"Empty required argument: {releaseTitle}");
         }
 
-        OperationResult<IEnumerable<DtoDiscogsAlbum>> releasesResult = await _discogService.GetSearchByReleaseTitleAndYear(releaseTitle, DateTime.Now.Year, cancellationToken).ConfigureAwait(false);
+        string sanitizedTitle = HttpUtility.UrlEncode(releaseTitle.Trim());
+        OperationResult<IEnumerable<DtoDiscogsAlbum>> releasesResult = await _discogService.GetSearchByReleaseTitleAndYear(sanitizedTitle, DateTime.Now.Year, cancellationToken).ConfigureAwait(false);
 
         if (releasesResult.IsFailed)
         {

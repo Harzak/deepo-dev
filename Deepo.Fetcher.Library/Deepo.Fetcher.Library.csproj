@@ -14,7 +14,7 @@
 	<ItemGroup>
 		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.5" />
 		<PackageReference Include="Harzak.Framework.Common.Worker" Version="1.0.1" />
-		<PackageReference Include="Harzak.Framework.Web.Http" Version="1.0.8" />
+		<PackageReference Include="Harzak.Framework.Web.Http" Version="1.0.9" />
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />

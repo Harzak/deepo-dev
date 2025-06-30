@@ -43,15 +43,23 @@ public class VinylStrategy : IVynilStrategy
             OperationResult<DtoDiscogsRelease> searchRelease = await _strategiesFactory.SearchDiscogsByTitleAsync(spotifyAlbum.Name!, cancellationToken).ConfigureAwait(false);
             if (searchRelease.IsSuccess)
             {
-                await InsertReleaseAlbumAsync(searchRelease.Content, cancellationToken).ConfigureAwait(false);
+                if (await InsertReleaseAlbumAsync(searchRelease.Content, cancellationToken).ConfigureAwait(false))
+                {
+                    VinylStrategyLogs.SuccessStrategy(_logger, "Market FR by title", spotifyAlbum.Name!);
+                }
                 continue;
             }
 
-            searchRelease = await _strategiesFactory.SearchDiscogsByArtistAsync(spotifyAlbum?.Artists?.FirstOrDefault()?.Name ?? string.Empty, cancellationToken).ConfigureAwait(false);
-            if (searchRelease.IsSuccess)
+            foreach (DtoSpotifyArtist artist in spotifyAlbum.Artists!)
             {
-                await InsertReleaseAlbumAsync(searchRelease.Content, cancellationToken).ConfigureAwait(false);
-                continue;
+                searchRelease = await _strategiesFactory.SearchDiscogsByArtistAsync(artist.Name!, cancellationToken).ConfigureAwait(false);
+                if (searchRelease.IsSuccess)
+                {
+                    if (await InsertReleaseAlbumAsync(searchRelease.Content, cancellationToken).ConfigureAwait(false))
+                    {
+                        VinylStrategyLogs.SuccessStrategy(_logger, "Market FR by artists", spotifyAlbum?.Name!);
+                    }
+                }
             }
 
             VinylStrategyLogs.AllStrategiesFailed(_logger, spotifyAlbum?.Name!);
@@ -62,20 +70,28 @@ public class VinylStrategy : IVynilStrategy
             OperationResult<DtoDiscogsRelease> searchRelease = await _strategiesFactory.SearchDiscogsByTitleAsync(spotifyAlbum.Name!, cancellationToken).ConfigureAwait(false);
             if (searchRelease.IsSuccess)
             {
-                await InsertReleaseAlbumAsync(searchRelease.Content, cancellationToken).ConfigureAwait(false);
+                if (await InsertReleaseAlbumAsync(searchRelease.Content, cancellationToken).ConfigureAwait(false))
+                {
+                    VinylStrategyLogs.SuccessStrategy(_logger, "Market US by title", spotifyAlbum?.Name!);
+                }
                 continue;
             }
 
             searchRelease = await _strategiesFactory.SearchDiscogsByArtistAsync(spotifyAlbum?.Artists?.FirstOrDefault()?.Name ?? string.Empty, cancellationToken).ConfigureAwait(false);
             if (searchRelease.IsSuccess)
             {
-                await InsertReleaseAlbumAsync(searchRelease.Content, cancellationToken).ConfigureAwait(false);
+                if (await InsertReleaseAlbumAsync(searchRelease.Content, cancellationToken).ConfigureAwait(false))
+                {
+                    VinylStrategyLogs.SuccessStrategy(_logger, "Market US by artists", spotifyAlbum?.Name!);
+                }
                 continue;
             }
 
             VinylStrategyLogs.AllStrategiesFailed(_logger, spotifyAlbum?.Name!);
         }
     }
+
+
 
     private async Task<bool> InsertReleaseAlbumAsync(DtoDiscogsRelease release, CancellationToken cancellationToken)
     {

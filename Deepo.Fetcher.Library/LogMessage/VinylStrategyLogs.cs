@@ -42,4 +42,7 @@ internal static partial class VinylStrategyLogs
 
     [LoggerMessage(EventId = 10, Level = LogLevel.Error, Message = "All strategies failed for release: '{title}'")]
     public static partial void AllStrategiesFailed(ILogger logger, string title);
+
+    [LoggerMessage(EventId = 11, Level = LogLevel.Information, Message = "Success: strategy {strategyName} for release: '{title}'")]
+    public static partial void SuccessStrategy(ILogger logger, string strategyName, string title);
 }
