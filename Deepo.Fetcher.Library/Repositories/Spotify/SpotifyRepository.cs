@@ -3,6 +3,7 @@ using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Dto.Spotify;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Repositories.Spotify.Endpoint;
+using Deepo.Fetcher.Library.Utils;
 using Framework.Web.Http.Client.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -31,43 +32,36 @@ internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
         _searchAlbumEndpoint = new EndPointSearchAlbum(_options, logger);
     }
 
-    #region Public 
-
     public async IAsyncEnumerable<HttpServiceResult<DtoSpotifyAlbum>> GetNewReleasesViaSearch(string market, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        await foreach (string item in GetNewReleasesViaSearchJson(market, cancellationToken).ConfigureAwait(false))
+        await foreach (string page in GetNewReleasesViaSearchJson(market, cancellationToken).ConfigureAwait(false))
         {
             HttpServiceResult<DtoSpotifyAlbum> result = new();
-            if (_searchAlbumEndpoint.TryParse(item, out IEnumerable<DtoSpotifyAlbum>? parsedReleases))
+
+            if (_searchAlbumEndpoint.TryParse(page, out IEnumerable<DtoSpotifyAlbum>? parsedAlbumList))
             {
-                if (parsedReleases is null)
+                if (parsedAlbumList is null)
                 {
                     continue;
                 }
 
-                foreach (var item2 in parsedReleases.Where(x => x != null))
+                foreach (DtoSpotifyAlbum album in parsedAlbumList.Where(x => x != null))
                 {
-                    result.IsSuccess = true;
-                    result.Content = item2;
-                    yield return result;
+                    yield return result.WithSuccess().WithValue(album);
                 }
 
             }
         }
     }
-    #endregion
-
-    #region GET Methods
 
     private async IAsyncEnumerable<string> GetNewReleasesViaSearchJson(string market, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         _searchAlbumEndpoint.Market = market;
-        await foreach (var item in base.GetAsync(_searchAlbumEndpoint.Get($"year:{DateTime.Now.Year}+tag:new"), _searchAlbumEndpoint, cancellationToken).ConfigureAwait(false))
+        await foreach (string item in base.GetAsync(_searchAlbumEndpoint.Get($"year:{DateTime.Now.Year}+tag:new"), _searchAlbumEndpoint, cancellationToken).ConfigureAwait(false))
         {
             yield return item;
         }
     }
-    #endregion
 
     protected override void SetTokenValue(string token)
     {

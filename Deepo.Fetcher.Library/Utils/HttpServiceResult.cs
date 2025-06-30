@@ -1,7 +1,7 @@
 ﻿using Framework.Common.Utils.Result;
 using System.Net;
 
-namespace Deepo.Fetcher.Library.Repositories;
+namespace Deepo.Fetcher.Library.Utils;
 
 public class HttpServiceResult<T> : OperationResult<T>
 {
@@ -33,7 +33,7 @@ public class HttpServiceResult<T> : OperationResult<T>
 
     public new HttpServiceResult<T> WithValue(T value)
     {
-        this.Content = value;
+        Content = value;
         return this;
     }
 }

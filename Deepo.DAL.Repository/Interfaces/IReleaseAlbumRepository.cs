@@ -6,7 +6,7 @@ namespace Deepo.DAL.Repository.Interfaces;
 
 public interface IReleaseAlbumRepository
 {
-    Task<DatabaseOperationResult> Insert(AlbumModel item, CancellationToken cancellationToken);
+    Task<DatabaseOperationResult> InsertAsync(AlbumModel item, CancellationToken cancellationToken);
     int Count(string market);
     bool Exists(AlbumModel item);
     V_LastVinylRelease? GetLast();

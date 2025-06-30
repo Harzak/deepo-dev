@@ -19,7 +19,6 @@ namespace Deepo.Fetcher.Library.Repositories.Discogs;
 internal class DiscogRepository : HttpService, IDiscogRepository
 {
     private readonly HttpServiceOption _options;
-
     private readonly EndPointSearch _endPointSearch;
     private readonly EndPointReleases _endPointReleases;
 
@@ -35,21 +34,23 @@ internal class DiscogRepository : HttpService, IDiscogRepository
         base.SetAuthorization("Discogs", $"token={_options.Token}");
     }
 
-    public async Task<OperationResult<IEnumerable<DtoDiscogsAlbum>?>> GetSearchByReleaseTitleAndYear(string releaseTitle, int year, CancellationToken cancellationToken)
+    public async Task<OperationResult<IEnumerable<DtoDiscogsAlbum>>> GetSearchByReleaseTitleAndYear(string releaseTitle, int year, CancellationToken cancellationToken)
     {
-        OperationResult<IEnumerable<DtoDiscogsAlbum>?> result = new();
+        OperationResult<IEnumerable<DtoDiscogsAlbum>> result = new();
 
         OperationResult<string> searchRequest = await this.GetSearchByReleaseTitleAndYearJson(releaseTitle, DateTime.Now.Year, cancellationToken).ConfigureAwait(false);
         if (searchRequest.IsFailed)
         {
-            return result.WithFailure();
+            return result.Affect(searchRequest);
         }
+
         bool isSearchParsed = _endPointSearch.TryParse(searchRequest.Content, out IEnumerable<DtoDiscogsAlbum>? parseSearch);
-        if (!isSearchParsed)
+        if (isSearchParsed && parseSearch != null)
         {
-            return result.WithFailure();
+            return result.WithSuccess().WithValue(parseSearch);
         }
-        return result.WithSuccess().WithValue(parseSearch);
+
+        return result.WithError("Failed to parse Discogs search data");
     }
 
     private async Task<OperationResult<string>> GetSearchByReleaseTitleAndYearJson(string releaseTitle, int year, CancellationToken cancellationToken)
@@ -57,46 +58,46 @@ internal class DiscogRepository : HttpService, IDiscogRepository
         return await base.GetAsync(_endPointSearch.Get($"release_title={releaseTitle}&year={year}&format=vinyl&type=release"), cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<OperationResult<IEnumerable<DtoDiscogsAlbum>?>> GetSearchByArtistNameAndYear(string nameArtist, CancellationToken cancellationToken)
+    public async Task<OperationResult<IEnumerable<DtoDiscogsAlbum>>> GetSearchByArtistNameAndYear(string nameArtist, CancellationToken cancellationToken)
     {
-        OperationResult<IEnumerable<DtoDiscogsAlbum>?> result = new();
+        OperationResult<IEnumerable<DtoDiscogsAlbum>> result = new();
 
         OperationResult<string> searchRequest = await GetSearchByArtistNameAndYearJson(nameArtist, cancellationToken).ConfigureAwait(false);
         if (searchRequest.IsFailed)
         {
-            return result.WithFailure();
+            return result.Affect(searchRequest);
         }
 
         bool isSearchParsed = _endPointSearch.TryParse(searchRequest.Content, out IEnumerable<DtoDiscogsAlbum>? parseSearch);
-        if (!isSearchParsed)
+        if (isSearchParsed && parseSearch != null)
         {
-            return result.WithFailure();
+            return result.WithSuccess().WithValue(parseSearch);
         }
-        return result.WithSuccess().WithValue(parseSearch);
+
+        return result.WithError("Failed to parse Discogs search data");
     }
     private async Task<OperationResult<string>> GetSearchByArtistNameAndYearJson(string nameArtist, CancellationToken cancellationToken)
     {
         return await base.GetAsync(_endPointSearch.Get($"artist={nameArtist}&year={DateTime.UtcNow.Year}&format=vinyl&type=release"), cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<OperationResult<DtoDiscogsRelease?>> GetReleaseByID(string id, CancellationToken cancellationToken)
+    public async Task<OperationResult<DtoDiscogsRelease>> GetReleaseByID(string id, CancellationToken cancellationToken)
     {
-        OperationResult<DtoDiscogsRelease?> result = new();
-
+        OperationResult<DtoDiscogsRelease> result = new();
 
         OperationResult<string> masterRequest = await GetReleaseByIDJson(id, cancellationToken).ConfigureAwait(false);
         if (masterRequest.IsFailed)
         {
-            return result.WithFailure();
+            return result.Affect(masterRequest);
         }
 
-        bool isReleaseParsed = _endPointReleases.TryParse(masterRequest.Content, out Dto.Discogs.DtoDiscogsRelease? parsedRelease);
-        if (!isReleaseParsed || parsedRelease is null)
+        bool isReleaseParsed = _endPointReleases.TryParse(masterRequest.Content, out DtoDiscogsRelease? parsedRelease);
+        if (isReleaseParsed && parsedRelease != null)
         {
-            return result.WithFailure();
+            return result.WithSuccess().WithValue(parsedRelease);
         }
 
-        return result.WithSuccess().WithValue(parsedRelease);
+        return result.WithError("Failed to parse Discogs release return data");
     }
     private async Task<OperationResult<string>> GetReleaseByIDJson(string id, CancellationToken cancellationToken)
     {
