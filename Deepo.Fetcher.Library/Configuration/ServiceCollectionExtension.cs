@@ -2,6 +2,7 @@
 using Deepo.Fetcher.Library.Fetcher;
 using Deepo.Fetcher.Library.Fetcher.Fetch;
 using Deepo.Fetcher.Library.Fetcher.Planification;
+using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Service.Discogs;
 using Deepo.Fetcher.Library.Service.Spotify;
 using Framework.Common.Utils.Time.Provider;

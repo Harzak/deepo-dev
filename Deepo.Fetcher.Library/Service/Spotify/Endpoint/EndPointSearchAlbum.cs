@@ -8,24 +8,27 @@ using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Text.Json;
 
-namespace Deepo.Fetcher.Library.Service.Spotify;
+namespace Deepo.Fetcher.Library.Service.Spotify.Endpoint;
 
 internal class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<Dto.Spotify.Album>?>, IPaginableEndpointQuery
 {
     private const int OFFSET_MAX_RANGE = 1000;
     private const int LIMIT_MAX_RANGE = 50;
 
+    public string Market { get; set; }
+
     private readonly HttpServiceOption _options;
 
     internal EndPointSearchAlbum(HttpServiceOption options, ILogger logger) : base(logger)
     {
         _options = options;
+        Market = Constants.DEFAULT_MARKET;
     }
 
     #region HTTP Methods
     public override string Get(string query = "")
     {
-        return $"v1/search?market={Constants.DEFAULT_MARKET}&type=album&limit={LIMIT_MAX_RANGE}&q={query}";
+        return $"v1/search?market={Market}&type=album&limit={LIMIT_MAX_RANGE}&q={query}";
     }
     public override string Options()
     {

@@ -1,7 +1,7 @@
 ﻿using Framework.Common.Worker.Interfaces;
 using Framework.Common.Worker.Schedule.Planification;
 
-namespace Deepo.Fetcher.Library.Fetcher;
+namespace Deepo.Fetcher.Library.Interfaces;
 
 public interface IFetcherProvider
 {

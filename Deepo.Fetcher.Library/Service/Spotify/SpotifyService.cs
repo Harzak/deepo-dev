@@ -1,4 +1,6 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
+using Deepo.Fetcher.Library.Interfaces;
+using Deepo.Fetcher.Library.Service.Spotify.Endpoint;
 using Framework.Web.Http.Client.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -29,9 +31,9 @@ internal class SpotifyService : AuthenticatedHttpService, ISpotifyService
 
     #region Public 
 
-    public async IAsyncEnumerable<HttpServiceResult<Dto.Spotify.Album>> GetNewReleasesViaSearch([EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<HttpServiceResult<Dto.Spotify.Album>> GetNewReleasesViaSearch(string market, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        await foreach (string item in GetNewReleasesViaSearchJson(cancellationToken).ConfigureAwait(false))
+        await foreach (string item in GetNewReleasesViaSearchJson(market, cancellationToken).ConfigureAwait(false))
         {
             HttpServiceResult<Dto.Spotify.Album> result = new();
             if (_searchAlbumEndpoint.TryParse(item, out IEnumerable<Dto.Spotify.Album>? parsedReleases))
@@ -55,8 +57,9 @@ internal class SpotifyService : AuthenticatedHttpService, ISpotifyService
 
     #region GET Methods
 
-    private async IAsyncEnumerable<string> GetNewReleasesViaSearchJson([EnumeratorCancellation] CancellationToken cancellationToken)
+    private async IAsyncEnumerable<string> GetNewReleasesViaSearchJson(string market, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
+        _searchAlbumEndpoint.Market = market;
         await foreach (var item in base.GetAsync(_searchAlbumEndpoint.Get($"year:{DateTime.Now.Year}+tag:new"), _searchAlbumEndpoint, cancellationToken).ConfigureAwait(false))
         {
             yield return item;

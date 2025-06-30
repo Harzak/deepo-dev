@@ -1,6 +1,5 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
-using Deepo.Fetcher.Library.Fetcher.Fetch;
-using Deepo.Fetcher.Library.Service.Spotify;
+using Deepo.Fetcher.Library.Interfaces;
 using Framework.Common.Worker.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

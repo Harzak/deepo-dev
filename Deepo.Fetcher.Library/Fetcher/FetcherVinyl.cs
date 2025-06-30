@@ -1,7 +1,6 @@
-﻿using Deepo.Fetcher.Library.Fetcher.Fetch;
+﻿using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.LogMessage;
 using Deepo.Fetcher.Library.Service;
-using Deepo.Fetcher.Library.Service.Spotify;
 using Framework.Common.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -36,7 +35,21 @@ internal class FetcherVinyl : CancellableWorker
 
     protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
     {
-        await foreach (HttpServiceResult<Dto.Spotify.Album> result in _spotifyService.GetNewReleasesViaSearch(stoppingToken).ConfigureAwait(false))
+        //await foreach (HttpServiceResult<Dto.Spotify.Album> result in _spotifyService.GetNewReleasesViaSearch("FR", stoppingToken).ConfigureAwait(false))
+        //{
+        //    using (IFetch fetch = _fetchFactory.CreateFetchVinyl(result.Content))
+        //    {
+        //        await fetch.StartAsync(stoppingToken).ConfigureAwait(false);
+
+        //        if (fetch.Success)
+        //        {
+        //            FetchSucced++;
+        //        }
+
+        //        TotalFetch++;
+        //    }
+        //}
+        await foreach (HttpServiceResult<Dto.Spotify.Album> result in _spotifyService.GetNewReleasesViaSearch("US", stoppingToken).ConfigureAwait(false))
         {
             using (IFetch fetch = _fetchFactory.CreateFetchVinyl(result.Content))
             {

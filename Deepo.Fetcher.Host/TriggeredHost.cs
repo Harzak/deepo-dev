@@ -1,5 +1,4 @@
 ﻿using Deepo.DAL.Repository.Feature.Fetcher;
-using Deepo.Fetcher.Library.Fetcher;
 using Framework.Common.Worker.Interfaces;
 using Framework.Common.Worker.Hosting;
 using Framework.Common.Worker.Schedule;
@@ -12,6 +11,7 @@ using Deepo.Fetcher.Library.Configuration.Setting;
 using Microsoft.Extensions.Options;
 using Framework.Common.Worker.EventArg;
 using Deepo.DAL.Repository.Interfaces;
+using Deepo.Fetcher.Library.Interfaces;
 
 namespace Deepo.Fetcher.Host;
 
