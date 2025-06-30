@@ -1,8 +1,7 @@
 ﻿using Deepo.DAL.Repository.Feature.Release;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Fetcher.Fetch;
-using Deepo.Fetcher.Library.Service.Discogs;
-using Deepo.Fetcher.Library.Service.Spotify;
+using Deepo.Fetcher.Library.Interfaces;
 using Framework.Common.Utils.Result;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

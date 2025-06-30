@@ -1,4 +1,4 @@
-﻿namespace Deepo.Fetcher.Library.Fetcher.Fetch;
+﻿namespace Deepo.Fetcher.Library.Interfaces;
 
 internal interface IFetch : IDisposable
 {

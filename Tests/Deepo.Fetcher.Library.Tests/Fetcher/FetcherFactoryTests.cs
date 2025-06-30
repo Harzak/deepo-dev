@@ -1,7 +1,6 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Fetcher;
-using Deepo.Fetcher.Library.Fetcher.Fetch;
-using Deepo.Fetcher.Library.Service.Spotify;
+using Deepo.Fetcher.Library.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

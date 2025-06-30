@@ -1,4 +1,5 @@
-﻿using Framework.Common.Utils.Result;
+﻿using Deepo.Fetcher.Library.Interfaces;
+using Framework.Common.Utils.Result;
 
 namespace Deepo.Fetcher.Library.Fetcher.Fetch;
 

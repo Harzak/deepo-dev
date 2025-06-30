@@ -3,7 +3,7 @@ using Framework.Web.Http.Client.Endpoint;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace Deepo.Fetcher.Library.Service.Discogs;
+namespace Deepo.Fetcher.Library.Service.Discogs.Endpoint;
 
 internal class EndPointArtistReleases : MultipleResultEndpointConsumer<IEnumerable<Dto.Discogs.DtoRelease>?>
 {

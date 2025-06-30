@@ -3,51 +3,52 @@ using Framework.Web.Http.Client.Endpoint;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace Deepo.Fetcher.Library.Service.Discogs;
-internal class EndPointSearch : SingleResultEndpointConsumer<Dto.Discogs.DtoAlbum?>
+namespace Deepo.Fetcher.Library.Service.Discogs.Endpoint;
+internal class EndPointReleases : SingleResultEndpointConsumer<Dto.Discogs.DtoMaster?>
 {
     private readonly HttpServiceOption _options;
 
-    internal EndPointSearch(HttpServiceOption options, ILogger logger) : base(logger)
+    public EndPointReleases(HttpServiceOption options, ILogger logger) : base(logger)
     {
         _options = options;
     }
 
-    #region HTTP Methods
-    public override string Get(string query)
+    public override string Get(string id)
     {
-        return $"database/search?{query}";
+        return $"releases/{id}";
     }
     public override string Delete(string id)
     {
         throw new NotImplementedException();
     }
+
     public override string Options()
     {
         throw new NotImplementedException();
     }
+
     public override string Patch(string id, string json)
     {
         throw new NotImplementedException();
     }
+
     public override string Post(string id, string json)
     {
         throw new NotImplementedException();
     }
+
     public override string Put(string id, string json)
     {
         throw new NotImplementedException();
     }
+
     public override string Trace()
     {
         throw new NotImplementedException();
     }
-    #endregion
 
-    protected override Dto.Discogs.DtoAlbum? Parse(string text)
+    protected override Dto.Discogs.DtoMaster? Parse(string text)
     {
-        return JsonSerializer.Deserialize<Dto.Discogs.AlbumSearch>(text)?
-            .Results?
-            .FirstOrDefault();
+        return JsonSerializer.Deserialize<Dto.Discogs.DtoMaster>(text);
     }
 }

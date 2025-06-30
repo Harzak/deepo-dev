@@ -1,7 +1,6 @@
 ﻿using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Dto.Spotify;
-using Deepo.Fetcher.Library.Service.Discogs;
-using Deepo.Fetcher.Library.Service.Spotify;
+using Deepo.Fetcher.Library.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Deepo.Fetcher.Library.Fetcher.Fetch;
