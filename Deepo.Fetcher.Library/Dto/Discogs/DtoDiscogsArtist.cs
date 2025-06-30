@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
-public sealed class DtoArtist : IAuthor
+public sealed class DtoDiscogsArtist : IAuthor
 {
     [JsonPropertyName("name")]
     public string? Name { get; set; }

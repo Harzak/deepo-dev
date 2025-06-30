@@ -2,12 +2,12 @@
 
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
-public sealed class DtoReleases
+public sealed class DtoDiscogsReleaseList
 {
     [JsonPropertyName("pagination")]
-    public DtoPagination? Pagination { get; set; }
+    public DtoDiscogsPagination? Pagination { get; set; }
 
     [JsonPropertyName("releases")]
-    public IEnumerable<DtoRelease>? Items { get; set; }
+    public IEnumerable<DtoDiscogsRelease>? Items { get; set; }
 }
 

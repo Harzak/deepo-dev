@@ -2,6 +2,7 @@
 using Deepo.DAL.Repository.Feature.Release;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Configuration.Setting;
+using Deepo.Fetcher.Library.Dto.Discogs;
 using Deepo.Fetcher.Library.Dto.Spotify;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Mappers;
@@ -34,16 +35,16 @@ internal class DiscogRepository : HttpService, IDiscogRepository
         base.SetAuthorization("Discogs", $"token={_options.Token}");
     }
 
-    public async Task<OperationResult<IEnumerable<Dto.Discogs.DtoAlbum>?>> GetSearchByReleaseTitleAndYear(string releaseTitle, int year, CancellationToken cancellationToken)
+    public async Task<OperationResult<IEnumerable<DtoDiscogsAlbum>?>> GetSearchByReleaseTitleAndYear(string releaseTitle, int year, CancellationToken cancellationToken)
     {
-        OperationResult<IEnumerable<Dto.Discogs.DtoAlbum>?> result = new();
+        OperationResult<IEnumerable<DtoDiscogsAlbum>?> result = new();
 
         OperationResult<string> searchRequest = await this.GetSearchByReleaseTitleAndYearJson(releaseTitle, DateTime.Now.Year, cancellationToken).ConfigureAwait(false);
         if (searchRequest.IsFailed)
         {
             return result.WithFailure();
         }
-        bool isSearchParsed = _endPointSearch.TryParse(searchRequest.Content, out IEnumerable<Dto.Discogs.DtoAlbum>? parseSearch);
+        bool isSearchParsed = _endPointSearch.TryParse(searchRequest.Content, out IEnumerable<DtoDiscogsAlbum>? parseSearch);
         if (!isSearchParsed)
         {
             return result.WithFailure();
@@ -56,9 +57,9 @@ internal class DiscogRepository : HttpService, IDiscogRepository
         return await base.GetAsync(_endPointSearch.Get($"release_title={releaseTitle}&year={year}&format=vinyl&type=release"), cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<OperationResult<IEnumerable<Dto.Discogs.DtoAlbum>?>> GetSearchByArtistNameAndYear(string nameArtist, CancellationToken cancellationToken)
+    public async Task<OperationResult<IEnumerable<DtoDiscogsAlbum>?>> GetSearchByArtistNameAndYear(string nameArtist, CancellationToken cancellationToken)
     {
-        OperationResult<IEnumerable<Dto.Discogs.DtoAlbum>?> result = new();
+        OperationResult<IEnumerable<DtoDiscogsAlbum>?> result = new();
 
         OperationResult<string> searchRequest = await GetSearchByArtistNameAndYearJson(nameArtist, cancellationToken).ConfigureAwait(false);
         if (searchRequest.IsFailed)
@@ -66,7 +67,7 @@ internal class DiscogRepository : HttpService, IDiscogRepository
             return result.WithFailure();
         }
 
-        bool isSearchParsed = _endPointSearch.TryParse(searchRequest.Content, out IEnumerable<Dto.Discogs.DtoAlbum>? parseSearch);
+        bool isSearchParsed = _endPointSearch.TryParse(searchRequest.Content, out IEnumerable<DtoDiscogsAlbum>? parseSearch);
         if (!isSearchParsed)
         {
             return result.WithFailure();
@@ -78,9 +79,9 @@ internal class DiscogRepository : HttpService, IDiscogRepository
         return await base.GetAsync(_endPointSearch.Get($"artist={nameArtist}&year={DateTime.UtcNow.Year}&format=vinyl&type=release"), cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<OperationResult<Dto.Discogs.DtoMaster?>> GetReleaseByID(string id, CancellationToken cancellationToken)
+    public async Task<OperationResult<DtoDiscogsRelease?>> GetReleaseByID(string id, CancellationToken cancellationToken)
     {
-        OperationResult<Dto.Discogs.DtoMaster?> result = new();
+        OperationResult<DtoDiscogsRelease?> result = new();
 
 
         OperationResult<string> masterRequest = await GetReleaseByIDJson(id, cancellationToken).ConfigureAwait(false);
@@ -89,7 +90,7 @@ internal class DiscogRepository : HttpService, IDiscogRepository
             return result.WithFailure();
         }
 
-        bool isReleaseParsed = _endPointReleases.TryParse(masterRequest.Content, out Dto.Discogs.DtoMaster? parsedRelease);
+        bool isReleaseParsed = _endPointReleases.TryParse(masterRequest.Content, out Dto.Discogs.DtoDiscogsRelease? parsedRelease);
         if (!isReleaseParsed || parsedRelease is null)
         {
             return result.WithFailure();

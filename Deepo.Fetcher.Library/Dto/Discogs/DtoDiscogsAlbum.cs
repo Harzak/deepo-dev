@@ -3,7 +3,7 @@
 namespace Deepo.Fetcher.Library.Dto.Discogs;
 
 [Serializable]
-public sealed class DtoAlbum
+public sealed class DtoDiscogsAlbum
 {
     [JsonPropertyName("country")]
     public string? Country { get; set; }
@@ -60,6 +60,6 @@ public sealed class DtoAlbum
     public int FormatQuantity { get; set; }
 
     [JsonPropertyName("formats")]
-    public IEnumerable<DtoFormat>? Formats { get; set; }
+    public IEnumerable<DtoDiscogsFormat>? Formats { get; set; }
 }
 

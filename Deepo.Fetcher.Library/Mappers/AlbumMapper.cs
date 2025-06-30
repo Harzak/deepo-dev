@@ -11,7 +11,7 @@ namespace Deepo.Fetcher.Library.Mappers;
 
 public static class AlbumMapper
 {
-    public static AlbumModel MapToAlbum(this DtoMaster master)
+    public static AlbumModel MapToAlbum(this DtoDiscogsRelease master)
     {
         ArgumentNullException.ThrowIfNull(master, nameof(master));
         AlbumModel model = new()

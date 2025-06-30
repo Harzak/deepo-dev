@@ -23,7 +23,7 @@ internal class FetchFactory : IFetchFactory
         _logger = logger;
     }
 
-    public IFetch CreateFetchVinyl(Album initialData)
+    public IFetch CreateFetchVinyl(DtoSpotifyAlbum initialData)
     {
         return new FetchVinyl(initialData, _discogService, _spotifyService, _releaseAlbumRepository, _logger);
     }

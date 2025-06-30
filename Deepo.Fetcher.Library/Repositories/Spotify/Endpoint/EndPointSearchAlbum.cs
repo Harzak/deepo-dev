@@ -10,7 +10,7 @@ using System.Text.Json;
 
 namespace Deepo.Fetcher.Library.Repositories.Spotify.Endpoint;
 
-internal class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<Dto.Spotify.Album>?>, IPaginableEndpointQuery
+internal class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<Dto.Spotify.DtoSpotifyAlbum>?>, IPaginableEndpointQuery
 {
     private const int OFFSET_MAX_RANGE = 1000;
     private const int LIMIT_MAX_RANGE = 50;
@@ -44,26 +44,26 @@ internal class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<
     #region Pagination
     public int Total(string content)
     {
-        return JsonSerializer.Deserialize<Dto.Spotify.Albums>(content)?.Result?.Total ?? -1;
+        return JsonSerializer.Deserialize<Dto.Spotify.DtoSpotifyAlbums>(content)?.Result?.Total ?? -1;
     }
 
     public int Limit(string content)
     {
-        return JsonSerializer.Deserialize<Dto.Spotify.Albums>(content)?.Result?.Limit ?? -1;
+        return JsonSerializer.Deserialize<Dto.Spotify.DtoSpotifyAlbums>(content)?.Result?.Limit ?? -1;
     }
 
     public int Offset(string content)
     {
-        return JsonSerializer.Deserialize<Dto.Spotify.Albums>(content)?.Result?.Offset ?? -1;
+        return JsonSerializer.Deserialize<Dto.Spotify.DtoSpotifyAlbums>(content)?.Result?.Offset ?? -1;
     }
 
     public string? Next(string content)
     {
-        string? nextQuery = JsonSerializer.Deserialize<Dto.Spotify.Albums>(content)?.Result?.Next;
+        string? nextQuery = JsonSerializer.Deserialize<Dto.Spotify.DtoSpotifyAlbums>(content)?.Result?.Next;
 
         if (nextQuery.IsNullOrEmpty())
         {
-            Dto.Spotify.ResultSpotify<Dto.Spotify.Album>? result = JsonSerializer.Deserialize<Dto.Spotify.Albums>(content)?.Result;
+            Dto.Spotify.ResultSpotify<Dto.Spotify.DtoSpotifyAlbum>? result = JsonSerializer.Deserialize<Dto.Spotify.DtoSpotifyAlbums>(content)?.Result;
             if (result?.Href != null && result?.Offset != null && result.Offset < OFFSET_MAX_RANGE)
             {
                 Uri nextUri = new(result.Href);
@@ -79,8 +79,8 @@ internal class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<
     }
     #endregion
 
-    protected override IEnumerable<Dto.Spotify.Album>? Parse(string content)
+    protected override IEnumerable<Dto.Spotify.DtoSpotifyAlbum>? Parse(string content)
     {
-        return JsonSerializer.Deserialize<Dto.Spotify.Albums>(content)?.Result?.Items;
+        return JsonSerializer.Deserialize<Dto.Spotify.DtoSpotifyAlbums>(content)?.Result?.Items;
     }
 }

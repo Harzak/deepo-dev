@@ -1,6 +1,7 @@
 ﻿using Deepo.DAL.Repository.Feature.Release;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.DAL.Repository.Result;
+using Deepo.Fetcher.Library.Dto.Discogs;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Mappers;
 using Framework.Common.Utils.Result;
@@ -36,7 +37,7 @@ internal class DiscogsSearchByArtistsStrategy
             return result.WithFailure();
         }
 
-        OperationResult<IEnumerable<Dto.Discogs.DtoAlbum>?> releasesResult = await _discogService.GetSearchByArtistNameAndYear(artistName, cancellationToken).ConfigureAwait(false);
+        OperationResult<IEnumerable<DtoDiscogsAlbum>?> releasesResult = await _discogService.GetSearchByArtistNameAndYear(artistName, cancellationToken).ConfigureAwait(false);
 
         if (releasesResult.IsFailed)
         {
@@ -49,9 +50,9 @@ internal class DiscogsSearchByArtistsStrategy
         }
 
         bool isInserted = false;
-        foreach (Dto.Discogs.DtoAlbum album in releasesResult.Content.Where(x => x != null && x?.Id != 0))
+        foreach (DtoDiscogsAlbum album in releasesResult.Content.Where(x => x != null && x?.Id != 0))
         {
-            OperationResult<Dto.Discogs.DtoMaster?> masterRequest = await _discogService.GetReleaseByID(album.Id.ToString(CultureInfo.CurrentCulture), cancellationToken).ConfigureAwait(false);
+            OperationResult<DtoDiscogsRelease?> masterRequest = await _discogService.GetReleaseByID(album.Id.ToString(CultureInfo.CurrentCulture), cancellationToken).ConfigureAwait(false);
             if (masterRequest.IsFailed)
             {
                 continue;

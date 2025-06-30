@@ -1,10 +1,11 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
+using Deepo.Fetcher.Library.Dto.Discogs;
 using Framework.Web.Http.Client.Endpoint;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace Deepo.Fetcher.Library.Repositories.Discogs.Endpoint;
-internal class EndPointReleases : SingleResultEndpointConsumer<Dto.Discogs.DtoMaster?>
+internal class EndPointReleases : SingleResultEndpointConsumer<DtoDiscogsRelease?>
 {
     private readonly HttpServiceOption _options;
 
@@ -47,8 +48,8 @@ internal class EndPointReleases : SingleResultEndpointConsumer<Dto.Discogs.DtoMa
         throw new NotImplementedException();
     }
 
-    protected override Dto.Discogs.DtoMaster? Parse(string text)
+    protected override DtoDiscogsRelease? Parse(string text)
     {
-        return JsonSerializer.Deserialize<Dto.Discogs.DtoMaster>(text);
+        return JsonSerializer.Deserialize<DtoDiscogsRelease>(text);
     }
 }

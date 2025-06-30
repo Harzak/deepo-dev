@@ -22,9 +22,9 @@ internal class FetchVinyl : FetchBase
     private readonly ISpotifyRepository _spotifyService;
     private readonly IReleaseAlbumRepository _releaseAlbumRepository;
 
-    private readonly Dto.Spotify.Album _initialData;
+    private readonly Dto.Spotify.DtoSpotifyAlbum _initialData;
 
-    public FetchVinyl(Dto.Spotify.Album newRelease,
+    public FetchVinyl(Dto.Spotify.DtoSpotifyAlbum newRelease,
         IDiscogRepository discogService,
         ISpotifyRepository spotifyService,
         IReleaseAlbumRepository releaseAlbumRepository,
