@@ -7,13 +7,13 @@ namespace Deepo.Fetcher.Library.Fetcher.Fetch;
 
 internal class FetchFactory : IFetchFactory
 {
-    private readonly IDiscogService _discogService;
-    private readonly ISpotifyService _spotifyService;
+    private readonly IDiscogRepository _discogService;
+    private readonly ISpotifyRepository _spotifyService;
     private readonly IReleaseAlbumRepository _releaseAlbumRepository;
     private readonly ILogger _logger;
 
-    public FetchFactory(IDiscogService discogService,
-        ISpotifyService spotifyService,
+    public FetchFactory(IDiscogRepository discogService,
+        ISpotifyRepository spotifyService,
         IReleaseAlbumRepository releaseAlbumRepository,
         ILogger<FetchFactory> logger)
     {

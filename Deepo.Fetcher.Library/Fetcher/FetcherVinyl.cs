@@ -1,6 +1,6 @@
 ﻿using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.LogMessage;
-using Deepo.Fetcher.Library.Service;
+using Deepo.Fetcher.Library.Repositories;
 using Framework.Common.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -10,12 +10,12 @@ internal class FetcherVinyl : CancellableWorker
 {
     private readonly ILogger _logger;
     private readonly IFetchFactory _fetchFactory;
-    private readonly ISpotifyService _spotifyService;
+    private readonly ISpotifyRepository _spotifyService;
 
     public int FetchSucced { get; private set; }
     public int TotalFetch { get; private set; }
 
-    public FetcherVinyl(IFetchFactory fetchFactory, ISpotifyService spotifyService, ILogger logger)
+    public FetcherVinyl(IFetchFactory fetchFactory, ISpotifyRepository spotifyService, ILogger logger)
     : base(logger)
     {
         _logger = logger;

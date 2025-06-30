@@ -10,11 +10,11 @@ internal class FetcherFactory : IFetcherFactory
 {
     private readonly ILogger _logger;
     private readonly IFetchFactory _fetchFactory;
-    private readonly ISpotifyService _spotifyService;
+    private readonly ISpotifyRepository _spotifyService;
     private readonly IOptions<FetcherOptions> _fetcherOptions;
 
     public FetcherFactory(IFetchFactory fetchFactory,
-        ISpotifyService spotifyService,
+        ISpotifyRepository spotifyService,
         IOptions<FetcherOptions> fetcherOptions,
         ILogger<FetcherFactory> logger)
     {

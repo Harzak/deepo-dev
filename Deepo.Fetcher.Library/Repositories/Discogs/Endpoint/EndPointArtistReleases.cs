@@ -3,33 +3,35 @@ using Framework.Web.Http.Client.Endpoint;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace Deepo.Fetcher.Library.Service.Discogs.Endpoint;
-internal class EndPointSearch : MultipleResultEndpointConsumer<IEnumerable<Dto.Discogs.DtoAlbum>?>
+namespace Deepo.Fetcher.Library.Repositories.Discogs.Endpoint;
+
+internal class EndPointArtistReleases : MultipleResultEndpointConsumer<IEnumerable<Dto.Discogs.DtoRelease>?>
 {
     private readonly HttpServiceOption _options;
 
-    internal EndPointSearch(HttpServiceOption options, ILogger logger) : base(logger)
+    public EndPointArtistReleases(HttpServiceOption options, ILogger logger) : base(logger)
     {
         _options = options;
     }
 
-    #region HTTP Methods
     public override string Get(string query)
     {
-        return $"database/search?{query}";
+        return $"artists/{query}";
     }
+
     public override string Options()
     {
         throw new NotImplementedException();
     }
+
     public override string Trace()
     {
         throw new NotImplementedException();
     }
-    #endregion
 
-    protected override IEnumerable<Dto.Discogs.DtoAlbum>? Parse(string text)
+    protected override IEnumerable<Dto.Discogs.DtoRelease>? Parse(string text)
     {
-        return JsonSerializer.Deserialize<Dto.Discogs.AlbumSearch>(text)?.Results;
+        return JsonSerializer.Deserialize<Dto.Discogs.DtoReleases>(text)?
+            .Items;
     }
 }

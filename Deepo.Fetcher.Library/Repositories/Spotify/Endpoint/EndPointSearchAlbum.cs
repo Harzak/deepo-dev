@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Text.Json;
 
-namespace Deepo.Fetcher.Library.Service.Spotify.Endpoint;
+namespace Deepo.Fetcher.Library.Repositories.Spotify.Endpoint;
 
 internal class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<Dto.Spotify.Album>?>, IPaginableEndpointQuery
 {

@@ -3,7 +3,7 @@ using Framework.Web.Http.Client.Endpoint;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace Deepo.Fetcher.Library.Service.Discogs.Endpoint;
+namespace Deepo.Fetcher.Library.Repositories.Discogs.Endpoint;
 internal class EndPointReleases : SingleResultEndpointConsumer<Dto.Discogs.DtoMaster?>
 {
     private readonly HttpServiceOption _options;

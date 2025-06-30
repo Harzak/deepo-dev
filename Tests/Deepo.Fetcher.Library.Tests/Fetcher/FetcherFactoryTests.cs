@@ -15,7 +15,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher
     public class FetcherFactoryTests
     {
         private Mock<IFetchFactory> _fetchFactoryMock;
-        private Mock<ISpotifyService> _spotifyServiceMock;
+        private Mock<ISpotifyRepository> _spotifyServiceMock;
         private Mock<IOptions<FetcherOptions>> _fetcherOptionsMock;
         private Mock<ILogger<FetcherFactory>> _loggerMock;
         private static FetcherOptions _fetcherOptions;
@@ -28,7 +28,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetcher
         {
             _fetcherOptions = GetTestFetcherOptions();
             _fetchFactoryMock = new Mock<IFetchFactory>();
-            _spotifyServiceMock = new Mock<ISpotifyService>();
+            _spotifyServiceMock = new Mock<ISpotifyRepository>();
             _fetcherOptionsMock = new Mock<IOptions<FetcherOptions>>();
             _loggerMock = new Mock<ILogger<FetcherFactory>>();
         }

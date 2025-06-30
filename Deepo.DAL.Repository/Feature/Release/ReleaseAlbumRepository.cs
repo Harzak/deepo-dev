@@ -130,7 +130,7 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
         {
             Release = newRelease,
             Country = item.Country ?? string.Empty,
-            Market = item.Market ?? string.Empty,
+            Market = "FR",
             Label = item.Label ?? string.Empty,
             Genre_Albums = genres,
             Tracklist_Albums = tracklist
