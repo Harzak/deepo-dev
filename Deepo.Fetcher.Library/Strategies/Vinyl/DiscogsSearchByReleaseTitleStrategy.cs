@@ -1,4 +1,5 @@
 ﻿using Deepo.Fetcher.Library.Dto.Discogs;
+using Deepo.Fetcher.Library.Extensions;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.LogMessage;
 using Framework.Common.Utils.Result;
@@ -48,7 +49,7 @@ public class DiscogsSearchByReleaseTitleStrategy
             }
 
             bool isReleaseDateParsed = DateTime.TryParse(releaseRequest.Content.Released, out DateTime parsedReleaseDate);
-            if (isReleaseDateParsed && parsedReleaseDate.Month != DateTime.Now.Month)
+            if (isReleaseDateParsed && parsedReleaseDate.IsSameMonthAndYear(DateTime.Now))
             {
                 VinylStrategyLogs.FoundDiscogsReleaseByTitle(_logger, releaseRequest.Content.Title ?? "", releaseTitle);
                 return result.WithSuccess().WithValue(releaseRequest.Content);
