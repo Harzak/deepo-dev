@@ -19,14 +19,17 @@ public class VinylStrategiesFactory : IVinylStrategiesFactory
 
     private readonly DiscogsSearchByArtistsStrategy _strategyDiscogsByArtists;
     private readonly DiscogsSearchByReleaseTitleStrategy _strategyDiscogsByTitle;
-    private readonly SpotifyDiscoverByMarket _strategySpotifyByMarket;
+    private readonly SpotifyDiscoverByMarketStrategy _strategySpotifyByMarket;
 
-    public VinylStrategiesFactory(IDiscogRepository discogRepository,  ISpotifyRepository   spotifyRepository, ILogger<VinylStrategiesFactory> logger)
+    public VinylStrategiesFactory(IDiscogRepository discogRepository,  
+        ISpotifyRepository spotifyRepository, 
+        ILogger<VinylStrategiesFactory> logger)
     {
+        _logger = logger;
+
         _strategyDiscogsByArtists = new DiscogsSearchByArtistsStrategy(discogRepository, logger);
         _strategyDiscogsByTitle =  new DiscogsSearchByReleaseTitleStrategy(discogRepository, logger);
-        _strategySpotifyByMarket = new SpotifyDiscoverByMarket(spotifyRepository, logger);
-        _logger = logger;
+        _strategySpotifyByMarket = new SpotifyDiscoverByMarketStrategy(spotifyRepository, logger);
     }
 
     public async IAsyncEnumerable<DtoSpotifyAlbum> DiscoverSpotifyFrenchMarketAsync([EnumeratorCancellation] CancellationToken cancellationToken)

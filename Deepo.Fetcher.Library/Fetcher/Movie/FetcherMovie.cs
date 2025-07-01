@@ -3,7 +3,7 @@ using Framework.Common.Worker;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace Deepo.Fetcher.Library.Fetcher;
+namespace Deepo.Fetcher.Library.Fetcher.Movie;
 
 public class FetcherMovie : CancellableWorker
 {

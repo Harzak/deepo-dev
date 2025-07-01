@@ -1,6 +1,7 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Fetcher;
 using Deepo.Fetcher.Library.Fetcher.Planification;
+using Deepo.Fetcher.Library.Fetcher.Vinyl;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Repositories.Discogs;
 using Deepo.Fetcher.Library.Repositories.Spotify;
@@ -51,7 +52,7 @@ public static class ServiceCollectionExtension
         services.AddTransient<IFetcherProvider, FetcherProvider>();
         services.AddTransient<IPlanningFactory, PlanningFactory>();
         services.AddTransient<IVinylStrategiesFactory, VinylStrategiesFactory>();
-        services.AddTransient<IVynilStrategy, VinylStrategy>();
+        services.AddTransient<IVinylFetchPipelineFactory, VinylFetchPipelineFactory>();
     }
 }
 

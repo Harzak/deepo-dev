@@ -1,4 +1,6 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
+using Deepo.Fetcher.Library.Fetcher.Movie;
+using Deepo.Fetcher.Library.Fetcher.Vinyl;
 using Deepo.Fetcher.Library.Interfaces;
 using Framework.Common.Worker.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -10,15 +12,15 @@ internal class FetcherFactory : IFetcherFactory
 {
     private readonly ILogger _logger;
     private readonly IOptions<FetcherOptions> _fetcherOptions;
-    private readonly IVynilStrategy _vinylStrategy;
+    private readonly IVinylFetchPipelineFactory _vinylFetchPipelineFactory;
 
     public FetcherFactory(IOptions<FetcherOptions> fetcherOptions,
-        IVynilStrategy vinylStrategy,
+        IVinylFetchPipelineFactory vinylFetchPipelineFactory,
         ILogger<FetcherFactory> logger)
     {
         _logger = logger;
         _fetcherOptions = fetcherOptions;
-        _vinylStrategy = vinylStrategy;
+        _vinylFetchPipelineFactory = vinylFetchPipelineFactory;
     }
 
     public IWorker CreateFetcher(string code)
@@ -26,19 +28,19 @@ internal class FetcherFactory : IFetcherFactory
         switch (code)
         {
             case "FETCHER_VINYL":
-                return new FetcherVinyl(_vinylStrategy, _logger)
+                return new FetcherVinyl(_vinylFetchPipelineFactory, _logger)
                 {
                     ID = Guid.Parse(_fetcherOptions.Value.FetcherVinyleId),
                     Name  = _fetcherOptions.Value.FetcherVinyleName
                 };
-            case "FETCHER_MOVIE":
-                return new FetcherMovie(_fetcherOptions, _logger);
             case "FETCHER_DEBUG":
                 return new FetcherDebug(_logger)
                 {
                     ID = Guid.Parse(_fetcherOptions.Value.FetcherDebugId),
                     Name  = _fetcherOptions.Value.FetcherDebugName
                 };
+            case "FETCHER_MOVIE":
+                return new FetcherMovie(_fetcherOptions, _logger);
             default:
                 throw new NotImplementedException();
         }

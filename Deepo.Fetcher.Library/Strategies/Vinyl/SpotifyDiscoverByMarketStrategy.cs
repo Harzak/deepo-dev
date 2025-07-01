@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Library.Strategies.Vinyl;
 
-public class SpotifyDiscoverByMarket 
+public class SpotifyDiscoverByMarketStrategy 
 {
     private const string MARKET_FR = "FR";
     private const string MARKET_US = "US";
@@ -20,7 +20,7 @@ public class SpotifyDiscoverByMarket
     private readonly ILogger _logger;
     private readonly ISpotifyRepository _spotifyRepository;
 
-    public SpotifyDiscoverByMarket(ISpotifyRepository spotifyRepository, ILogger logger)
+    public SpotifyDiscoverByMarketStrategy(ISpotifyRepository spotifyRepository, ILogger logger)
     {
         _logger = logger;
         _spotifyRepository = spotifyRepository;
@@ -46,7 +46,10 @@ public class SpotifyDiscoverByMarket
     {
         await foreach (HttpServiceResult<DtoSpotifyAlbum> resultAlbum in _spotifyRepository.GetNewReleasesViaSearch(market, cancellationToken).ConfigureAwait(false))
         {
-            if (resultAlbum.IsSuccess && resultAlbum.Content?.Artists?.Any(x => x?.Name != null) == true && !string.IsNullOrEmpty(resultAlbum.Content?.Name))
+            if (resultAlbum.IsSuccess 
+                && resultAlbum.Content?.Artists?.Any(x => x?.Name != null) == true 
+                && !string.IsNullOrEmpty(resultAlbum.Content?.Name)
+                && resultAlbum.Content.Id != null)
             {
                 VinylStrategyLogs.SuccessSpotifyReleaseDiscovery(_logger, string.Join(", ", resultAlbum.Content.Artists.Select(x => x.Name)), resultAlbum.Content.Name);
                 yield return resultAlbum.Content;
