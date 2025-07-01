@@ -212,6 +212,8 @@
     <Build Include="dbo\Tables\Genre_Album_Release.sql" />
     <Build Include="dbo\Tables\Tracklist_Album.sql" />
     <Build Include="dbo\Tables\Tracklist_Album_1.sql" />
+    <Build Include="dbo\Tables\Release_Fetch_History.sql" />
+    <Build Include="dbo\Views\V_Spotify_Vinyl_Fetch_History.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script\Script.PostDeployment.sql" />
