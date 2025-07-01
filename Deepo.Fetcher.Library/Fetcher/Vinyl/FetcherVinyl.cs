@@ -7,20 +7,20 @@ using Framework.Common.Worker;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 
-namespace Deepo.Fetcher.Library.Fetcher;
+namespace Deepo.Fetcher.Library.Fetcher.Vinyl;
 
 internal class FetcherVinyl : CancellableWorker
 {
     private readonly ILogger _logger;
-    private readonly IVynilStrategy _strategy;
+    private readonly IVinylFetchPipelineFactory _pipelineFactory;
 
     public int FetchSucced { get; private set; }
-    public int TotalFetch { get; private set; }
+    public int FetchFailed { get; private set; }
 
-    public FetcherVinyl(IVynilStrategy strategy, ILogger logger)
+    public FetcherVinyl(IVinylFetchPipelineFactory pipelineFactory, ILogger logger)
     : base(logger)
     {
-        _strategy = strategy;
+        _pipelineFactory = pipelineFactory;
         _logger = logger;
     }
 
@@ -36,14 +36,22 @@ internal class FetcherVinyl : CancellableWorker
 
     protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
     {
-        _strategy.OnSuccess(() =>
+        using (VinylFetchPipeline _strategy = _pipelineFactory.Create())
         {
-            FetchSucced++;
-        });
-        await _strategy.StartAsync(stoppingToken).ConfigureAwait(false);
+            _strategy.OnStrategySuccess(() =>
+            {
+                FetchSucced++;
+            });
+            _strategy.OnStrategyFailure(() =>
+            {
+                FetchFailed++;
+            });
 
-        FetcherLogs.FetchFailed(_logger, TotalFetch - FetchSucced);
-        FetcherLogs.FetchSucceed(_logger, FetchSucced);
+            await _strategy.StartAsync(stoppingToken).ConfigureAwait(false);
+
+            FetcherLogs.FetchFailed(_logger, FetchFailed);
+            FetcherLogs.FetchSucceed(_logger, FetchSucced);
+        }
     }
 }
 

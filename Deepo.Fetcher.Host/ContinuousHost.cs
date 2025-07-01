@@ -31,6 +31,7 @@ internal sealed class ContinuousHost : HostPlannedWorker
     {
         base.AddWorkers(_fetcherProvider.GetAllFetcher());
         await base.StartAsync(cancellationToken).ConfigureAwait(false);
+
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)

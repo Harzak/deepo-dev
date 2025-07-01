@@ -25,5 +25,6 @@ public static class ServiceCollectionExtension
         services.AddTransient<IReleaseAlbumRepository, ReleaseAlbumRepository>();
         services.AddTransient<IGenreAlbumRepository, GenreAlbumRepository>();
         services.AddTransient<IFetcherHttpRequestRepository, FetcherHttpRequestRepository>();
+        services.AddTransient<IReleaseHistoryRepository, ReleaseHistoryRepository>();
     }
 }

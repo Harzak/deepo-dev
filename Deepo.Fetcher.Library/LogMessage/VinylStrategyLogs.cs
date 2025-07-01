@@ -39,10 +39,4 @@ internal static partial class VinylStrategyLogs
 
     [LoggerMessage(EventId = 9, Level = LogLevel.Error, Message = "Spotify release discovery failed | code: {code} | error: {error} ")]
     public static partial void FailedSpotifyReleaseDiscovery(ILogger logger, string code, string error);
-
-    [LoggerMessage(EventId = 10, Level = LogLevel.Error, Message = "All strategies failed for release: '{title}'")]
-    public static partial void AllStrategiesFailed(ILogger logger, string title);
-
-    [LoggerMessage(EventId = 11, Level = LogLevel.Information, Message = "Success: strategy {strategyName} for release: '{title}'")]
-    public static partial void SuccessStrategy(ILogger logger, string strategyName, string title);
 }
