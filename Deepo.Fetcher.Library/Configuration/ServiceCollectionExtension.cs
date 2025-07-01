@@ -30,16 +30,16 @@ public static class ServiceCollectionExtension
         services.TryAddTransient<LoggingHandler>();
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:Spotify:Name") ?? string.Empty)
-                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(2), new TimeProvider()))
+                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new TimeProvider()))
                     .AddHttpMessageHandler((x)=> x.GetRequiredService<LoggingHandler>())
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:SpotifyAuth:Name") ?? string.Empty)
-                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(2), new TimeProvider()))
+                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new TimeProvider()))
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:Discogs:Name") ?? string.Empty)
-                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(2), new TimeProvider()))
+                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new TimeProvider()))
                     .AddHttpMessageHandler((x) => x.GetRequiredService<LoggingHandler>())
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 

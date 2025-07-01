@@ -40,7 +40,10 @@ internal class DiscogsSearchByArtistsStrategy
             return result.WithError("Discogs search by artist failed");
         }
 
-        foreach (DtoDiscogsAlbum album in releasesResult.Content.Where(x => x != null && x?.Id != 0))
+        List<DtoDiscogsAlbum> releasesFound = releasesResult.Content.Where(x => x != null && x?.Id != 0).ToList();
+        VinylStrategyLogs.DiscogsReleaseSearchArtistResultsCount(_logger, releasesFound.Count, artistName);
+
+        foreach (DtoDiscogsAlbum album in releasesFound)
         {
             OperationResult<DtoDiscogsRelease> releaseRequest = await _discogRepository.GetReleaseByID(album.Id.ToString(CultureInfo.CurrentCulture), cancellationToken).ConfigureAwait(false);
             if (releaseRequest.IsFailed)
@@ -57,6 +60,6 @@ internal class DiscogsSearchByArtistsStrategy
             }
         }
         VinylStrategyLogs.FailedDiscogsStrategyByArtist(_logger, artistName);
-        return result.WithError($"Search by artists failed, no results found for: '{artistName}'");
+        return result.WithError($"Search by artists failed, no results found this month for: '{artistName}'");
     }
 }

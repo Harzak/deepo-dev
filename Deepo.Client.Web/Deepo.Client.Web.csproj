@@ -14,7 +14,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.5" />
+		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.7" />
 		<PackageReference Include="Harzak.Framework.Web.Http" Version="1.0.9" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.5" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.5" PrivateAssets="all" />

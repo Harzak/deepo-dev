@@ -39,9 +39,13 @@ public class DiscogsSearchByReleaseTitleStrategy
             return result.WithError("Discogs search by release title failed");
         }
 
-        foreach (DtoDiscogsAlbum album in releasesResult.Content.Where(x => x != null && x?.Id != 0))
+        List<DtoDiscogsAlbum> releasesFound = releasesResult.Content.Where(x => x != null && x?.Id != 0).ToList();
+        VinylStrategyLogs.DiscogsReleaseSearchTitleResultsCount(_logger, releasesFound.Count, releaseTitle);
+
+        foreach (DtoDiscogsAlbum album in releasesFound)
         {
             OperationResult<DtoDiscogsRelease> releaseRequest = await _discogService.GetReleaseByID(album.Id.ToString(CultureInfo.CurrentCulture), cancellationToken).ConfigureAwait(false);
+
             if (releaseRequest.IsFailed)
             {
                 VinylStrategyLogs.FailedDiscogsGetReleaseById(_logger, album.Id, releaseRequest.ErrorCode, releaseRequest.ErrorMessage);
@@ -56,6 +60,6 @@ public class DiscogsSearchByReleaseTitleStrategy
             }
         }
         VinylStrategyLogs.FailedDiscogsStrategyBytitle(_logger, releaseTitle);
-        return result.WithError($"Search by release title failed, no results found for: '{releaseTitle}'");
+        return result.WithError($"Search by release title failed, no results found this month for: '{releaseTitle}'");
     }
 }
