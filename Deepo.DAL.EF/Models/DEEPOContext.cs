@@ -53,6 +53,8 @@ public partial class DEEPOContext : DbContext
 
     public virtual DbSet<Release_Album> Release_Albums { get; set; }
 
+    public virtual DbSet<Release_Fetch_History> Release_Fetch_Histories { get; set; }
+
     public virtual DbSet<Release_Movie> Release_Movies { get; set; }
 
     public virtual DbSet<Release_TVShow> Release_TVShows { get; set; }
@@ -72,6 +74,8 @@ public partial class DEEPOContext : DbContext
     public virtual DbSet<V_FetchersLastExecution> V_FetchersLastExecutions { get; set; }
 
     public virtual DbSet<V_LastVinylRelease> V_LastVinylReleases { get; set; }
+
+    public virtual DbSet<V_Spotify_Vinyl_Fetch_History> V_Spotify_Vinyl_Fetch_Histories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -198,7 +202,7 @@ public partial class DEEPOContext : DbContext
 
             entity.ToTable("Genre_Album");
 
-            entity.Property(e => e.Identifier).HasMaxLength(5);
+            entity.Property(e => e.Identifier).HasMaxLength(50);
             entity.Property(e => e.Name).HasMaxLength(50);
 
             entity.HasMany(d => d.Release_Albums).WithMany(p => p.Genre_Albums)
@@ -341,6 +345,7 @@ public partial class DEEPOContext : DbContext
             entity.Property(e => e.Modification_Date).HasColumnType("datetime");
             entity.Property(e => e.Modification_User).HasMaxLength(20);
             entity.Property(e => e.Name).HasMaxLength(500);
+            entity.Property(e => e.Release_Date_UTC).HasColumnType("datetime");
 
             entity.HasOne(d => d.Type_Release).WithMany(p => p.Releases)
                 .HasForeignKey(d => d.Type_Release_ID)
@@ -356,11 +361,34 @@ public partial class DEEPOContext : DbContext
 
             entity.Property(e => e.Country).HasMaxLength(2000);
             entity.Property(e => e.Duration).HasMaxLength(50);
-            entity.Property(e => e.Label).HasMaxLength(300);
+            entity.Property(e => e.Label).HasMaxLength(2000);
+            entity.Property(e => e.Market).HasMaxLength(300);
 
             entity.HasOne(d => d.Release).WithMany(p => p.Release_Albums)
                 .HasForeignKey(d => d.Release_ID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Release_Album_Release");
+        });
+
+        modelBuilder.Entity<Release_Fetch_History>(entity =>
+        {
+            entity.HasKey(e => e.Release_Fetch_History_ID).HasName("PK_[Release_Fetch_History");
+
+            entity.ToTable("Release_Fetch_History");
+
+            entity.Property(e => e.Date_UTC).HasColumnType("datetime");
+            entity.Property(e => e.Identifier).HasMaxLength(500);
+            entity.Property(e => e.Identifier_Desc).HasMaxLength(100);
+
+            entity.HasOne(d => d.Provider).WithMany(p => p.Release_Fetch_Histories)
+                .HasForeignKey(d => d.Provider_ID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Release_Fetch_History_Provider");
+
+            entity.HasOne(d => d.Type_Release).WithMany(p => p.Release_Fetch_Histories)
+                .HasForeignKey(d => d.Type_Release_ID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Release_Fetch_History_Release_Type");
         });
 
         modelBuilder.Entity<Release_Movie>(entity =>
@@ -493,8 +521,21 @@ public partial class DEEPOContext : DbContext
             entity.Property(e => e.ArtistsNames).HasMaxLength(4000);
             entity.Property(e => e.Cover_URL).IsUnicode(false);
             entity.Property(e => e.Creation_Date).HasColumnType("datetime");
+            entity.Property(e => e.GenresIdentifier).HasMaxLength(4000);
+            entity.Property(e => e.Market).HasMaxLength(300);
             entity.Property(e => e.ReleasGUID).HasMaxLength(68);
+            entity.Property(e => e.Release_Date_UTC).HasColumnType("datetime");
             entity.Property(e => e.Thumb_URL).IsUnicode(false);
+        });
+
+        modelBuilder.Entity<V_Spotify_Vinyl_Fetch_History>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("V_Spotify_Vinyl_Fetch_History");
+
+            entity.Property(e => e.Date_UTC).HasColumnType("datetime");
+            entity.Property(e => e.Identifier).HasMaxLength(500);
         });
 
         OnModelCreatingPartial(modelBuilder);

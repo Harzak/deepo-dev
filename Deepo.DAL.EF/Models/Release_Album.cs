@@ -7,7 +7,7 @@ public partial class Release_Album
 {
     public int Release_Album_ID { get; set; }
 
-    public int? Release_ID { get; set; }
+    public int Release_ID { get; set; }
 
     public string? Duration { get; set; }
 
@@ -17,7 +17,7 @@ public partial class Release_Album
 
     public string? Market { get; set; }
 
-    public virtual Release Release { get; set; }
+    public virtual Release Release { get; set; } = null!;
 
     public virtual ICollection<Tracklist_Album> Tracklist_Albums { get; set; } = new List<Tracklist_Album>();
 
