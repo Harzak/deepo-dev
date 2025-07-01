@@ -11,5 +11,7 @@ public partial class Type_Release
 
     public string Name { get; set; } = null!;
 
+    public virtual ICollection<Release_Fetch_History> Release_Fetch_Histories { get; set; } = new List<Release_Fetch_History>();
+
     public virtual ICollection<Release> Releases { get; set; } = new List<Release>();
 }

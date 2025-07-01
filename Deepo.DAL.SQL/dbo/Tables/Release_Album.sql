@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Release_Album] (
     [Release_Album_ID] INT IDENTITY (1, 1)  NOT NULL,
-    [Release_ID]       INT                  NULL,
+    [Release_ID]       INT                  NOT NULL,
     [Duration]         NVARCHAR (50)        NULL,
     [Label]            NVARCHAR (2000)      NULL,
     [Country]          NVARCHAR (2000)      NULL,

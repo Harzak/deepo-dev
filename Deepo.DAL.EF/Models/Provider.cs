@@ -14,4 +14,6 @@ public partial class Provider
     public virtual ICollection<Author> Authors { get; set; } = new List<Author>();
 
     public virtual ICollection<Provider_Release> Provider_Releases { get; set; } = new List<Provider_Release>();
+
+    public virtual ICollection<Release_Fetch_History> Release_Fetch_Histories { get; set; } = new List<Release_Fetch_History>();
 }

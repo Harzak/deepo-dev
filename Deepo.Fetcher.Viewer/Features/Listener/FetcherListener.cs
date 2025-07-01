@@ -50,7 +50,7 @@ internal sealed class FetcherListener : IFetcherListener
         }
         GridModel model = new()
         {
-            ID = lastrow.Release_ID ?? -1,
+            ID = lastrow.Release_ID,
             GUID_ID = lastrow.ReleasGUID,
             Column1 = lastrow.AlbumName,
             Column2 = lastrow.ArtistsNames,
