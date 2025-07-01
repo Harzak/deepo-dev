@@ -22,7 +22,7 @@ internal static partial class VinylStrategyLogs
     [LoggerMessage(EventId = 3, Level = LogLevel.Information, Message = "Found release: '{releaseName}' for artist: '{artistName}' in Discogs")]
     public static partial void FoundDiscogsReleaseByArtist(ILogger logger, string releaseName, string artistName);
 
-    [LoggerMessage(EventId = 4, Level = LogLevel.Warning, Message = "Discogs search by artist failed, no result found for: {artistName}")]
+    [LoggerMessage(EventId = 4, Level = LogLevel.Warning, Message = "Discogs search by artist failed, no result found this month for: {artistName}")]
     public static partial void FailedDiscogsStrategyByArtist(ILogger logger, string artistName);
 
     [LoggerMessage(EventId = 5, Level = LogLevel.Error, Message = "Discogs search failed for release title: {title} | code: {code} | error: {error}")]
@@ -31,12 +31,18 @@ internal static partial class VinylStrategyLogs
     [LoggerMessage(EventId = 6, Level = LogLevel.Information, Message = "Found release: '{releaseName}' for release title: '{releaseTitle}' in Discogs")]
     public static partial void FoundDiscogsReleaseByTitle(ILogger logger, string releaseName, string releaseTitle);
 
-    [LoggerMessage(EventId = 7, Level = LogLevel.Warning, Message = "Discogs search by title failed, no result found for: {releaseTitle}")]
+    [LoggerMessage(EventId = 7, Level = LogLevel.Warning, Message = "Discogs search by title failed, no result found this month for: {releaseTitle}")]
     public static partial void FailedDiscogsStrategyBytitle(ILogger logger, string releaseTitle);
 
     [LoggerMessage(EventId = 8, Level = LogLevel.Information, Message = "Discover a release on Spotify | artists: {artists} | title: {title}")]
     public static partial void SuccessSpotifyReleaseDiscovery(ILogger logger, string artists, string title);
 
-    [LoggerMessage(EventId = 9, Level = LogLevel.Error, Message = "Spotify release discovery failed | code: {code} | error: {error} ")]
+    [LoggerMessage(EventId = 9, Level = LogLevel.Error, Message = "Spotify release discovery failed | code: {code} | error: {error}")]
     public static partial void FailedSpotifyReleaseDiscovery(ILogger logger, string code, string error);
+    
+    [LoggerMessage(EventId = 10, Level = LogLevel.Information, Message = "Found {count} release for title search: {title}")]
+    public static partial void DiscogsReleaseSearchTitleResultsCount(ILogger logger, int count, string title);
+
+    [LoggerMessage(EventId = 11, Level = LogLevel.Information, Message = "Found {count} release for artist search: {title}")]
+    public static partial void DiscogsReleaseSearchArtistResultsCount(ILogger logger, int count, string title);
 }

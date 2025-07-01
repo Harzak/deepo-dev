@@ -9,6 +9,7 @@ using Deepo.Fetcher.Library.Mappers;
 using Framework.Common.Utils.Result;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace Deepo.Fetcher.Library.Fetcher.Vinyl;
