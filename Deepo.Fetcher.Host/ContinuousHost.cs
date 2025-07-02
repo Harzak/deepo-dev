@@ -29,7 +29,7 @@ internal sealed class ContinuousHost : HostPlannedWorker
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
-        base.AddWorkers(_fetcherProvider.GetAllFetcher());
+        base.AddWorkers(await _fetcherProvider.GetAllFetcherAsync().ConfigureAwait(false));
         await base.StartAsync(cancellationToken).ConfigureAwait(false);
 
     }
@@ -42,9 +42,9 @@ internal sealed class ContinuousHost : HostPlannedWorker
 
     protected override async Task StartWorkerAsync(IWorker worker, CancellationToken cancellationToken)
     {
-        _fetcherHistory.LogStart(worker);
+        await _fetcherHistory.LogStartAsync(worker, cancellationToken).ConfigureAwait(false);
         await base.StartWorkerAsync(worker, cancellationToken).ConfigureAwait(false);
-        _fetcherHistory.LogEnd(worker);
+        await _fetcherHistory.LogEndAsync(worker, cancellationToken).ConfigureAwait(false);
     }
 
     protected override void Dispose(bool disposing)

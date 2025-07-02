@@ -5,7 +5,7 @@ namespace Deepo.Fetcher.Library.Interfaces;
 
 public interface IFetcherProvider
 {
-    IEnumerable<IWorker> GetAllFetcher();
-    Dictionary<IWorker, IPlanning> GetAllPlannedFetcher();
-    IWorker? GetFetcherByName(string name);
+    Task<IEnumerable<IWorker>> GetAllFetcherAsync();
+    Task<Dictionary<IWorker, IPlanning>> GetAllPlannedFetcherAsync();
+    Task<IWorker?> GetFetcherByNameAsync(string name);
 }

@@ -15,16 +15,16 @@ public static class ServiceCollectionExtension
     public static void AddDALServiceDependencies(this IServiceCollection services, IConfiguration config)
     {
         //Database
-        services.AddDbContext<DEEPOContext>(options => options.UseSqlServer(config.GetConnectionString("DEEPOContext")), ServiceLifetime.Singleton);
+        services.AddDbContextFactory<DEEPOContext>(options => options.UseSqlServer(config.GetConnectionString("DEEPOContext")));
 
         //Service Dependencies
-        services.AddTransient<IAuthorRepository, AuthorRepository>();
-        services.AddTransient<IFetcherExecutionRepository, FetcherExecutionRepository>();
-        services.AddTransient<IFetcherRepository, FetcherRepository>();
-        services.AddTransient<IPlanificationRepository, PlanificationRepository>();
-        services.AddTransient<IReleaseAlbumRepository, ReleaseAlbumRepository>();
-        services.AddTransient<IGenreAlbumRepository, GenreAlbumRepository>();
-        services.AddTransient<IFetcherHttpRequestRepository, FetcherHttpRequestRepository>();
-        services.AddTransient<IReleaseHistoryRepository, ReleaseHistoryRepository>();
+        services.AddSingleton<IAuthorRepository, AuthorRepository>();
+        services.AddSingleton<IFetcherExecutionRepository, FetcherExecutionRepository>();
+        services.AddSingleton<IFetcherRepository, FetcherRepository>();
+        services.AddSingleton<IPlanificationRepository, PlanificationRepository>();
+        services.AddSingleton<IReleaseAlbumRepository, ReleaseAlbumRepository>();
+        services.AddSingleton<IGenreAlbumRepository, GenreAlbumRepository>();
+        services.AddSingleton<IFetcherHttpRequestRepository, FetcherHttpRequestRepository>();
+        services.AddSingleton<IReleaseHistoryRepository, ReleaseHistoryRepository>();
     }
 }

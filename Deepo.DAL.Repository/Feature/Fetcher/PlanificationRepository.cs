@@ -1,47 +1,56 @@
 ﻿using Deepo.DAL.EF.Models;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.DAL.Repository.LogMessage;
-using Framework.Common.Utils.Time.Provider;
 using Framework.Common.Worker.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Models = Deepo.DAL.EF.Models;
 
 namespace Deepo.DAL.Repository.Feature.Fetcher;
 
-public class PlanificationRepository : IPlanificationRepository
+public sealed class PlanificationRepository : IPlanificationRepository
 {
     private readonly ILogger<PlanificationRepository> _logger;
-    private readonly DEEPOContext _dbContext;
-    private readonly ITimeProvider _timeProvier;
+    private readonly IDbContextFactory<DEEPOContext> _contextFactory;
 
     private const string DAILY_PLANNING_CODE = "DAILY";
     private const string HOURLY_PLANNING_CODE = "HOURLY";
     private const string ONESHOT_PLANNING_CODE = "ONESHOT";
 
-    public PlanificationRepository(DEEPOContext dbContext, ITimeProvider datetimeprovider, ILogger<PlanificationRepository> logger)
+    public PlanificationRepository(IDbContextFactory<DEEPOContext> contextFactory, ILogger<PlanificationRepository> logger)
     {
         _logger = logger;
-        _dbContext = dbContext;
-        _timeProvier = datetimeprovider;
+        _contextFactory = contextFactory;
     }
 
-    public bool Delete(IWorker worker)
+    public async Task<bool> DeleteAsync(IWorker worker, CancellationToken cancellationToken = default)
     {
-        if (!_dbContext.Fetchers.Any(x => x.Fetcher_GUID == worker.ID.ToString()))
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        if (!await context.Fetchers
+                    .AnyAsync(x => x.Fetcher_GUID == worker.ID.ToString(), cancellationToken)
+                    .ConfigureAwait(false))
         {
             return true;
         }
-        Planification planification = _dbContext.Planifications.First(x => x.Fetcher.Fetcher_GUID == worker.ID.ToString());
-        _dbContext.Planifications.Remove(planification);
+
+        Planification planification = await context.Planifications
+                                        .FirstAsync(x => x.Fetcher.Fetcher_GUID == worker.ID.ToString(), cancellationToken)
+                                        .ConfigureAwait(false);
+
+        context.Planifications.Remove(planification);
+
         try
         {
-            return _dbContext.SaveChanges() > 0;
+            return await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
         }
         catch (DbUpdateException ex)
         {
-            DatabaseLogs.UnableToRemove(_logger, nameof(Planification), _dbContext?.Database?.GetDbConnection().ConnectionString, ex);
+            DatabaseLogs.UnableToRemove(_logger, nameof(Planification), context?.Database?.GetDbConnection().ConnectionString, ex);
             return false;
         }
         catch (Exception)
@@ -50,48 +59,63 @@ public class PlanificationRepository : IPlanificationRepository
         }
     }
 
-    public bool AddOneShot(IWorker worker)
+    public async Task<bool> AddOneShotAsync(IWorker worker, CancellationToken cancellationToken = default)
     {
         if (worker != null)
         {
-            return Add(worker, ONESHOT_PLANNING_CODE);
+            return await AddAsync(worker, ONESHOT_PLANNING_CODE, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
         return false;
     }
 
-    public bool AddHourly(IWorker worker, int startMinute)
+    public async Task<bool> AddHourlyAsync(IWorker worker, int startMinute, CancellationToken cancellationToken = default)
     {
         if (worker != null)
         {
-            return Add(worker, HOURLY_PLANNING_CODE, null, startMinute);
+            return await AddAsync(worker, HOURLY_PLANNING_CODE, null, startMinute, cancellationToken).ConfigureAwait(false);
         }
         return false;
     }
 
-    public bool AddDaily(IWorker worker, int startHour, int startMinute)
+    public async Task<bool> AddDailyAsync(IWorker worker, int startHour, int startMinute, CancellationToken cancellationToken = default)
     {
         if (worker != null)
         {
-            return Add(worker, DAILY_PLANNING_CODE, startHour, startMinute);
+            return await AddAsync(worker, DAILY_PLANNING_CODE, startHour, startMinute, cancellationToken).ConfigureAwait(false);
         }
         return false;
     }
 
-    public bool UpdateDateNextStart(Guid fetcherGUID, DateTime dateNextStart)
+    public async Task<bool> UpdateDateNextStartAsync(Guid fetcherGUID, DateTime dateNextStart, CancellationToken cancellationToken = default)
     {
-        if (!_dbContext.Planifications.Any(x => x.Fetcher.Fetcher_GUID == fetcherGUID.ToString()))
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        if (!await context.Planifications
+                    .AnyAsync(x => x.Fetcher.Fetcher_GUID == fetcherGUID.ToString(), cancellationToken)
+                    .ConfigureAwait(false))
         {
             return false;
         }
-        _dbContext.Planifications.First(x => x.Fetcher.Fetcher_GUID == fetcherGUID.ToString()).DateNextStart =
-            new DateTime(dateNextStart.Year, dateNextStart.Month, dateNextStart.Day, dateNextStart.Hour, dateNextStart.Minute, dateNextStart.Second);
+
+        Planification planification = await context.Planifications
+                            .FirstAsync(x => x.Fetcher.Fetcher_GUID == fetcherGUID.ToString(), cancellationToken)
+                            .ConfigureAwait(false);
+
+        planification.DateNextStart = new DateTime(
+            dateNextStart.Year,
+            dateNextStart.Month,
+            dateNextStart.Day,
+            dateNextStart.Hour,
+            dateNextStart.Minute,
+            dateNextStart.Second);
+
         try
         {
-            return _dbContext.SaveChanges() > 0;
+            return await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false) > 0;
         }
         catch (DbUpdateException ex)
         {
-            DatabaseLogs.UnableToUpdate(_logger, nameof(Planification), _dbContext?.Database?.GetDbConnection().ConnectionString, ex);
+            DatabaseLogs.UnableToUpdate(_logger, nameof(Planification), context?.Database?.GetDbConnection().ConnectionString, ex);
             return false;
         }
         catch (Exception)
@@ -100,14 +124,22 @@ public class PlanificationRepository : IPlanificationRepository
         }
     }
 
-    private bool Add(IWorker worker, string codePlanning, int? startHour = null, int? startMinute = null)
+    private async Task<bool> AddAsync(IWorker worker, string codePlanning, int? startHour = null, int? startMinute = null, CancellationToken cancellationToken = default)
     {
-        if (!_dbContext.Fetchers.Any(x => x.Fetcher_GUID == worker.ID.ToString()))
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        if (!await context.Fetchers
+                            .AnyAsync(x => x.Fetcher_GUID == worker.ID.ToString(), cancellationToken)
+                            .ConfigureAwait(false))
         {
             return false;
         }
 
-        _dbContext.Planifications.Add(new Planification
+        var planificationType = await context.PlanificationTypes
+                                        .FirstAsync(x => x.Code == codePlanning, cancellationToken)
+                                        .ConfigureAwait(false);
+
+        context.Planifications.Add(new Planification
         {
             Fetcher = new Models.Fetcher
             {
@@ -119,16 +151,16 @@ public class PlanificationRepository : IPlanificationRepository
                 HourStart = startHour,
                 MinuteStart = startMinute
             },
-            PlanificationType = _dbContext.PlanificationTypes.First(x => x.Code == codePlanning)
+            PlanificationType = planificationType
         });
 
         try
         {
-            return _dbContext.SaveChanges() == 1;
+            return await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false) == 1;
         }
         catch (DbUpdateException ex)
         {
-            DatabaseLogs.UnableToAdd(_logger, nameof(Planification), _dbContext?.Database?.GetDbConnection().ConnectionString, ex);
+            DatabaseLogs.UnableToAdd(_logger, nameof(Planification), context?.Database?.GetDbConnection().ConnectionString, ex);
             return false;
         }
         catch (Exception)
@@ -137,8 +169,14 @@ public class PlanificationRepository : IPlanificationRepository
         }
     }
 
-    public ReadOnlyCollection<V_FetcherPlannification>? GetAll()
+    public async Task<ReadOnlyCollection<V_FetcherPlannification>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return _dbContext.V_FetcherPlannifications.ToList().AsReadOnly();
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        List<V_FetcherPlannification> planifications = await context.V_FetcherPlannifications
+                                                        .ToListAsync(cancellationToken)
+                                                        .ConfigureAwait(false);
+
+        return planifications.AsReadOnly();
     }
 }

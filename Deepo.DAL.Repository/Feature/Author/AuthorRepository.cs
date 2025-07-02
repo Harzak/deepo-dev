@@ -9,15 +9,15 @@ using Models = Deepo.DAL.EF.Models;
 
 namespace Deepo.DAL.Repository.Feature.Author;
 
-internal class AuthorRepository : IAuthorRepository
+internal sealed class AuthorRepository : IAuthorRepository
 {
-    protected readonly ILogger _logger;
-    protected readonly DEEPOContext _dbContext;
+    private readonly ILogger _logger;
+    private readonly IDbContextFactory<DEEPOContext> _contextFactory;
 
-    public AuthorRepository(DEEPOContext dbContext, ILogger<AuthorRepository> logger)
+    public AuthorRepository(IDbContextFactory<DEEPOContext> contextFactory, ILogger<AuthorRepository> logger)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        _contextFactory = contextFactory;
     }
 
     public async Task<DatabaseOperationResult> Insert(IAuthor item, CancellationToken cancellationToken)
@@ -26,23 +26,31 @@ internal class AuthorRepository : IAuthorRepository
 
         DatabaseOperationResult result = new();
 
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        Provider provider = await context.Providers
+                                    .FirstAsync(x => x.Code == item.Provider_Code, cancellationToken)
+                                    .ConfigureAwait(false);
+
+        context.Authors.Add(new Models.Author
+        {
+            Name = item.Name ?? string.Empty,
+            Code = item.Name?.Trim().Length > 10
+                ? item.Name?.Trim()[..10].ToUpper(CultureInfo.CurrentCulture)
+                : item.Name?.Trim().ToUpper(new CultureInfo(0x040A, false)),
+            Provider = provider,
+            Provider_Author_Identifier = item.Provider_Identifier
+        });
+
         try
         {
-            _dbContext.Authors.Add(new Models.Author
-            {
-                Name = item.Name ?? string.Empty,
-                Code = item.Name?.Trim().Length > 10 ? item.Name?.Trim()[..10].ToUpper(CultureInfo.CurrentCulture) : item.Name?.Trim().ToUpper(new CultureInfo(0x040A, false)),
-                Provider = _dbContext.Providers.First(x => x.Code == item.Provider_Code),
-                Provider_Author_Identifier = item.Provider_Identifier
-            });
-
-            int rowAffected = await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            int rowAffected = await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             result.IsSuccess = rowAffected > -1;
             result.RowAffected = rowAffected;
         }
         catch (DbUpdateException ex)
         {
-            DatabaseLogs.UnableToAdd(_logger, nameof(_dbContext.Authors), _dbContext?.Database?.GetDbConnection()?.ConnectionString, ex);
+            DatabaseLogs.UnableToAdd(_logger, nameof(context.Authors), context?.Database?.GetDbConnection()?.ConnectionString, ex);
         }
         catch (Exception)
         {
@@ -52,15 +60,25 @@ internal class AuthorRepository : IAuthorRepository
         return result;
     }
 
-    public bool Exists(IAuthor item)
+    public async Task<bool> ExistsAsync(IAuthor item, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(item, nameof(item));
 
-        return _dbContext.Authors.Any(x => x.Provider.Code == item.Provider_Code && x.Provider_Author_Identifier == item.Provider_Identifier);
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.Authors
+                        .AnyAsync(x => x.Provider.Code == item.Provider_Code &&
+                                       x.Provider_Author_Identifier == item.Provider_Identifier,
+                                 cancellationToken)
+                        .ConfigureAwait(false);
     }
 
-    public Models.Author GetByProviderIdentifier(string identifier)
+    public async Task<Models.Author?> GetByProviderIdentifierAsync(string identifier, CancellationToken cancellationToken = default)
     {
-        return _dbContext.Authors.First(x => x.Provider_Author_Identifier == identifier);
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.Authors
+            .FirstOrDefaultAsync(x => x.Provider_Author_Identifier == identifier, cancellationToken)
+            .ConfigureAwait(false);
     }
 }

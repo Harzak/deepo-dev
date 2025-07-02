@@ -4,5 +4,5 @@ namespace Deepo.DAL.Repository.Interfaces;
 
 public interface IFetcherHttpRequestRepository
 {
-    HttpRequest? GetLast();
+    Task<HttpRequest?> GetLastAsync(CancellationToken cancellationToken = default);
 }

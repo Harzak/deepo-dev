@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Deepo.DAL.Repository.Feature.Genre;
 
@@ -15,25 +16,35 @@ public class GenreAlbumRepository : IGenreAlbumRepository
     private static char[] ALLOWED_GENRE_NAME_CHAR = ['-', '/', ' '];
 
     private readonly ILogger _logger;
-    private readonly DEEPOContext _dbContext;
+    private readonly IDbContextFactory<DEEPOContext> _contextFactory;
 
-    public GenreAlbumRepository(DEEPOContext dbContext, ILogger<GenreAlbumRepository> logger)
+    public GenreAlbumRepository(IDbContextFactory<DEEPOContext> contextFactory, ILogger<GenreAlbumRepository> logger)
     {
         _logger = logger;
-        _dbContext = dbContext;
+        _contextFactory = contextFactory;
     }
 
-    public ReadOnlyCollection<Genre_Album> GetAll()
+    public async Task<ReadOnlyCollection<Genre_Album>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return _dbContext.Genre_Albums.ToList().AsReadOnly();
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        List<Genre_Album> genres = await context.Genre_Albums
+                                            .ToListAsync(cancellationToken)
+                                            .ConfigureAwait(false);
+            
+        return genres.AsReadOnly();
     }
 
-    public bool Exists(Genre_Album genre)
+    public async Task<bool> ExistsAsync(Genre_Album genre, CancellationToken cancellationToken = default)
     {
-        return _dbContext.Genre_Albums.Any(x => x.Identifier == genre.Identifier);
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.Genre_Albums
+                        .AnyAsync(x => x.Identifier == genre.Identifier, cancellationToken)
+                        .ConfigureAwait(false);
     }
 
-    public async Task<DatabaseOperationResult> Insert(string genreName, CancellationToken cancellationToken)
+    public async Task<DatabaseOperationResult> InsertAsync(string genreName, CancellationToken cancellationToken = default)
     {
         DatabaseOperationResult result = new();
 
@@ -42,9 +53,11 @@ public class GenreAlbumRepository : IGenreAlbumRepository
             return result;
         }
 
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
         string normalizedGenreName = NormalizeGenreName(genreName);
 
-        _dbContext.Genre_Albums.Add(new Genre_Album()
+        context.Genre_Albums.Add(new Genre_Album()
         {
             Identifier = Guid.NewGuid().ToString(),
             Name = PretifyGenreName(normalizedGenreName)
@@ -52,43 +65,44 @@ public class GenreAlbumRepository : IGenreAlbumRepository
 
         try
         {
-            int rowAffected = await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            int rowAffected = await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             result.IsSuccess = rowAffected >= 0;
             result.RowAffected = rowAffected;
             return result;
         }
         catch (DbUpdateException ex)
         {
-            DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), _dbContext?.Database?.GetDbConnection()?.ConnectionString, ex);
+            DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), context?.Database?.GetDbConnection()?.ConnectionString, ex);
             return result;
         }
         catch (Exception ex)
         {
-            DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), _dbContext?.Database?.GetDbConnection()?.ConnectionString, ex);
+            DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), context?.Database?.GetDbConnection()?.ConnectionString, ex);
             throw;
         }
     }
 
-    public bool TryFindGenre(string genreSearched, out Genre_Album genreFind)
+    public async Task<(bool Found, Genre_Album Genre)> TryFindGenreAsync(string genreSearched, CancellationToken cancellationToken = default)
     {
-        genreFind = new Genre_Album();
         if (string.IsNullOrWhiteSpace(genreSearched))
         {
-            return false;
+            return (false, new Genre_Album());
         }
 
         string normalizedInput = NormalizeGenreName(genreSearched);
-        foreach (Genre_Album genreStored in this.GetAll())
+        var allGenres = await GetAllAsync(cancellationToken).ConfigureAwait(false);
+        
+        foreach (Genre_Album genreStored in allGenres)
         {
             string normalizedGenreName = NormalizeGenreName(genreStored.Name);
 
             if (normalizedGenreName == normalizedInput)
             {
-                genreFind = genreStored;
-                return true;
+                return (true, genreStored);
             }
         }
-        return false;
+        
+        return (false, new Genre_Album());
     }
 
     private string NormalizeGenreName(string genreName)

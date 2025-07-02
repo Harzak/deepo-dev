@@ -73,6 +73,9 @@ public partial class App : Application
 
         MainWindow = _host.Services.GetRequiredService<MainWindow>();
         MainWindow.Show();
+
+        MainWindowViewModel mainWindowViewModel = _host.Services.GetRequiredService<MainWindowViewModel>();
+        await mainWindowViewModel.InitializeAsync().ConfigureAwait(false);
     }
 
     /// <summary>

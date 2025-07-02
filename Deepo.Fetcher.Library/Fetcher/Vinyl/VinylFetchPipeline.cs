@@ -42,9 +42,9 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        _historyIdentifiersCache = _historyRepository.GetSpotifyReleaseFetchHistory(DateTime.UtcNow.AddDays(-7))
-            .Select(x => x.Identifier)
-            .Distinct();
+        _historyIdentifiersCache = (await _historyRepository.GetSpotifyReleaseFetchHistoryByDateAsync(DateTime.UtcNow.AddDays(-7), cancellationToken).ConfigureAwait(false))
+                                    .Select(x => x.Identifier)
+                                    .Distinct();
 
         IAsyncEnumerable<DtoSpotifyAlbum> frenchReleases = _strategiesFactory.DiscoverSpotifyFrenchMarketAsync(cancellationToken);
         await DiscoverSpotifyMarketAsync(frenchReleases, cancellationToken).ConfigureAwait(false);
@@ -67,7 +67,7 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
     {
         await foreach (DtoSpotifyAlbum spotifyAlbum in albums.ConfigureAwait(false))
         {
-            if (_historyIdentifiersCache.Contains(spotifyAlbum.Id))
+            if (_historyIdentifiersCache.Contains(spotifyAlbum.Id!))
             {
                 FetcherLogs.IngoreReleaseInHistory(_logger, spotifyAlbum.Name!, spotifyAlbum.Id!);
                 continue;

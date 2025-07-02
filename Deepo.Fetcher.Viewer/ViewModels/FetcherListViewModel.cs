@@ -1,5 +1,4 @@
-﻿using Deepo.DAL.Repository.Feature.Fetcher;
-using Deepo.DAL.Repository.Interfaces;
+﻿using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Framework.WPF.Behavior.ViewModel;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace Deepo.Fetcher.Viewer.ViewModels;
 internal sealed class FetcherListViewModel : ViewModelBase
 {
     private readonly IFetcherRepository _fetcherRepository;
-    private readonly IFetcherListenerFactory _fetcherListenerFactory;
+    private readonly IFetcherListener _fetcherListener;
 
     public SelectedFetcherViewModel? SelectedFetcherViewModel { get; private set; }
 
@@ -27,19 +26,19 @@ internal sealed class FetcherListViewModel : ViewModelBase
             {
                 _selectedFetcher = value;
                 SelectedFetcherViewModel?.Dispose();
-                SelectedFetcherViewModel = new SelectedFetcherViewModel(_selectedFetcher,_fetcherRepository, _fetcherListenerFactory.CreateFetcherListener());
+                SelectedFetcherViewModel = new SelectedFetcherViewModel(_selectedFetcher,_fetcherRepository, _fetcherListener);
                 OnPropertyChanged(nameof(SelectedFetcherViewModel));
             }
         }
     }
 
 
-    internal FetcherListViewModel(IFetcherRepository fetcherRepository, IFetcherListenerFactory fetcherListenerFactory)
+    internal FetcherListViewModel(IFetcherRepository fetcherRepository, IFetcherListener fetcherListener)
     {
         _fetcherRepository = fetcherRepository;
-        _fetcherListenerFactory = fetcherListenerFactory;
+        _fetcherListener = fetcherListener;
 
-        var fetchers = _fetcherRepository.GetAll();
+        var fetchers = _fetcherRepository.GetAllAsync().Result;
 
         this.Fetchers = fetchers != null ? fetchers : new List<EF.Fetcher>();
 

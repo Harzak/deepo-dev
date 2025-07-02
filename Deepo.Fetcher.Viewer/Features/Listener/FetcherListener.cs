@@ -7,6 +7,7 @@ using Framework.Common.Data.SQLServer.ServiceBroker;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Viewer.Features.Listener;
 
@@ -14,72 +15,95 @@ internal sealed class FetcherListener : IFetcherListener
 {
     private readonly SQLListener _releaseVinyListener;
     private readonly SQLListener _requestListener;
+    private readonly SQLListener _fetcherListener;
 
     private readonly IReleaseAlbumRepository _releaseAlbumRepository;
     private readonly IFetcherHttpRequestRepository _httpRequestRepository;
+    private readonly IFetcherExecutionRepository _fetcherExecutionRepository;
 
-    public event EventHandler<string>? HttpRequestRowAdded;
+    public event EventHandler<HttpRequestLogEventArgs>? HttpRequestLogRowAdded;
     public event EventHandler<GridModelEventArgs>? VinylReleaseRowAdded;
+    public event EventHandler<FetcherExecutionEventArgs>? FetcherExecutionRowAdded;
 
-    public FetcherListener(string connectionString, 
+
+    public FetcherListener(string connectionString,
         IReleaseAlbumRepository releaseAlbumRepository,
         IFetcherHttpRequestRepository httpRequestRepository,
+        IFetcherExecutionRepository fetcherExecutionRepository,
         ILogger logger)
     {
         _httpRequestRepository = httpRequestRepository;
         _releaseAlbumRepository = releaseAlbumRepository;
+        _fetcherExecutionRepository = fetcherExecutionRepository;
         _releaseVinyListener = new SQLListener(connectionString, Queries.VinyleSubscriptionQuery, logger);
         _requestListener = new SQLListener(connectionString, Queries.HttpRequestSubscriptionQuery, logger);
+        _fetcherListener = new SQLListener(connectionString, Queries.FectherExecutionSubscriptionQuery, logger);
     }
 
     public void StartListener()
     {
+        _releaseVinyListener.OnInsert += OnInsertReleaseVinylAsync;
         _releaseVinyListener.StartListener();
-        _releaseVinyListener.OnInsert += OnInsertReleaseVinyl;
 
+        _requestListener.OnInsert += OnInsertHttpRequestLogAsync;
         _requestListener.StartListener();
-        _requestListener.OnInsert += OnInsertHttpRequest;
+
+        _fetcherListener.OnInsert += OnInsertFetcherExecutionAsync;
+        _fetcherListener.StartListener();
     }
 
-    private void OnInsertReleaseVinyl(object? sender, EventArgs e)
+    private async void OnInsertReleaseVinylAsync(object? sender, EventArgs e)
     {
-        V_LastVinylRelease? lastrow = _releaseAlbumRepository.GetLast();
-        if (lastrow is null)
+        V_LastVinylRelease? lastrow = await _releaseAlbumRepository.GetLastAsync().ConfigureAwait(false);
+        if (lastrow != null)
         {
-            return;
+            GridModel model = new()
+            {
+                ID = lastrow.Release_ID,
+                IdentifierGuid = lastrow.ReleasGUID,
+                Column1 = lastrow.AlbumName,
+                Column2 = lastrow.ArtistsNames,
+                Column3 = lastrow.Release_Date_UTC.ToString(CultureInfo.CurrentCulture)
+            };
+            VinylReleaseRowAdded?.Invoke(this, new GridModelEventArgs(model));
         }
-        GridModel model = new()
-        {
-            ID = lastrow.Release_ID,
-            GUID_ID = lastrow.ReleasGUID,
-            Column1 = lastrow.AlbumName,
-            Column2 = lastrow.ArtistsNames,
-            Column3 = lastrow.Release_Date_UTC.ToString(CultureInfo.CurrentCulture)
-        };
-        VinylReleaseRowAdded?.Invoke(this, new GridModelEventArgs(model));
     }
 
-    private void OnInsertHttpRequest(object? sender, EventArgs e)
+    private async void OnInsertHttpRequestLogAsync(object? sender, EventArgs e)
     {
-        HttpRequest? lastrow = _httpRequestRepository.GetLast();
-        if (lastrow is null)
+        HttpRequest? lastrow = await _httpRequestRepository.GetLastAsync().ConfigureAwait(false);
+        if (lastrow != null)
         {
-            return;
+            HttpRequestLogRowAdded?.Invoke(this, new HttpRequestLogEventArgs(lastrow.RequestUri ?? "n/a"));
         }
-        HttpRequestRowAdded?.Invoke(this, lastrow.RequestUri ?? "");
+    }
+
+    private async void OnInsertFetcherExecutionAsync(object? sender, EventArgs e)
+    {
+        V_FetchersLastExecution? lastFetcher = await _fetcherExecutionRepository.GetLastFetcherExecutionAsync().ConfigureAwait(false);
+        if (lastFetcher != null)
+        {
+            FetcherExecutionEventArgs args = new(lastFetcher.Fetcher_GUID, lastFetcher.StartedAt ?? DateTime.UtcNow);
+            FetcherExecutionRowAdded?.Invoke(this, args);
+        }
     }
 
     public void Dispose()
     {
         if (_releaseVinyListener != null)
         {
-            _releaseVinyListener.OnInsert -= OnInsertReleaseVinyl;
+            _releaseVinyListener.OnInsert -= OnInsertReleaseVinylAsync;
             _releaseVinyListener.Dispose();
         }
         if (_requestListener != null)
         {
-            _requestListener.OnInsert -= OnInsertHttpRequest;
+            _requestListener.OnInsert -= OnInsertHttpRequestLogAsync;
             _requestListener.Dispose();
+        }
+        if (_fetcherListener != null)
+        {
+            _fetcherListener.OnInsert -= OnInsertFetcherExecutionAsync;
+            _fetcherListener.Dispose();
         }
     }
 }

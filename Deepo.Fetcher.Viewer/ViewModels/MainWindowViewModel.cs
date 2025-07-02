@@ -4,6 +4,7 @@ using Deepo.Fetcher.Viewer.Interfaces;
 using Framework.WPF.Behavior.ViewModel;
 using System.Globalization;
 using System.Reflection;
+using System.Threading.Tasks;
 using Wpf.Ui;
 
 namespace Deepo.Fetcher.Viewer.ViewModels;
@@ -30,7 +31,15 @@ internal sealed class MainWindowViewModel : ViewModelBase
         ApplicationName = Assembly.GetEntryAssembly()?.GetName()?.Name ?? string.Empty;
         ApplicationTitle = string.Format(CultureInfo.CurrentCulture, "{0} - {1}", ApplicationName, ApplicationVersion);
 
-        FetcherListViewModel = new FetcherListViewModel(fetcherRepository, fetcherListenerFactory);
-        AppOverviewViewModel = new AppOverviewViewModel(fetcherExecutionRepository);
+        IFetcherListener listener = fetcherListenerFactory.CreateFetcherListener();
+        listener.StartListener();
+
+        FetcherListViewModel = new FetcherListViewModel(fetcherRepository, listener);
+        AppOverviewViewModel = new AppOverviewViewModel(fetcherExecutionRepository, listener);
+    }
+
+    public async Task InitializeAsync()
+    {
+        await AppOverviewViewModel.InitializeAsync().ConfigureAwait(false);
     }
 }
