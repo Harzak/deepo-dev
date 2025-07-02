@@ -100,7 +100,7 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
         {
             if (await InsertReleaseAlbumAsync(searchResult.Content, cancellationToken).ConfigureAwait(false))
             {
-                FetcherLogs.SuccessStrategy(_logger, $"{nameof(_strategiesFactory.SearchDiscogsByTitleAsync)} by title", spotifyAlbum.Name!);
+                FetcherLogs.SuccessStrategy(_logger, strategyName:"discogs search by title", spotifyAlbum.Name!);
                 return true;
             }
         }
@@ -117,6 +117,7 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
             {
                 if( await InsertReleaseAlbumAsync(searchResult.Content, cancellationToken).ConfigureAwait(false))
                 {
+                    FetcherLogs.SuccessStrategy(_logger, strategyName: "discogs search by artists", artist.Name!);
                     return true;
                 }
             }
@@ -130,7 +131,7 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
         DatabaseOperationResult insertResult = await _releaseAlbumRepository.InsertAsync(mappedModel, cancellationToken).ConfigureAwait(false);
         if (insertResult.IsSuccess)
         {
-            FetcherLogs.SuccessStrategy(_logger, $"{nameof(_strategiesFactory.SearchDiscogsByArtistAsync)}", release.Title!);
+            FetcherLogs.InsertSucceed(_logger, release.Title!);
             return true;
         }
         else

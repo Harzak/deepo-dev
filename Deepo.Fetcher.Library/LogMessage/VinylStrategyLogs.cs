@@ -40,7 +40,7 @@ internal static partial class VinylStrategyLogs
     [LoggerMessage(EventId = 9, Level = LogLevel.Error, Message = "Spotify release discovery failed | code: {code} | error: {error}")]
     public static partial void FailedSpotifyReleaseDiscovery(ILogger logger, string code, string error);
     
-    [LoggerMessage(EventId = 10, Level = LogLevel.Information, Message = "Found {count} release for title search: {title}")]
+    [LoggerMessage(EventId = 10, Level = LogLevel.Information, Message = "Found {count} releases for title search: {title}")]
     public static partial void DiscogsReleaseSearchTitleResultsCount(ILogger logger, int count, string title);
 
     [LoggerMessage(EventId = 11, Level = LogLevel.Information, Message = "Found {count} release for artist search: {title}")]

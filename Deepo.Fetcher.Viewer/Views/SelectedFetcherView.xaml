@@ -1,15 +1,16 @@
-﻿<UserControl x:Class="Deepo.Fetcher.Viewer.Views.SelectedFetcherView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             xmlns:local="clr-namespace:Deepo.Fetcher.Viewer.Views"
-             xmlns:viewmodels="clr-namespace:Deepo.Fetcher.Viewer.ViewModels"
-             d:DataContext="{d:DesignInstance Type=viewmodels:SelectedFetcherViewModel}"
-             mc:Ignorable="d"
-             d:DesignHeight="450"
-             d:DesignWidth="800">
+﻿<UserControl
+    x:Class="Deepo.Fetcher.Viewer.Views.SelectedFetcherView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Deepo.Fetcher.Viewer.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    xmlns:viewmodels="clr-namespace:Deepo.Fetcher.Viewer.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewmodels:SelectedFetcherViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
 
     <Grid Margin="20,20,20,20">
         <Grid.RowDefinitions>
@@ -18,9 +19,10 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0"
-                Background="{DynamicResource GreyDarker}"
-                CornerRadius="5">
+        <Border
+            Grid.Row="0"
+            Background="{DynamicResource GreyDarker}"
+            CornerRadius="5">
             <Grid Margin="10,10,10,10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -34,18 +36,17 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Column="0">
-                    <TextBlock Foreground="{StaticResource CyanLight}"
-                               FontSize="13"
-                               Text="Status" />
-                    <TextBlock Text="Stopped">
+                    <TextBlock
+                        FontSize="13"
+                        Foreground="{StaticResource CyanLight}"
+                        Text="Status" />
+                    <TextBlock>
                         <TextBlock.Style>
                             <Style TargetType="TextBlock">
-                                <Setter Property="Text"
-                                        Value="Stopped" />
+                                <Setter Property="Text" Value="Stopped" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding InExecution}" Value="true">
-                                        <Setter Property="Text"
-                                                Value="Started" />
+                                    <DataTrigger Binding="{Binding InExecution}" Value="True">
+                                        <Setter Property="Text" Value="Started" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -54,66 +55,77 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1">
-                    <TextBlock Foreground="{StaticResource CyanLight}"
-                               FontSize="13"
-                               Text="Recurrence" />
-                    <TextBlock Text="{Binding  Recurrence}" />
+                    <TextBlock
+                        FontSize="13"
+                        Foreground="{StaticResource CyanLight}"
+                        Text="Recurrence" />
+                    <TextBlock Text="{Binding Recurrence}" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="2">
-                    <TextBlock Foreground="{StaticResource CyanLight}"
-                               FontSize="13"
-                               Text="Start at" />
-                    <TextBlock Text="{Binding StartAt}" />
+                    <TextBlock
+                        FontSize="13"
+                        Foreground="{StaticResource CyanLight}"
+                        Text="Last execution" />
+                    <TextBlock Text="{Binding LastExecution}" />
                 </StackPanel>
 
                 <StackPanel Grid.Column="3">
-                    <TextBlock Foreground="{StaticResource CyanLight}"
-                               FontSize="13"
-                               Text="Last execution" />
-                    <TextBlock Text="{Binding LastExecution}" />
+                    <TextBlock
+                        FontSize="13"
+                        Foreground="{StaticResource CyanLight}"
+                        Text="Next execution" />
+                    <TextBlock Text="{Binding StartAt}" />
                 </StackPanel>
 
             </Grid>
         </Border>
 
-        <Border Grid.Row="1"
-                Background="{StaticResource GreyDarker}"
-                CornerRadius="5"
-                Margin="0,10,0,10">
-            <TextBlock Margin="10,5,10,5"
-                       FontStyle="Italic"
-                       TextAlignment="Right"
-                       TextWrapping="NoWrap"
-                       TextTrimming="CharacterEllipsis"
-                       Text="{Binding LastRequestedURI, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" />
+        <Border
+            Grid.Row="1"
+            Margin="0,10,0,10"
+            Background="{StaticResource GreyDarker}"
+            CornerRadius="5">
+            <TextBlock
+                Margin="10,5,10,5"
+                FontStyle="Italic"
+                Text="{Binding LastRequestedURI, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                TextAlignment="Right"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="NoWrap" />
         </Border>
 
-        <DataGrid Grid.Row="2"
-                  IsReadOnly="True"
-                  GridLinesVisibility="Horizontal"
-                  HorizontalGridLinesBrush="{StaticResource Grey}"
-                  CanUserSortColumns="False"
-                  AutoGenerateColumns="False"
-                  HeadersVisibility="Column"
-                  ItemsSource="{Binding FetcherRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ColumnHeaderStyle="{StaticResource DataGridHeaderDeepoStyle}">
+        <DataGrid
+            Grid.Row="2"
+            AutoGenerateColumns="False"
+            CanUserSortColumns="False"
+            ColumnHeaderStyle="{StaticResource DataGridHeaderDeepoStyle}"
+            GridLinesVisibility="Horizontal"
+            HeadersVisibility="Column"
+            HorizontalGridLinesBrush="{StaticResource Grey}"
+            IsReadOnly="True"
+            ItemsSource="{Binding FetcherRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
-                <DataGridTextColumn CellStyle="{StaticResource DataGridCellDeepoStyle}"
-                                    Binding="{Binding ID}"
-                                    Header="ID" />
-                <DataGridTextColumn CellStyle="{StaticResource DataGridCellDeepoStyle}"
-                                    Binding="{Binding GUID_ID}"
-                                    Header="GUID" />
-                <DataGridTextColumn CellStyle="{StaticResource DataGridCellDeepoStyle}"
-                                    Binding="{Binding Column1}"
-                                    Header="Column1" />
-                <DataGridTextColumn CellStyle="{StaticResource DataGridCellDeepoStyle}"
-                                    Binding="{Binding Column2}"
-                                    Header="Column2" />
-                <DataGridTextColumn CellStyle="{StaticResource DataGridCellDeepoStyle}"
-                                    Binding="{Binding Column3}"
-                                    Header="Column3" />
+                <DataGridTextColumn
+                    Binding="{Binding ID}"
+                    CellStyle="{StaticResource DataGridCellDeepoStyle}"
+                    Header="ID" />
+                <DataGridTextColumn
+                    Binding="{Binding GUID_ID}"
+                    CellStyle="{StaticResource DataGridCellDeepoStyle}"
+                    Header="GUID" />
+                <DataGridTextColumn
+                    Binding="{Binding Column1}"
+                    CellStyle="{StaticResource DataGridCellDeepoStyle}"
+                    Header="Column1" />
+                <DataGridTextColumn
+                    Binding="{Binding Column2}"
+                    CellStyle="{StaticResource DataGridCellDeepoStyle}"
+                    Header="Column2" />
+                <DataGridTextColumn
+                    Binding="{Binding Column3}"
+                    CellStyle="{StaticResource DataGridCellDeepoStyle}"
+                    Header="Column3" />
             </DataGrid.Columns>
         </DataGrid>
 
