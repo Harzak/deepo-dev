@@ -74,13 +74,13 @@ internal sealed class SelectedFetcherViewModel : ViewModelBase
         });
     }
 
-    private void OnFetcherExecutionRowAdded(object? sender, FetcherExecutionEventArgs e)
+    private async void OnFetcherExecutionRowAdded(object? sender, FetcherExecutionEventArgs e)
     {
-        App.Current.Dispatcher.BeginInvoke(() =>
+        await App.Current.Dispatcher.BeginInvoke(async () =>
         {
             if (_model?.Fetcher_GUID == e.FetcherIdentifier)
             {
-                _model = _fetcherRepository.GetExtendedAsync(e.FetcherIdentifier).Result;
+                _model = await _fetcherRepository.GetExtendedAsync(e.FetcherIdentifier).ConfigureAwait(false);
                 OnPropertyChanged(nameof(InExecution));
                 OnPropertyChanged(nameof(StartAt));
                 OnPropertyChanged(nameof(LastExecution));

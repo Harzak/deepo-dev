@@ -1,6 +1,7 @@
 ﻿using Deepo.DAL.EF.Models;
 using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.DAL.Repository.Interfaces;
+using Deepo.Fetcher.Host.WPF;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Deepo.Fetcher.Viewer.Models;
 using Framework.WPF.Behavior.ViewModel;
@@ -23,7 +24,7 @@ public class AppOverviewViewModel : ViewModelBase
     {
         get
         {
-            return _fetcherExecutions.Where(x => x.StartedAt != null && x.EndedAt is null).Count();
+            return _fetcherExecutions.Where(x => x.StartedAt != null && x.StartedAt > x.EndedAt).Count();
         }
     }
 
@@ -48,11 +49,21 @@ public class AppOverviewViewModel : ViewModelBase
 
     public async Task InitializeAsync()
     {
-        _fetcherExecutions = await _fetcherExecutionRepository.GetFetcherExecutionsAsync().ConfigureAwait(false);
+        await RefreshFetcherExecutions().ConfigureAwait(false);
     }
 
     private async void OnFetcherExecutionRowAdded(object? sender, FetcherExecutionEventArgs e)
     {
+        await App.Current.Dispatcher.BeginInvoke(async () =>
+        {
+            await RefreshFetcherExecutions().ConfigureAwait(false);
+        });
+    }
+
+    private async Task RefreshFetcherExecutions()
+    {
         _fetcherExecutions = await _fetcherExecutionRepository.GetFetcherExecutionsAsync().ConfigureAwait(false);
+        OnPropertyChanged(nameof(ActiveFetcherCount));
+        OnPropertyChanged(nameof(InactiveFetcherCount));
     }
 }

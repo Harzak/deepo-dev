@@ -58,36 +58,33 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
             }
         }
 
-        List<Author_Release> author_Releases = [];
-        foreach (var artist in item.Artists)
-        {
-            Models.Author? author = await _authorRepository.GetByProviderIdentifierAsync(artist.Provider_Identifier, cancellationToken).ConfigureAwait(false);
-            if(author != null)
-            {
-                author_Releases.Add(new Author_Release
-                {
-                    Author = author
-                });
-            }
-        }
-
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
 
-        Type_Release typeRelease = await context.Type_Releases
-                                        .FirstAsync(x => x.Code == "VINYL", cancellationToken)
-                                        .ConfigureAwait(false);
+        Type_Release typeRelease = await context.Type_Releases.FirstAsync(x => x.Code == "VINYL", cancellationToken).ConfigureAwait(false);
 
         Models.Release newRelease = new()
         {
             Name = item.Title ?? string.Empty,
             Release_Date_UTC = item.ReleaseDateUTC ?? DateTime.UtcNow,
             GUID = Guid.NewGuid().ToString(),
-            Author_Releases = author_Releases,
-            Type_Release = typeRelease,
+            Type_Release_ID = typeRelease.Type_Release_ID,
             Creation_User = "Auto",
             Creation_Date = DateTime.UtcNow,
             Modification_Date = DateTime.UtcNow
         };
+
+        foreach (IAuthor artist in item.Artists)
+        {
+            Models.Author? authorModel = await _authorRepository.GetByProviderIdentifierAsync(artist.Provider_Identifier, cancellationToken).ConfigureAwait(false);
+            if (authorModel != null)
+            {
+                newRelease.Author_Releases.Add(new Author_Release()
+                {
+                    Author_ID = authorModel.Author_ID,
+                });
+            }
+        }
+
 
         if (!string.IsNullOrEmpty(item.ThumbURL))
         {
@@ -106,38 +103,14 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
 
         foreach (KeyValuePair<string, string> providerIdentifier in item.ProvidersIdentifier)
         {
-            Provider provider = await context.Providers
-                                        .FirstAsync(x => x.Code == providerIdentifier.Key, cancellationToken)
-                                        .ConfigureAwait(false);
-
             context.Provider_Releases.Add(new Provider_Release()
             {
-                Provider = provider,
+                Provider = await context.Providers.FirstAsync(x => x.Code == providerIdentifier.Key, cancellationToken).ConfigureAwait(false),
                 Provider_Release_Identifier = providerIdentifier.Value,
                 Release = newRelease
             });
         }
 
-        List<Genre_Album> genres = [];
-        foreach (var genreStr in item.Genres)
-        {
-            var genreResult = await _genreAlbumRepository.TryFindGenreAsync(genreStr, cancellationToken).ConfigureAwait(false);
-
-            if (genreResult.Found)
-            {
-                genres.Add(genreResult.Genre);
-            }
-            else
-            {
-                await _genreAlbumRepository.InsertAsync(genreStr, cancellationToken).ConfigureAwait(false);
-
-                var secondGenreResult = await _genreAlbumRepository.TryFindGenreAsync(genreStr, cancellationToken).ConfigureAwait(false);
-                if (secondGenreResult.Found)
-                {
-                    genres.Add(secondGenreResult.Genre);
-                }
-            }
-        }
 
         List<Tracklist_Album> tracklist = [];
         foreach (TrackModel track in item.Tracklist)
@@ -153,15 +126,44 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
             });
         }
 
-        context.Release_Albums.Add(new Release_Album
+        Release_Album releaseAlbum = new()
         {
             Release = newRelease,
             Country = item.Country ?? string.Empty,
             Market = "FR",
             Label = item.Label ?? string.Empty,
-            Genre_Albums = genres,
             Tracklist_Albums = tracklist
-        });
+        };
+
+        foreach (var genreStr in item.Genres)
+        {
+            (bool Found, Genre_Album Genre) genreResult = await _genreAlbumRepository.TryFindGenreAsync(genreStr, cancellationToken).ConfigureAwait(false);
+
+            if (genreResult.Found)
+            {
+                Genre_Album? genreInCurrentContext = await context.Genre_Albums.FindAsync([genreResult.Genre.Genre_Album_ID], cancellationToken).ConfigureAwait(false);
+                if (genreInCurrentContext != null)
+                {
+                    releaseAlbum.Genre_Albums.Add(genreInCurrentContext);
+                }
+            }
+            else
+            {
+                await _genreAlbumRepository.InsertAsync(genreStr, cancellationToken).ConfigureAwait(false);
+
+                (bool Found, Genre_Album Genre) newGenreResult = await _genreAlbumRepository.TryFindGenreAsync(genreStr, cancellationToken).ConfigureAwait(false);
+                if (newGenreResult.Found)
+                {
+                    Genre_Album? genreInCurrentContext = await context.Genre_Albums.FindAsync([genreResult.Genre.Genre_Album_ID], cancellationToken).ConfigureAwait(false);
+                    if (genreInCurrentContext != null)
+                    {
+                        releaseAlbum.Genre_Albums.Add(genreInCurrentContext);
+                    }
+                }
+            }
+        }
+
+        context.Release_Albums.Add(releaseAlbum);
 
         try
         {

@@ -44,7 +44,6 @@ internal sealed class ContinuousHost : HostPlannedWorker
     {
         await _fetcherHistory.LogStartAsync(worker, cancellationToken).ConfigureAwait(false);
         await base.StartWorkerAsync(worker, cancellationToken).ConfigureAwait(false);
-        await _fetcherHistory.LogEndAsync(worker, cancellationToken).ConfigureAwait(false);
     }
 
     protected override void Dispose(bool disposing)

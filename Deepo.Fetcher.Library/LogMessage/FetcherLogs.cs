@@ -17,7 +17,7 @@ internal static partial class FetcherLogs
     [LoggerMessage(EventId = 3, Level = LogLevel.Error, Message = "All strategies failed for release: '{title}'")]
     public static partial void AllStrategiesFailed(ILogger logger, string title);
 
-    [LoggerMessage(EventId = 4, Level = LogLevel.Information, Message = "Success: strategy {strategyName} for release: '{title}'")]
+    [LoggerMessage(EventId = 4, Level = LogLevel.Information, Message = "Success: strategy {strategyName} for: '{title}'")]
     public static partial void SuccessStrategy(ILogger logger, string strategyName, string title);
 
     [LoggerMessage(EventId = 5, Level = LogLevel.Information, Message = "Release {id} ({title}) is ignored because already fetched (present in history)")]
@@ -25,4 +25,8 @@ internal static partial class FetcherLogs
 
     [LoggerMessage(EventId = 6, Level = LogLevel.Error, Message = "Failed to insert release: '{title} in database | ex: {error}'")]
     public static partial void InsertFailed(ILogger logger, string title, string error);
+
+    [LoggerMessage(EventId = 7, Level = LogLevel.Information, Message = "Release successfully inserted in DB: '{title}'")]
+    public static partial void InsertSucceed(ILogger logger, string title);
+
 }
