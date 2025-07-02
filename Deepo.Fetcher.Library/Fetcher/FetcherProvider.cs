@@ -26,10 +26,10 @@ internal class FetcherProvider : IFetcherProvider
         _planificationRepository = planificationRepository;
     }
 
-    public IEnumerable<IWorker> GetAllFetcher()
+    public async Task<IEnumerable<IWorker>> GetAllFetcherAsync()
     {
         List<IWorker> workers = [];
-        ReadOnlyCollection<Models.Fetcher>? fetchersDb = _fetcherRepository.GetAll();
+        ReadOnlyCollection<Models.Fetcher>? fetchersDb = await _fetcherRepository.GetAllAsync().ConfigureAwait(false);
 
         if (fetchersDb is null || fetchersDb.Count == 0)
         {
@@ -44,11 +44,11 @@ internal class FetcherProvider : IFetcherProvider
         return workers;
     }
 
-    public Dictionary<IWorker, IPlanning> GetAllPlannedFetcher()
+    public async Task<Dictionary<IWorker, IPlanning>> GetAllPlannedFetcherAsync()
     {
         Dictionary<IWorker, IPlanning> plannedWorkers = [];
 
-        IEnumerable<Models.V_FetcherPlannification>? plannificationFetchers = _planificationRepository.GetAll();
+        IEnumerable<Models.V_FetcherPlannification>? plannificationFetchers =  await _planificationRepository.GetAllAsync().ConfigureAwait(false);
 
         if (plannificationFetchers is null || !plannificationFetchers.Any())
         {
@@ -68,14 +68,14 @@ internal class FetcherProvider : IFetcherProvider
         return plannedWorkers;
     }
 
-    public IWorker? GetFetcherByName(string name)
+    public async Task<IWorker?> GetFetcherByNameAsync(string name)
     {
-        Models.Fetcher? fetcherDb = _fetcherRepository.GetByName(name);
+        Models.Fetcher? fetcherDb = await _fetcherRepository.GetByNameAsync(name).ConfigureAwait(false);
 
-        if (fetcherDb is null)
+        if (fetcherDb != null)
         {
-            return null;
+            return _fetcherFactory.CreateFetcher(fetcherDb.Code);
         }
-        return _fetcherFactory.CreateFetcher(fetcherDb.Code);
+        return null;
     }
 }

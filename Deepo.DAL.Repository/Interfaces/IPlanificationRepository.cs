@@ -1,20 +1,18 @@
 ﻿using Deepo.DAL.EF.Models;
 using Framework.Common.Worker.Interfaces;
+using System;
 using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Deepo.DAL.Repository.Interfaces;
 
 public interface IPlanificationRepository
 {
-    ReadOnlyCollection<V_FetcherPlannification>? GetAll();
-
-    bool Delete(IWorker worker);
-
-    bool AddOneShot(IWorker worker);
-
-    bool AddHourly(IWorker worker, int startMinute);
-
-    bool AddDaily(IWorker worker, int startHour, int startMinute);
-
-    bool UpdateDateNextStart(Guid fetcherGUID, DateTime dateNextStart);
+    Task<bool> DeleteAsync(IWorker worker, CancellationToken cancellationToken = default);
+    Task<bool> AddOneShotAsync(IWorker worker, CancellationToken cancellationToken = default);
+    Task<bool> AddHourlyAsync(IWorker worker, int startMinute, CancellationToken cancellationToken = default);
+    Task<bool> AddDailyAsync(IWorker worker, int startHour, int startMinute, CancellationToken cancellationToken = default);
+    Task<bool> UpdateDateNextStartAsync(Guid fetcherGUID, DateTime dateNextStart, CancellationToken cancellationToken = default);
+    Task<ReadOnlyCollection<V_FetcherPlannification>> GetAllAsync(CancellationToken cancellationToken = default);
 }

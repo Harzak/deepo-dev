@@ -21,7 +21,7 @@ internal sealed class GetVinylReleaseHandler : IRequestHandler<GetVinylReleaseQu
 
         OperationResult<ReleaseVinylExDto> result = new();
 
-        Release_Album? vinylReleaseDB = _repository.GetById(request.Id);
+        Release_Album? vinylReleaseDB = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
 
         if (vinylReleaseDB is null)
         {

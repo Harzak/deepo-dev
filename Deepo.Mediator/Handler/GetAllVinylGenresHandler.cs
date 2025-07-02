@@ -23,7 +23,7 @@ internal sealed class GetAllVinylGenresHandler : IRequestHandler<GetAllVinylGenr
             Content = []
         };
 
-        IReadOnlyCollection<Genre_Album> genres = _repository.GetAll();
+        IReadOnlyCollection<Genre_Album> genres = await _repository.GetAllAsync(cancellationToken).ConfigureAwait(false);
 
         if (genres != null)
         {

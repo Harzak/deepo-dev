@@ -95,4 +95,12 @@
 	  <Resource Include="Resources\Icon\deepo@4x.png" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Workspaces\Deepo-dev\Deepo.Fetcher.Viewer\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Workspaces\Deepo-dev\Deepo.Fetcher.Viewer\.editorconfig" />
+	</ItemGroup>
+
 </Project>

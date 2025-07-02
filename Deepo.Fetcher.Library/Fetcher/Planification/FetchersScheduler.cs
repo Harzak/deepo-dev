@@ -29,13 +29,13 @@ public class FetchersScheduler : Scheduler
     public override void Start()
     {
         base.Start();
-        Load();
+        LoadAsync().Wait();
         EvaluateReadyWorkers();
     }
 
-    private void Load()
+    private async Task LoadAsync()
     {
-        var plannedFetchers = _fetcherProvider.GetAllPlannedFetcher();
+        var plannedFetchers = await _fetcherProvider.GetAllPlannedFetcherAsync().ConfigureAwait(false);
         foreach (KeyValuePair<IWorker, IPlanning> plannedFetcher in plannedFetchers)
         {
             UpSertWorker(plannedFetcher.Key, plannedFetcher.Value);
@@ -48,27 +48,27 @@ public class FetchersScheduler : Scheduler
         DateTime? dateNexStart = plannedWorker.Value.DateNextStart;
         if (dateNexStart.HasValue)
         {
-            _planificationRepository.UpdateDateNextStart(plannedWorker.Key.ID, dateNexStart.Value);
+            _planificationRepository.UpdateDateNextStartAsync(plannedWorker.Key.ID, dateNexStart.Value).Wait();
         }
     }
 
     public override bool RegisterOneShot(IWorker worker)
     {
-        return base.RegisterOneShot(worker) && _planificationRepository.AddOneShot(worker);
+        return base.RegisterOneShot(worker) && _planificationRepository.AddOneShotAsync(worker).Result;
     }
 
     public override bool RegisterDaily(IWorker worker, int startHour, int startMinute)
     {
-        return base.RegisterDaily(worker, startHour, startMinute) && _planificationRepository.AddDaily(worker, startHour, startMinute);
+        return base.RegisterDaily(worker, startHour, startMinute) && _planificationRepository.AddDailyAsync(worker, startHour, startMinute).Result;
     }
 
     public override bool RegisterHourly(IWorker worker, int startMinute)
     {
-        return base.RegisterHourly(worker, startMinute) && _planificationRepository.AddHourly(worker, startMinute);
+        return base.RegisterHourly(worker, startMinute) && _planificationRepository.AddHourlyAsync(worker, startMinute).Result;
     }
 
     public override bool Unregister(IWorker worker)
     {
-        return _planificationRepository.Delete(worker) && base.Unregister(worker);
+        return _planificationRepository.DeleteAsync(worker).Result && base.Unregister(worker);
     }
 }

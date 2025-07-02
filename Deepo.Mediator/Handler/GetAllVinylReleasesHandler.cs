@@ -23,7 +23,10 @@ internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylRe
             Content = []
         };
 
-        IReadOnlyCollection<V_LastVinylRelease> allVinylReleasesDB = _repository.GetAll(request.Market, request.Offset, request.Limit);
+        IReadOnlyCollection<V_LastVinylRelease> allVinylReleasesDB = await _repository.GetAllAsync(request.Market, 
+                                                                                                   request.Offset, 
+                                                                                                   request.Limit, 
+                                                                                                   cancellationToken).ConfigureAwait(false);
 
         if (allVinylReleasesDB != null)
         {

@@ -18,7 +18,7 @@ internal sealed class CountAllVinylReleasesHandler : IRequestHandler<CountAllVin
     {
         OperationResult<int> result = new()
         {
-            Content =  _repository.Count(request.Market)
+            Content = await _repository.CountAsync(request.Market, cancellationToken).ConfigureAwait(false)
         };
 
         return await Task.FromResult(result.WithSuccess()).ConfigureAwait(false);

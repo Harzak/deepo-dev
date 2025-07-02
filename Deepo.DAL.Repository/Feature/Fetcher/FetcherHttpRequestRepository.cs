@@ -1,19 +1,25 @@
 ﻿using Deepo.DAL.EF.Models;
 using Deepo.DAL.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Deepo.DAL.Repository.Feature.Fetcher;
 
-public class FetcherHttpRequestRepository : IFetcherHttpRequestRepository
+public sealed class FetcherHttpRequestRepository : IFetcherHttpRequestRepository
 {
-    private readonly DEEPOContext _dbContext;
+    private readonly IDbContextFactory<DEEPOContext> _contextFactory;
 
-    public FetcherHttpRequestRepository(DEEPOContext dbContext)
+    public FetcherHttpRequestRepository(IDbContextFactory<DEEPOContext> contextFactory)
     {
-        _dbContext = dbContext;
+        _contextFactory = contextFactory;
     }
 
-    public HttpRequest? GetLast()
+    public async Task<HttpRequest?> GetLastAsync(CancellationToken cancellationToken = default)
     {
-        return _dbContext.HttpRequests.OrderByDescending(x => x.HttpRequest_ID).FirstOrDefault();
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.HttpRequests
+                        .OrderByDescending(x => x.HttpRequest_ID)
+                        .FirstOrDefaultAsync( cancellationToken)
+                        .ConfigureAwait(false);
     }
 }

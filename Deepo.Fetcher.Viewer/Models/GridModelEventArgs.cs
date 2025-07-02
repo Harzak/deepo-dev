@@ -2,7 +2,7 @@
 
 namespace Deepo.Fetcher.Viewer.Models;
 
-internal sealed class GridModelEventArgs : EventArgs
+public sealed class GridModelEventArgs : EventArgs
 {
     public GridModel Row { get; set; }
 

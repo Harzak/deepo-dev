@@ -9,72 +9,88 @@ using EF = Deepo.DAL.EF.Models;
 using Deepo.Fetcher.Viewer.Models;
 using Deepo.DAL.Repository.Interfaces;
 
-namespace Deepo.Fetcher.Viewer.ViewModels
+namespace Deepo.Fetcher.Viewer.ViewModels;
+
+internal sealed class SelectedFetcherViewModel : ViewModelBase
 {
-    internal sealed class SelectedFetcherViewModel : ViewModelBase
+    private readonly IFetcherListener _fetcherListener;
+    private readonly IFetcherRepository _fetcherRepository;
+    private EF.V_FetcherExtended? _model;
+
+    public ObservableCollection<GridModel> FetcherRows { get; set; }
+
+    public string LastRequestedURI { get; set; }
+
+    public bool InExecution
     {
-        private readonly EF.V_FetcherExtended? _model;
-        private readonly IFetcherListener _fetcherListener;
+        get => _model?.LastStart != null && _model?.LastStart > _model?.LastEnd;
+    }
 
-        public ObservableCollection<GridModel> FetcherRows { get; set; }
+    public string Recurrence
+    {
+        get => _model?.PlanificationTypeName ?? "Unknow";
+    }
 
-        public string LastRequestedURI { get; set; }
+    public string StartAt
+    {
+        get => _model?.DateNextStart?.ToString(CultureInfo.CurrentCulture) ?? "n/a";
+    }
 
-        public bool InExecution
+    public string LastExecution
+    {
+        get => _model?.LastStart?.ToString(CultureInfo.CurrentCulture) ?? "n/a";
+    }
+
+    public SelectedFetcherViewModel(EF.Fetcher model,
+        IFetcherRepository fetcherRepository,
+        IFetcherListener fetcherListener)
+    {
+        _fetcherListener = fetcherListener;
+        _fetcherRepository = fetcherRepository;
+
+        _model = _fetcherRepository.GetExtendedAsync(model.Fetcher_GUID).Result;
+        FetcherRows = [];
+        LastRequestedURI = string.Empty;
+
+        _fetcherListener.VinylReleaseRowAdded += OnVinylReleaseRowAdded;
+        _fetcherListener.HttpRequestLogRowAdded += OnHttpRequestRowAdded;
+        _fetcherListener.FetcherExecutionRowAdded += OnFetcherExecutionRowAdded;
+    }
+
+    private void OnVinylReleaseRowAdded(object? sender, GridModelEventArgs e)
+    {
+        App.Current.Dispatcher.BeginInvoke(() =>
         {
-            get => _model?.LastStart != null && _model?.LastStart > _model?.LastEnd;
-        }
+            FetcherRows.Add(e.Row);
+        });
+    }
 
-        public string Recurrence
+    private void OnHttpRequestRowAdded(object? sender, HttpRequestLogEventArgs e)
+    {
+        App.Current.Dispatcher.BeginInvoke(() =>
         {
-            get => _model?.PlanificationTypeName ?? "Unknow";
-        }
+            LastRequestedURI = e.Request;
+            OnPropertyChanged(nameof(LastRequestedURI));
+        });
+    }
 
-        public string StartAt
+    private void OnFetcherExecutionRowAdded(object? sender, FetcherExecutionEventArgs e)
+    {
+        App.Current.Dispatcher.BeginInvoke(() =>
         {
-            get => (_model?.DateNextStart ?? DateTime.MinValue).ToString(CultureInfo.CurrentCulture);
-        }
-
-        public string LastExecution
-        {
-            get => (_model?.LastStart ?? DateTime.MinValue).ToString(CultureInfo.CurrentCulture);
-        }
-
-        public SelectedFetcherViewModel(EF.Fetcher model, 
-            IFetcherRepository fetcherRepository, 
-            IFetcherListener fetcherListener)
-        {
-            _fetcherListener = fetcherListener;
-            _fetcherListener.VinylReleaseRowAdded += FetcherGridProvider_RowAdded;
-            _fetcherListener.HttpRequestRowAdded += FetcherHttpRequestProvider_RowAdded;
-            _model = fetcherRepository.GetExtended(model.Fetcher_GUID);
-
-            FetcherRows = [];
-            LastRequestedURI = string.Empty;
-            _fetcherListener.StartListener();
-        }
-
-        private void FetcherGridProvider_RowAdded(object? sender, GridModelEventArgs e)
-        {
-            App.Current.Dispatcher.BeginInvoke(() =>
+            if (_model?.Fetcher_GUID == e.FetcherIdentifier)
             {
-                FetcherRows.Add(e.Row);
-            });
-        }
+                _model = _fetcherRepository.GetExtendedAsync(e.FetcherIdentifier).Result;
+                OnPropertyChanged(nameof(InExecution));
+                OnPropertyChanged(nameof(StartAt));
+                OnPropertyChanged(nameof(LastExecution));
+            }
+        });
+    }
 
-        private void FetcherHttpRequestProvider_RowAdded(object? sender, string e)
-        {
-            App.Current.Dispatcher.BeginInvoke(() =>
-            {
-                LastRequestedURI = e;
-                OnPropertyChanged(nameof(LastRequestedURI));
-            });
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            _fetcherListener.Dispose();
-        }
+    protected override void Dispose(bool disposing)
+    {
+        base.Dispose(disposing);
+        _fetcherListener.Dispose();
     }
 }

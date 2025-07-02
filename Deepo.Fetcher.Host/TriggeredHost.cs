@@ -42,7 +42,7 @@ public class TriggeredHost : HostWorker
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
-        IWorker? fetcherVinyl = _fetcherProvider.GetFetcherByName(_config.Value.FetcherVinyleName);
+        IWorker? fetcherVinyl = await _fetcherProvider.GetFetcherByNameAsync(_config.Value.FetcherVinyleName).ConfigureAwait(false);
         if (fetcherVinyl is not null)
         {
             fetcherVinyl.WorkerExecuted += OnFetcherVinyl_WorkerExecuted;
@@ -63,9 +63,9 @@ public class TriggeredHost : HostWorker
 
     protected override async Task StartWorkerAsync(IWorker worker, CancellationToken cancellationToken)
     {
-        _fetcherHistory.LogStart(worker);
+        await _fetcherHistory.LogStartAsync(worker, cancellationToken).ConfigureAwait(false);
         await base.StartWorkerAsync(worker, cancellationToken).ConfigureAwait(false);
-        _fetcherHistory.LogEnd(worker);
+        await _fetcherHistory.LogStartAsync(worker, cancellationToken).ConfigureAwait(false);
     }
 
     protected override void Dispose(bool disposing)

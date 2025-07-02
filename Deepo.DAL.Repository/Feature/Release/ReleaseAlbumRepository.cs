@@ -4,6 +4,10 @@ using Deepo.DAL.Repository.LogMessage;
 using Deepo.DAL.Repository.Result;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Models = Deepo.DAL.EF.Models;
 
 namespace Deepo.DAL.Repository.Feature.Release;
@@ -11,34 +15,40 @@ namespace Deepo.DAL.Repository.Feature.Release;
 public class ReleaseAlbumRepository : IReleaseAlbumRepository
 {
     private readonly ILogger _logger;
-
-    private readonly DEEPOContext _dbContext;
+    private readonly IDbContextFactory<DEEPOContext> _contextFactory;
     private readonly IAuthorRepository _authorRepository;
     private readonly IGenreAlbumRepository _genreAlbumRepository;
 
-    public ReleaseAlbumRepository(DEEPOContext dbContext,
+    public ReleaseAlbumRepository(IDbContextFactory<DEEPOContext> contextFactory,
         IAuthorRepository authorRepository,
         IGenreAlbumRepository genreAlbumRepository,
         ILogger<ReleaseAlbumRepository> logger)
     {
-        _dbContext = dbContext;
+        _contextFactory = contextFactory;
         _authorRepository = authorRepository;
         _genreAlbumRepository = genreAlbumRepository;
         _logger = logger;
     }
 
-    public async Task<DatabaseOperationResult> InsertAsync(AlbumModel item, CancellationToken cancellationToken)
+    public async Task<DatabaseOperationResult> InsertAsync(AlbumModel item, CancellationToken cancellationToken = default)
     {
         DatabaseOperationResult result = new();
 
-        if (item is null || item.Artists is null || Exists(item))
+        if (item is null || item.Artists is null)
+        {
+            return result;
+        }
+
+        bool exists = await ExistsAsync(item, cancellationToken).ConfigureAwait(false);
+        if (exists)
         {
             return result;
         }
 
         foreach (var author in item.Artists)
         {
-            if (!_authorRepository.Exists(author))
+            bool authorExists = await _authorRepository.ExistsAsync(author, cancellationToken).ConfigureAwait(false);
+            if (!authorExists)
             {
                 DatabaseOperationResult innerResult = await _authorRepository.Insert(author, cancellationToken).ConfigureAwait(false);
                 if (!innerResult.IsSuccess)
@@ -51,11 +61,21 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
         List<Author_Release> author_Releases = [];
         foreach (var artist in item.Artists)
         {
-            author_Releases.Add(new Author_Release
+            Models.Author? author = await _authorRepository.GetByProviderIdentifierAsync(artist.Provider_Identifier, cancellationToken).ConfigureAwait(false);
+            if(author != null)
             {
-                Author = _authorRepository.GetByProviderIdentifier(artist.Provider_Identifier)
-            });
+                author_Releases.Add(new Author_Release
+                {
+                    Author = author
+                });
+            }
         }
+
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        Type_Release typeRelease = await context.Type_Releases
+                                        .FirstAsync(x => x.Code == "VINYL", cancellationToken)
+                                        .ConfigureAwait(false);
 
         Models.Release newRelease = new()
         {
@@ -63,12 +83,11 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
             Release_Date_UTC = item.ReleaseDateUTC ?? DateTime.UtcNow,
             GUID = Guid.NewGuid().ToString(),
             Author_Releases = author_Releases,
-            Type_Release = _dbContext.Type_Releases.First(x => x.Code == "VINYL"), // todo
+            Type_Release = typeRelease,
             Creation_User = "Auto",
             Creation_Date = DateTime.UtcNow,
             Modification_Date = DateTime.UtcNow
         };
-
 
         if (!string.IsNullOrEmpty(item.ThumbURL))
         {
@@ -87,9 +106,13 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
 
         foreach (KeyValuePair<string, string> providerIdentifier in item.ProvidersIdentifier)
         {
-            _dbContext.Provider_Releases.Add(new Models.Provider_Release()
+            Provider provider = await context.Providers
+                                        .FirstAsync(x => x.Code == providerIdentifier.Key, cancellationToken)
+                                        .ConfigureAwait(false);
+
+            context.Provider_Releases.Add(new Provider_Release()
             {
-                Provider = _dbContext.Providers.First(x => x.Code == providerIdentifier.Key),
+                Provider = provider,
                 Provider_Release_Identifier = providerIdentifier.Value,
                 Release = newRelease
             });
@@ -98,16 +121,20 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
         List<Genre_Album> genres = [];
         foreach (var genreStr in item.Genres)
         {
-            if (_genreAlbumRepository.TryFindGenre(genreStr, out Genre_Album genre))
+            var genreResult = await _genreAlbumRepository.TryFindGenreAsync(genreStr, cancellationToken).ConfigureAwait(false);
+
+            if (genreResult.Found)
             {
-                genres.Add(genre);
+                genres.Add(genreResult.Genre);
             }
             else
             {
-                await _genreAlbumRepository.Insert(genreStr, cancellationToken).ConfigureAwait(false);
-                if (_genreAlbumRepository.TryFindGenre(genreStr, out genre))
+                await _genreAlbumRepository.InsertAsync(genreStr, cancellationToken).ConfigureAwait(false);
+
+                var secondGenreResult = await _genreAlbumRepository.TryFindGenreAsync(genreStr, cancellationToken).ConfigureAwait(false);
+                if (secondGenreResult.Found)
                 {
-                    genres.Add(genre);
+                    genres.Add(secondGenreResult.Genre);
                 }
             }
         }
@@ -126,7 +153,7 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
             });
         }
 
-        _dbContext.Release_Albums.Add(new Release_Album
+        context.Release_Albums.Add(new Release_Album
         {
             Release = newRelease,
             Country = item.Country ?? string.Empty,
@@ -138,79 +165,107 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
 
         try
         {
-            int rowAffected = await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+            int rowAffected = await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
             result.IsSuccess = rowAffected >= 0;
             result.RowAffected = rowAffected;
             return result;
         }
         catch (DbUpdateException ex)
         {
-            DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), _dbContext?.Database?.GetDbConnection()?.ConnectionString, ex);
+            DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), context?.Database?.GetDbConnection().ConnectionString, ex);
             return result;
         }
         catch (Exception ex)
         {
-            DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), _dbContext?.Database?.GetDbConnection()?.ConnectionString, ex);
+            DatabaseLogs.UnableToAdd(_logger, nameof(Release_Album), context?.Database?.GetDbConnection().ConnectionString, ex);
             throw;
         }
     }
 
-    public int Count(string market)
+    public async Task<int> CountAsync(string market, CancellationToken cancellationToken = default)
     {
-        return _dbContext.V_LastVinylReleases.Count();
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.V_LastVinylReleases
+                        .CountAsync(cancellationToken)
+                        .ConfigureAwait(false);
     }
 
-    public bool Exists(AlbumModel item)
+    public async Task<bool> ExistsAsync(AlbumModel item, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(item, nameof(item));
 
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
         foreach (var providerItem in item.ProvidersIdentifier)
         {
-            return _dbContext.Provider_Releases
-                .Any(x => x.Provider.Code == providerItem.Key
-                    && x.Provider_Release_Identifier == providerItem.Value);
+            bool exists = await context.Provider_Releases
+                                    .AnyAsync(x => x.Provider.Code == providerItem.Key
+                                        && x.Provider_Release_Identifier == providerItem.Value,
+                                        cancellationToken)
+                                    .ConfigureAwait(false);
 
+            if (exists)
+            {
+                return true;
+            }
         }
+
         return false;
     }
 
-    public V_LastVinylRelease? GetLast()
+    public async Task<V_LastVinylRelease?> GetLastAsync(CancellationToken cancellationToken = default)
     {
-        return _dbContext.V_LastVinylReleases
-            .OrderBy(x => x.Release_ID)
-            .LastOrDefault();
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.V_LastVinylReleases
+                        .OrderBy(x => x.Release_ID)
+                        .LastOrDefaultAsync(cancellationToken)
+                        .ConfigureAwait(false);
     }
 
-    public IReadOnlyCollection<V_LastVinylRelease> GetAll()
+    public async Task<IReadOnlyCollection<V_LastVinylRelease>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return _dbContext.V_LastVinylReleases
-            .ToList()
-            .AsReadOnly();
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        var releases = await context.V_LastVinylReleases
+                        .ToListAsync(cancellationToken)
+                        .ConfigureAwait(false);
+
+        return releases.AsReadOnly();
     }
 
-    public IReadOnlyCollection<V_LastVinylRelease> GetAll(string market, int offset, int limit)
+    public async Task<IReadOnlyCollection<V_LastVinylRelease>> GetAllAsync(string market, int offset, int limit, CancellationToken cancellationToken = default)
     {
-        return _dbContext.V_LastVinylReleases
-            .OrderByDescending(x => x.Release_ID)
-            .Skip(offset)
-            .Take(limit)
-            .ToList()
-            .AsReadOnly();
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        List<V_LastVinylRelease> releases = await context.V_LastVinylReleases
+                                                .OrderByDescending(x => x.Release_ID)
+                                                .Skip(offset)
+                                                .Take(limit)
+                                                .ToListAsync(cancellationToken)
+                                                .ConfigureAwait(false);
+
+        return releases.AsReadOnly();
     }
 
-    public Release_Album? GetById(Guid id)
+    public async Task<Release_Album?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return _dbContext.Release_Albums
-            .Include(x => x.Tracklist_Albums)
-            .ThenInclude(x => x.Track_Album)
-            .Include(x => x.Genre_Albums)
-            .Include(x => x.Release)
-            .ThenInclude(x => x.Asset_Releases)
-            .ThenInclude(x => x.Asset)
-            .Include(x => x.Release)
-            .ThenInclude(x => x.Author_Releases)
-            .ThenInclude(x => x.Author)
-            .FirstOrDefault(x => x.Release != null
-                            && x.Release.GUID == id.ToString());
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.Release_Albums
+                        .Include(x => x.Tracklist_Albums)
+                        .ThenInclude(x => x.Track_Album)
+                        .Include(x => x.Genre_Albums)
+                        .Include(x => x.Release)
+                        .ThenInclude(x => x.Asset_Releases)
+                        .ThenInclude(x => x.Asset)
+                        .Include(x => x.Release)
+                        .ThenInclude(x => x.Author_Releases)
+                        .ThenInclude(x => x.Author)
+                        .FirstOrDefaultAsync(x => x.Release != null
+                                        && x.Release.GUID == id.ToString(),
+                                        cancellationToken)
+                        .ConfigureAwait(false);
     }
 }
