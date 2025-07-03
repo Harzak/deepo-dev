@@ -2,7 +2,10 @@
 
 public interface IVinylFetchPipeline
 {
+    int SuccessfulFetchCount { get; }
+    int FailedFetchCount { get; }
+    int IgnoredFetchCount { get; }
+    int FetchCount => this.SuccessfulFetchCount + this.FailedFetchCount + this.IgnoredFetchCount;
+
     Task StartAsync(CancellationToken cancellationToken);
-    void OnStrategySuccess(Action action);
-    void OnStrategyFailure(Action action);
 }
