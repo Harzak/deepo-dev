@@ -9,6 +9,7 @@ using Deepo.Fetcher.Library.Mappers;
 using Framework.Common.Utils.Result;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 
@@ -23,10 +24,13 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
 
     private IEnumerable<string> _historyIdentifiersCache;
 
-    private Action? _onStrategySuccess;
-    private Action? _onStrategyFailure;
+    public int SuccessfulFetchCount { get; private set; }
+    public int FailedFetchCount { get; private set; }
+    public int IgnoredFetchCount { get; private set; }
+    public int FetchCount => this.SuccessfulFetchCount + this.FailedFetchCount + this.IgnoredFetchCount;
 
-    public VinylFetchPipeline( 
+
+    public VinylFetchPipeline(
         IVinylStrategiesFactory strategiesFactory,
         IReleaseAlbumRepository releaseAlbumRepository,
         IReleaseHistoryRepository historyRepository,
@@ -53,22 +57,13 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
         await DiscoverSpotifyMarketAsync(usReleases, cancellationToken).ConfigureAwait(false);
     }
 
-    public void OnStrategySuccess(Action action)
-    {
-        _onStrategySuccess = action;
-    }
-
-    public void OnStrategyFailure(Action action)
-    {
-        _onStrategyFailure = action;
-    }
-
     private async Task DiscoverSpotifyMarketAsync(IAsyncEnumerable<DtoSpotifyAlbum> albums, CancellationToken cancellationToken)
     {
         await foreach (DtoSpotifyAlbum spotifyAlbum in albums.ConfigureAwait(false))
         {
             if (_historyIdentifiersCache.Contains(spotifyAlbum.Id!))
             {
+                this.IgnoredFetchCount++;
                 FetcherLogs.IngoreReleaseInHistory(_logger, spotifyAlbum.Name!, spotifyAlbum.Id!);
                 continue;
             }
@@ -77,52 +72,60 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
 
             if (await SearchByTitleAsync(spotifyAlbum, cancellationToken).ConfigureAwait(false))
             {
-                _onStrategySuccess?.Invoke();
+                this.SuccessfulFetchCount++;
                 continue;
             }
 
             if (await SearchByArtistsAsync(spotifyAlbum, cancellationToken).ConfigureAwait(false))
             {
-                _onStrategySuccess?.Invoke();
+                this.SuccessfulFetchCount++;
                 continue;
             }
 
-            _onStrategyFailure?.Invoke();
+            this.FailedFetchCount++;
             FetcherLogs.AllStrategiesFailed(_logger, spotifyAlbum.Name!);
         }
     }
 
     private async Task<bool> SearchByTitleAsync(DtoSpotifyAlbum spotifyAlbum, CancellationToken cancellationToken)
     {
-        OperationResult<DtoDiscogsRelease> searchResult = await _strategiesFactory.SearchDiscogsByTitleAsync(spotifyAlbum.Name!, cancellationToken).ConfigureAwait(false);
+        OperationResultList<DtoDiscogsRelease> searchResult = await _strategiesFactory.SearchDiscogsByTitleAsync(spotifyAlbum.Name!, cancellationToken).ConfigureAwait(false);
 
-        if (searchResult.IsSuccess)
+        bool success = false;
+        if (searchResult.IsSuccess && searchResult.HasContent)
         {
-            if (await InsertReleaseAlbumAsync(searchResult.Content, cancellationToken).ConfigureAwait(false))
+            foreach (DtoDiscogsRelease findRelease in searchResult.Content)
             {
-                FetcherLogs.SuccessStrategy(_logger, strategyName:"discogs search by title", spotifyAlbum.Name!);
-                return true;
+                if (await InsertReleaseAlbumAsync(findRelease, cancellationToken).ConfigureAwait(false))
+                {
+                    FetcherLogs.SuccessStrategy(_logger, strategyName: "discogs search by title", spotifyAlbum.Name!);
+                    success = true;
+                }
             }
         }
-        return false;
+        return success;
     }
 
     private async Task<bool> SearchByArtistsAsync(DtoSpotifyAlbum spotifyAlbum, CancellationToken cancellationToken)
     {
+        bool success = false;
         foreach (DtoSpotifyArtist artist in spotifyAlbum.Artists!)
         {
-            OperationResult<DtoDiscogsRelease> searchResult = await _strategiesFactory.SearchDiscogsByArtistAsync(artist.Name!, cancellationToken).ConfigureAwait(false);
+            OperationResultList<DtoDiscogsRelease> searchResult = await _strategiesFactory.SearchDiscogsByArtistAsync(artist.Name!, cancellationToken).ConfigureAwait(false);
 
-            if (searchResult.IsSuccess)
+            if (searchResult.IsSuccess && searchResult.HasContent)
             {
-                if( await InsertReleaseAlbumAsync(searchResult.Content, cancellationToken).ConfigureAwait(false))
+                foreach (DtoDiscogsRelease findRelease in searchResult.Content)
                 {
-                    FetcherLogs.SuccessStrategy(_logger, strategyName: "discogs search by artists", artist.Name!);
-                    return true;
+                    if (await InsertReleaseAlbumAsync(findRelease, cancellationToken).ConfigureAwait(false))
+                    {
+                        FetcherLogs.SuccessStrategy(_logger, strategyName: "discogs search by artists", artist.Name!);
+                        success = true;
+                    }
                 }
             }
         }
-        return false;
+        return success;
     }
 
     private async Task<bool> InsertReleaseAlbumAsync(DtoDiscogsRelease release, CancellationToken cancellationToken)
@@ -154,8 +157,9 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
 
     public void Dispose()
     {
-        _onStrategyFailure = null;
-        _onStrategySuccess = null;
+        this.SuccessfulFetchCount = 0;
+        this.FailedFetchCount = 0;
+        this.IgnoredFetchCount = 0;
         _historyIdentifiersCache = [];
     }
 }

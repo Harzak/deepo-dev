@@ -14,8 +14,6 @@ internal class FetcherVinyl : CancellableWorker
     private readonly ILogger _logger;
     private readonly IVinylFetchPipelineFactory _pipelineFactory;
 
-    public int FetchSucced { get; private set; }
-    public int FetchFailed { get; private set; }
 
     public FetcherVinyl(IVinylFetchPipelineFactory pipelineFactory, ILogger logger)
     : base(logger)
@@ -36,22 +34,13 @@ internal class FetcherVinyl : CancellableWorker
 
     protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
     {
-        using (VinylFetchPipeline _strategy = _pipelineFactory.Create())
-        {
-            _strategy.OnStrategySuccess(() =>
-            {
-                FetchSucced++;
-            });
-            _strategy.OnStrategyFailure(() =>
-            {
-                FetchFailed++;
-            });
+        using VinylFetchPipeline _strategy = _pipelineFactory.Create();
 
-            await _strategy.StartAsync(stoppingToken).ConfigureAwait(false);
+        await _strategy.StartAsync(stoppingToken).ConfigureAwait(false);
 
-            FetcherLogs.FetchFailed(_logger, FetchFailed);
-            FetcherLogs.FetchSucceed(_logger, FetchSucced);
-        }
+        FetcherLogs.FetchIgnored(_logger, _strategy.IgnoredFetchCount, _strategy.FetchCount);
+        FetcherLogs.FetchFailed(_logger, _strategy.FailedFetchCount, _strategy.FetchCount);
+        FetcherLogs.FetchSucceed(_logger, _strategy.SuccessfulFetchCount, _strategy.FetchCount);
     }
 }
 

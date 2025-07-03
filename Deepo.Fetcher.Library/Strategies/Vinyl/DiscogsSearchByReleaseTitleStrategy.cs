@@ -4,6 +4,7 @@ using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.LogMessage;
 using Framework.Common.Utils.Result;
 using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Web;
 
@@ -20,9 +21,9 @@ public class DiscogsSearchByReleaseTitleStrategy
         _logger = logger;
     }
 
-    public async Task<OperationResult<DtoDiscogsRelease>> SearchAsync(string releaseTitle, CancellationToken cancellationToken)
+    public async Task<OperationResultList<DtoDiscogsRelease>> SearchAsync(string releaseTitle, CancellationToken cancellationToken)
     {
-        OperationResult<DtoDiscogsRelease> result = new();
+        OperationResultList<DtoDiscogsRelease> result = new();
 
         if (string.IsNullOrEmpty(releaseTitle?.Trim()))
         {
@@ -51,15 +52,23 @@ public class DiscogsSearchByReleaseTitleStrategy
                 VinylStrategyLogs.FailedDiscogsGetReleaseById(_logger, album.Id, releaseRequest.ErrorCode, releaseRequest.ErrorMessage);
                 continue;
             }
-
+      
             bool isReleaseDateParsed = DateTime.TryParse(releaseRequest.Content.Released, out DateTime parsedReleaseDate);
-            if (isReleaseDateParsed && parsedReleaseDate.IsSameMonthAndYear(DateTime.Now))
+            if (isReleaseDateParsed && parsedReleaseDate >= DateTime.Now.AddDays(-50))
             {
+                result.Content.Add(releaseRequest.Content); 
                 VinylStrategyLogs.FoundDiscogsReleaseByTitle(_logger, releaseRequest.Content.Title ?? "", releaseTitle);
-                return result.WithSuccess().WithValue(releaseRequest.Content);
             }
         }
-        VinylStrategyLogs.FailedDiscogsStrategyBytitle(_logger, releaseTitle);
-        return result.WithError($"Search by release title failed, no results found this month for: '{releaseTitle}'");
+
+        if (result.HasContent)
+        {
+            return result.WithSuccess();
+        }
+        else
+        {
+            VinylStrategyLogs.FailedDiscogsStrategyBytitle(_logger, releaseTitle);
+            return result.WithError($"Search by release title failed, no results found this month for: '{releaseTitle}'");
+        }
     }
 }

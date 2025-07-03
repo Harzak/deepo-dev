@@ -21,9 +21,9 @@ internal class DiscogsSearchByArtistsStrategy
         _logger = logger;
     }
 
-    public async Task<OperationResult<DtoDiscogsRelease>> SearchAsync(string artistName, CancellationToken cancellationToken)
+    public async Task<OperationResultList<DtoDiscogsRelease>> SearchAsync(string artistName, CancellationToken cancellationToken)
     {
-        OperationResult<DtoDiscogsRelease> result = new();
+        OperationResultList<DtoDiscogsRelease> result = new();
 
         if (string.IsNullOrEmpty(artistName?.Trim()))
         {
@@ -53,13 +53,21 @@ internal class DiscogsSearchByArtistsStrategy
             }
 
             bool isReleaseDateParsed = DateTime.TryParse(releaseRequest.Content.Released, out DateTime parsedReleaseDate);
-            if (isReleaseDateParsed && parsedReleaseDate.IsSameMonthAndYear(DateTime.Now))
+            if (isReleaseDateParsed && parsedReleaseDate >= DateTime.Now.AddDays(-50))
             {
+                result.Content.Add(releaseRequest.Content);
                 VinylStrategyLogs.FoundDiscogsReleaseByArtist(_logger, releaseRequest.Content.Title ?? "", artistName);
-                return result.WithSuccess().WithValue(releaseRequest.Content);
             }
         }
-        VinylStrategyLogs.FailedDiscogsStrategyByArtist(_logger, artistName);
-        return result.WithError($"Search by artists failed, no results found this month for: '{artistName}'");
+
+        if (result.HasContent)
+        {
+            return result.WithSuccess();
+        }
+        else
+        {
+            VinylStrategyLogs.FailedDiscogsStrategyByArtist(_logger, artistName);
+            return result.WithError($"Search by artists failed, no results found this month for: '{artistName}'");
+        }
     }
 }

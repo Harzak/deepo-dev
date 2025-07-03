@@ -6,6 +6,7 @@ using Framework.Common.Utils.Result;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -48,12 +49,12 @@ public class VinylStrategiesFactory : IVinylStrategiesFactory
         }
     }
 
-    public async Task<OperationResult<DtoDiscogsRelease>> SearchDiscogsByArtistAsync(string artistName, CancellationToken cancellationToken)
+    public async Task<OperationResultList<DtoDiscogsRelease>> SearchDiscogsByArtistAsync(string artistName, CancellationToken cancellationToken)
     {
         return await _strategyDiscogsByArtists.SearchAsync(artistName, cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<OperationResult<DtoDiscogsRelease>> SearchDiscogsByTitleAsync(string releaseTitle, CancellationToken cancellationToken)
+    public async Task<OperationResultList<DtoDiscogsRelease>> SearchDiscogsByTitleAsync(string releaseTitle, CancellationToken cancellationToken)
     {
         return await _strategyDiscogsByTitle.SearchAsync(releaseTitle, cancellationToken).ConfigureAwait(false);
     }

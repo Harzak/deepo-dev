@@ -8,11 +8,11 @@ internal static partial class FetcherLogs
     [LoggerMessage(EventId = 0, Level = LogLevel.Information, Message = "{fetchName} successfully ended")]
     public static partial void Success(ILogger logger, string fetchName);
 
-    [LoggerMessage(EventId = 1, Level = LogLevel.Information, Message = "Fetch succeed: {count}")]
-    public static partial void FetchSucceed(ILogger logger, int count);
+    [LoggerMessage(EventId = 1, Level = LogLevel.Information, Message = "Successful fetch: {count} out of {countAll}")]
+    public static partial void FetchSucceed(ILogger logger, int count, int countAll);
 
-    [LoggerMessage(EventId = 2, Level = LogLevel.Information, Message = "Fetch failed: {count}")]
-    public static partial void FetchFailed(ILogger logger, int count);
+    [LoggerMessage(EventId = 2, Level = LogLevel.Information, Message = "Failed fetch: {count} out of {countAll}")]
+    public static partial void FetchFailed(ILogger logger, int count, int countAll);
 
     [LoggerMessage(EventId = 3, Level = LogLevel.Error, Message = "All strategies failed for release: '{title}'")]
     public static partial void AllStrategiesFailed(ILogger logger, string title);
@@ -29,4 +29,6 @@ internal static partial class FetcherLogs
     [LoggerMessage(EventId = 7, Level = LogLevel.Information, Message = "Release successfully inserted in DB: '{title}'")]
     public static partial void InsertSucceed(ILogger logger, string title);
 
+    [LoggerMessage(EventId = 8, Level = LogLevel.Information, Message = "Ignored fetch: {count} out of {countAll}")]
+    public static partial void FetchIgnored(ILogger logger, int count, int countAll);
 }
