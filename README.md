@@ -39,7 +39,7 @@ Exposes the most recently scraped releases
 # :rocket: Tech Stack
 
 - **Frontend**: Blazor WebAssembly ([MudBlazor](https://github.com/MudBlazor/MudBlazor)), WPF XAML ([WPF UI](https://github.com/lepoco/wpfui)) 
-- **Backend**: .NET 9 (C#), REST API, BackgroundService, MVVM, Mediator  
+- **Backend**: .NET 9 (C#), REST API, BackgroundService, MVVM, Mediator ([MediatR](https://github.com/LuckyPennySoftware/MediatR))
 - **Database**: SQLServer, Entity Framework (database first)  
 - **API**: Spotify, Discogs
 
