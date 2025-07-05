@@ -1,8 +1,7 @@
 ﻿using Deepo.DAL.Repository.Configuration;
-using Framework.Common.Utils.Time.Provider;
+using Deepo.Framework.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using TimeProvider = Framework.Common.Utils.Time.Provider.TimeProvider;
 
 namespace Deepo.Mediator.Configuration;
 
@@ -13,7 +12,7 @@ public static class ServiceCollectionExtension
         ArgumentNullException.ThrowIfNull(config, nameof(config));
 
         services.AddDALServiceDependencies(config);
-        services.AddTransient<ITimeProvider, TimeProvider>();
+        services.AddTransient<ITimeProvider, Framework.Time.Provider.TimeProvider>();
         services.AddMediatR(x => x.RegisterServicesFromAssembly(typeof(ServiceCollectionExtension).Assembly));
         return services;
     }

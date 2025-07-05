@@ -1,12 +1,10 @@
 ﻿using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Interfaces;
-using Framework.Common.Utils.Time.Provider;
-using Framework.Common.Worker.Interfaces;
-using Framework.Common.Worker.Schedule;
-using Framework.Common.Worker.Schedule.Planification;
+using Deepo.Fetcher.Library.Workers.Schedule;
+using Deepo.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
-using ITimer = Framework.Common.Utils.Time.ITimer;
+using ITimer = Deepo.Framework.Interfaces.ITimer;
 
 namespace Deepo.Fetcher.Library.Fetcher.Planification;
 

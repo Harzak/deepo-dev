@@ -1,7 +1,7 @@
 ﻿using Deepo.API.Controller;
+using Deepo.Framework.Results;
 using Deepo.Mediator.Query;
 using FluentAssertions;
-using Framework.Common.Utils.Result;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

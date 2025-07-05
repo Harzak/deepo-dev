@@ -4,17 +4,14 @@ using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Host.WPF;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Deepo.Fetcher.Viewer.Models;
-using Framework.WPF.Behavior.ViewModel;
-using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Viewer.ViewModels;
 
-public class AppOverviewViewModel : ViewModelBase
+public class AppOverviewViewModel : BaseViewModel
 {
     private readonly IFetcherExecutionRepository _fetcherExecutionRepository;
     private readonly IFetcherListener _fetcherListener;
@@ -65,5 +62,17 @@ public class AppOverviewViewModel : ViewModelBase
         _fetcherExecutions = await _fetcherExecutionRepository.GetFetcherExecutionsAsync().ConfigureAwait(false);
         OnPropertyChanged(nameof(ActiveFetcherCount));
         OnPropertyChanged(nameof(InactiveFetcherCount));
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (_fetcherListener != null)
+            {
+                _fetcherListener.FetcherExecutionRowAdded -= OnFetcherExecutionRowAdded;
+            }
+        }
+        base.Dispose(disposing);
     }
 }

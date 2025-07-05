@@ -1,6 +1,6 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Dto.Discogs;
-using Framework.Web.Http.Client.Endpoint;
+using Deepo.Framework.Web.Endpoint;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 

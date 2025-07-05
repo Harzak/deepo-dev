@@ -27,10 +27,6 @@
 		<None Remove="Resources\values\nav_menu.xml" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.9" />
-		<PackageReference Include="Harzak.Framework.Web.Http" Version="1.0.9" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Ninject" Version="3.3.6" />
 		<PackageReference Include="NLog" Version="5.5.0" />
@@ -45,5 +41,8 @@
 	  <Content Include="nlog.config">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Deepo.Framework\Deepo.Framework.csproj" />
 	</ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿using Framework.Common.Utils.Result;
+﻿using Deepo.Framework.Results;
 
 namespace Deepo.DAL.Repository.Result;
 

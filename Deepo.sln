@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.Fetcher.Library.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.Mediator.Tests", "Tests\Deepo.Mediator.Tests\Deepo.Mediator.Tests.csproj", "{6AE32F4A-8A85-6C5F-605B-3C1D3968E328}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Deepo.Framework", "Deepo.Framework\Deepo.Framework.csproj", "{B0256671-416C-4546-AACB-B5826D144111}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{6AE32F4A-8A85-6C5F-605B-3C1D3968E328}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AE32F4A-8A85-6C5F-605B-3C1D3968E328}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AE32F4A-8A85-6C5F-605B-3C1D3968E328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0256671-416C-4546-AACB-B5826D144111}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0256671-416C-4546-AACB-B5826D144111}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0256671-416C-4546-AACB-B5826D144111}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0256671-416C-4546-AACB-B5826D144111}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

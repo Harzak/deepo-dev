@@ -1,8 +1,5 @@
 ﻿using Deepo.DAL.EF.Models;
-using Framework.Common.Worker.Interfaces;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using Deepo.Framework.Interfaces;
 
 namespace Deepo.DAL.Repository.Interfaces;
 

@@ -1,8 +1,7 @@
 ﻿using Deepo.DAL.EF.Models;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.DAL.Repository.LogMessage;
-using Framework.Common.Utils.Time.Provider;
-using Framework.Common.Worker.Interfaces;
+using Deepo.Framework.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

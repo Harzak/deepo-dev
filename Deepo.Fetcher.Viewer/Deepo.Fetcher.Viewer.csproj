@@ -54,11 +54,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Harzak.Framework.Common.Data" Version="1.0.1" />
-		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.9" />
-		<PackageReference Include="Harzak.Framework.WPF.Behavior" Version="1.0.1" />
 		<PackageReference Include="MaterialDesignThemes" Version="5.2.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
 		<PackageReference Include="NLog" Version="5.5.0" />
 		<PackageReference Include="NLog.Extensions.Logging" Version="5.5.0" />

@@ -1,7 +1,4 @@
 ﻿using Deepo.DAL.Repository.Feature.Fetcher;
-using Framework.Common.Worker.Interfaces;
-using Framework.Common.Worker.Hosting;
-using Framework.Common.Worker.Schedule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Deepo.Fetcher.Library.Configuration.Setting;
 using Microsoft.Extensions.Options;
-using Framework.Common.Worker.EventArg;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Interfaces;
+using Deepo.Framework.Interfaces;
+using Deepo.Framework.EventArguments;
 
-namespace Deepo.Fetcher.Host;
+namespace Deepo.Fetcher.Host.Hosting;
 
 public class TriggeredHost : HostWorker
 {

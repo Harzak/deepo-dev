@@ -6,7 +6,7 @@ using Deepo.Fetcher.Library.Dto.Spotify;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.LogMessage;
 using Deepo.Fetcher.Library.Mappers;
-using Framework.Common.Utils.Result;
+using Deepo.Framework.Results;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Collections.ObjectModel;

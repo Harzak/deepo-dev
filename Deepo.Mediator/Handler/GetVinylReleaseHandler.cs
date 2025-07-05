@@ -2,7 +2,7 @@
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.Dto;
 using Deepo.Mediator.Query;
-using Framework.Common.Utils.Result;
+using Deepo.Framework.Results;
 using MediatR;
 
 namespace Deepo.Mediator.Handler;

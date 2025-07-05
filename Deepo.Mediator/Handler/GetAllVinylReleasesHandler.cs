@@ -1,8 +1,8 @@
 ﻿using Deepo.DAL.EF.Models;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.Dto;
+using Deepo.Framework.Results;
 using Deepo.Mediator.Query;
-using Framework.Common.Utils.Result;
 using MediatR;
 
 namespace Deepo.Mediator.Handler;

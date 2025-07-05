@@ -1,7 +1,8 @@
 ﻿using Android.Views;
 using AndroidX.RecyclerView.Widget;
 using Deepo.Client.App.Adapter;
-using Framework.Web.Http.Client.Service;
+using Deepo.Framework.Interfaces;
+using Deepo.Framework.Results;
 using Newtonsoft.Json;
 
 namespace Deepo.Client.App.Fragments
@@ -31,7 +32,7 @@ namespace Deepo.Client.App.Fragments
             _layoutManager = new LinearLayoutManager(this.Context);
             _recyclerViewNewReleases?.SetLayoutManager(_layoutManager);
 
-            Task<Framework.Common.Utils.Result.OperationResult<string>> task = Task.Run(async () =>
+            Task<OperationResult<string>> task = Task.Run(async () =>
             {
                 return await _httpService.GetAsync("vinyl?market=FR&offset=100&limit=50", CancellationToken.None).ConfigureAwait(false);
             });

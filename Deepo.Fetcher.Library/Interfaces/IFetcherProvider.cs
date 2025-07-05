@@ -1,5 +1,4 @@
-﻿using Framework.Common.Worker.Interfaces;
-using Framework.Common.Worker.Schedule.Planification;
+﻿using Deepo.Framework.Interfaces;
 
 namespace Deepo.Fetcher.Library.Interfaces;
 

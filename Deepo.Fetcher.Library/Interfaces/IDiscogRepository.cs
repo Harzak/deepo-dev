@@ -1,5 +1,5 @@
 ﻿using Deepo.Fetcher.Library.Dto.Discogs;
-using Framework.Common.Utils.Result;
+using Deepo.Framework.Results;
 
 namespace Deepo.Fetcher.Library.Interfaces;
 

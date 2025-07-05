@@ -1,11 +1,9 @@
 ﻿using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Interfaces;
-using Framework.Common.Worker.Hosting;
-using Framework.Common.Worker.Interfaces;
-using Framework.Common.Worker.Schedule;
+using Deepo.Framework.Interfaces;
 
-namespace Deepo.Fetcher.Host;
+namespace Deepo.Fetcher.Host.Hosting;
 
 internal sealed class ContinuousHost : HostPlannedWorker
 {
@@ -29,14 +27,14 @@ internal sealed class ContinuousHost : HostPlannedWorker
 
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
-        base.AddWorkers(await _fetcherProvider.GetAllFetcherAsync().ConfigureAwait(false));
+        AddWorkers((await _fetcherProvider.GetAllFetcherAsync().ConfigureAwait(false)).ToList().AsReadOnly());
         await base.StartAsync(cancellationToken).ConfigureAwait(false);
 
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        base.Scheduler.Start();
+        Scheduler.Start();
         return Task.CompletedTask;
     }
 

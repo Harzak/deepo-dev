@@ -3,7 +3,6 @@ using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Viewer.Constants;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Deepo.Fetcher.Viewer.Models;
-using Framework.Common.Data.SQLServer.ServiceBroker;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;

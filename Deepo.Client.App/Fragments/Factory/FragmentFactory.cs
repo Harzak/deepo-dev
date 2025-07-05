@@ -1,4 +1,4 @@
-﻿using Framework.Web.Http.Client.Service;
+﻿using Deepo.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Deepo.Client.App.Fragments.Factory

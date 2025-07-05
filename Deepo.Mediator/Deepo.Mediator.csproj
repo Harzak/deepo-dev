@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.9" />
     <PackageReference Include="MediatR" Version="12.5.0" />
   </ItemGroup>
 

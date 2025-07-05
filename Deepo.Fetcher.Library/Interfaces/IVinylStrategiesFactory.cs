@@ -1,6 +1,6 @@
 ﻿using Deepo.Fetcher.Library.Dto.Discogs;
 using Deepo.Fetcher.Library.Dto.Spotify;
-using Framework.Common.Utils.Result;
+using Deepo.Framework.Results;
 using System.Collections.ObjectModel;
 
 namespace Deepo.Fetcher.Library.Interfaces;

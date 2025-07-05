@@ -3,9 +3,9 @@ using Deepo.Fetcher.Host.WPF.Extensions;
 using Deepo.Fetcher.Viewer.Features.Listener;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Deepo.Fetcher.Viewer.ViewModels;
-using Framework.Common.Utils.Time;
-using Framework.Common.Utils.Time.Provider;
-using Framework.WPF.Behavior.Navigation;
+using Deepo.Framework.Interfaces;
+using Deepo.Framework.Time;
+using Deepo.Framework.Time.Provider;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -46,7 +46,6 @@ public partial class App : Application
                 services.AddSingleton<IFetcherListenerFactory, FetcherListenerFactory>();
                 services.AddTransient<ITimeProvider, TimeProvider>();
                 services.AddTransient<ITimer, Timer>();
-                services.AddSingleton<NavigationState>();
 
                 services.AddSingleton(s => new MainWindow()
                 {

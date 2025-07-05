@@ -13,8 +13,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Harzak.Framework.Common.Worker" Version="1.0.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="9.0.5" />
@@ -38,4 +36,12 @@
 			<UserProperties appsettings_1json__JsonSchema="" />
 		</VisualStudio>
 	</ProjectExtensions>
+
+	<ItemGroup>
+	  <EditorConfigFiles Remove="C:\Workspaces\Deepo-dev\Deepo.Fetcher.Host\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="C:\Workspaces\Deepo-dev\Deepo.Fetcher.Host\.editorconfig" />
+	</ItemGroup>
 </Project>

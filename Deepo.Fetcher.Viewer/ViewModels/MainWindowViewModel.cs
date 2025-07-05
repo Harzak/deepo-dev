@@ -1,7 +1,5 @@
-﻿using Deepo.DAL.Repository.Feature.Fetcher;
-using Deepo.DAL.Repository.Interfaces;
+﻿using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Viewer.Interfaces;
-using Framework.WPF.Behavior.ViewModel;
 using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -9,7 +7,7 @@ using Wpf.Ui;
 
 namespace Deepo.Fetcher.Viewer.ViewModels;
 
-internal sealed class MainWindowViewModel : ViewModelBase
+internal sealed class MainWindowViewModel : BaseViewModel
 {
     private readonly IThemeService _themeService;
 
@@ -41,5 +39,15 @@ internal sealed class MainWindowViewModel : ViewModelBase
     public async Task InitializeAsync()
     {
         await AppOverviewViewModel.InitializeAsync().ConfigureAwait(false);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            FetcherListViewModel.Dispose();
+            AppOverviewViewModel.Dispose();
+        }
+        base.Dispose(disposing);
     }
 }

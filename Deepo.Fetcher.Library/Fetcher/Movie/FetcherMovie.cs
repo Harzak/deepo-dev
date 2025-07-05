@@ -1,5 +1,5 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
-using Framework.Common.Worker;
+using Deepo.Fetcher.Library.Workers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

@@ -1,4 +1,4 @@
-﻿using Framework.Common.Utils.Result;
+﻿using Deepo.Framework.Results;
 using System.Net;
 
 namespace Deepo.Fetcher.Library.Utils;

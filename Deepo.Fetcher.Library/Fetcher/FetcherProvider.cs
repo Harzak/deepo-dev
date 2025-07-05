@@ -1,8 +1,7 @@
 ﻿using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Interfaces;
-using Framework.Common.Worker.Interfaces;
-using Framework.Common.Worker.Schedule.Planification;
+using Deepo.Framework.Interfaces;
 using System.Collections.ObjectModel;
 using Models = Deepo.DAL.EF.Models;
 

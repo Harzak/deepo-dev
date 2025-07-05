@@ -1,6 +1,6 @@
 ﻿using Deepo.API.Constant;
+using Deepo.Framework.Results;
 using Deepo.Mediator.Query;
-using Framework.Common.Utils.Result;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

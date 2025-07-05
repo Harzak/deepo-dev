@@ -1,5 +1,6 @@
 ﻿using Deepo.Client.App.Service;
-using Framework.Web.Http.Client.Service;
+using Deepo.Framework.Interfaces;
+using Deepo.Framework.Web.Service;
 using Ninject.Modules;
 
 namespace Deepo.Client.App.DI

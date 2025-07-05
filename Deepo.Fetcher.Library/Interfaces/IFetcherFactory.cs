@@ -1,4 +1,4 @@
-﻿using Framework.Common.Worker.Interfaces;
+﻿using Deepo.Framework.Interfaces;
 
 namespace Deepo.Fetcher.Library.Interfaces;
 
