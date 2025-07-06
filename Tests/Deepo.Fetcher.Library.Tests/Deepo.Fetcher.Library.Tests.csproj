@@ -12,9 +12,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="FluentAssertions" Version="8.3.0" />
-		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.9" />
-		<PackageReference Include="Harzak.Framework.Common.Worker" Version="1.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
 		<PackageReference Include="Moq" Version="4.20.72" />
 		<PackageReference Include="MSTest.TestAdapter" Version="3.9.1" />
@@ -30,6 +27,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Deepo.Fetcher.Library\Deepo.Fetcher.Library.csproj" />
+		<ProjectReference Include="..\..\Deepo.Framework\Deepo.Framework.csproj" />
 	</ItemGroup>
 
 </Project>

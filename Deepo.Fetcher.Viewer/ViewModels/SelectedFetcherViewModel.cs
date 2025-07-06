@@ -1,7 +1,6 @@
 ﻿using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.Fetcher.Host.WPF;
 using Deepo.Fetcher.Viewer.Interfaces;
-using Framework.WPF.Behavior.ViewModel;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -11,7 +10,7 @@ using Deepo.DAL.Repository.Interfaces;
 
 namespace Deepo.Fetcher.Viewer.ViewModels;
 
-internal sealed class SelectedFetcherViewModel : ViewModelBase
+internal sealed class SelectedFetcherViewModel : BaseViewModel
 {
     private readonly IFetcherListener _fetcherListener;
     private readonly IFetcherRepository _fetcherRepository;
@@ -90,7 +89,17 @@ internal sealed class SelectedFetcherViewModel : ViewModelBase
 
     protected override void Dispose(bool disposing)
     {
+        if (disposing)
+        {
+            if ( _fetcherListener != null)
+            {
+                _fetcherListener.VinylReleaseRowAdded -= OnVinylReleaseRowAdded;
+                _fetcherListener.HttpRequestLogRowAdded -= OnHttpRequestRowAdded;
+                _fetcherListener.FetcherExecutionRowAdded -= OnFetcherExecutionRowAdded;
+                _fetcherListener.Dispose();
+            }
+            this.FetcherRows?.Clear();
+        }
         base.Dispose(disposing);
-        _fetcherListener.Dispose();
     }
 }

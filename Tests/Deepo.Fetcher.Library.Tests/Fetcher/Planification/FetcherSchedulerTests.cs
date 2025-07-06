@@ -2,11 +2,11 @@
 using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Library.Fetcher.Planification;
+using Deepo.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Diagnostics.CodeAnalysis;
-using ITimer = Framework.Common.Utils.Time.ITimer;
 
 namespace Deepo.Fetcher.Library.Tests.Fetchers.Planification
 {

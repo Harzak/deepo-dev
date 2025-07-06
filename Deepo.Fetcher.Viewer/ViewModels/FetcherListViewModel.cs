@@ -1,13 +1,12 @@
 ﻿using Deepo.DAL.Repository.Interfaces;
 using Deepo.Fetcher.Viewer.Interfaces;
-using Framework.WPF.Behavior.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
 using EF = Deepo.DAL.EF.Models;
 
 namespace Deepo.Fetcher.Viewer.ViewModels;
 
-internal sealed class FetcherListViewModel : ViewModelBase
+internal sealed class FetcherListViewModel : BaseViewModel
 {
     private readonly IFetcherRepository _fetcherRepository;
     private readonly IFetcherListener _fetcherListener;
@@ -32,7 +31,6 @@ internal sealed class FetcherListViewModel : ViewModelBase
         }
     }
 
-
     internal FetcherListViewModel(IFetcherRepository fetcherRepository, IFetcherListener fetcherListener)
     {
         _fetcherRepository = fetcherRepository;
@@ -40,7 +38,7 @@ internal sealed class FetcherListViewModel : ViewModelBase
 
         var fetchers = _fetcherRepository.GetAllAsync().Result;
 
-        this.Fetchers = fetchers != null ? fetchers : new List<EF.Fetcher>();
+        this.Fetchers = fetchers != null ? fetchers : [];
 
         if (Fetchers.Any())
         {

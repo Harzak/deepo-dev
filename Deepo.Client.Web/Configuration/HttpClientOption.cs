@@ -1,4 +1,4 @@
-﻿using Framework.Web.Http.Client.Service;
+﻿using Deepo.Framework.Interfaces;
 
 namespace Deepo.Client.Web.Configuration;
 

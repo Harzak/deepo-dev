@@ -1,9 +1,7 @@
-﻿using Deepo.DAL.Repository.Interfaces;
-using Deepo.Fetcher.Library.Dto.Discogs;
-using Deepo.Fetcher.Library.Extensions;
+﻿using Deepo.Fetcher.Library.Dto.Discogs;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.LogMessage;
-using Framework.Common.Utils.Result;
+using Deepo.Framework.Results;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Web;

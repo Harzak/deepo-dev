@@ -7,3 +7,4 @@ using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Performance", "CA1852:Seal internal types", Justification = "<Pending>", Scope = "type", Target = "~T:Deepo.Fetcher.Viewer.Features.FetcherGrid.Provider.FetcherMovieGridProvider")]
 [assembly: SuppressMessage("Performance", "CA1852:Seal internal types", Justification = "<Pending>", Scope = "type", Target = "~T:Deepo.Fetcher.Viewer.Features.FetcherGrid.Provider.FetcherGridProviderFactory")]
+[assembly: SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "<Pending>", Scope = "member", Target = "~M:Deepo.Fetcher.Viewer.Features.Listener.SQLDependency.CreateCommand~System.Boolean")]

@@ -4,11 +4,11 @@ using Deepo.Fetcher.Library.Dto.Spotify;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Repositories.Spotify.Endpoint;
 using Deepo.Fetcher.Library.Utils;
-using Framework.Web.Http.Client.Service;
+using Deepo.Framework.Time;
+using Deepo.Framework.Web.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Runtime.CompilerServices;
-using TimeProvider = Framework.Common.Utils.Time.Provider.TimeProvider;
 
 namespace Deepo.Fetcher.Library.Repositories.Spotify;
 
@@ -17,13 +17,15 @@ internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
     private readonly HttpServiceOption _options;
     private readonly EndPointSearchAlbum _searchAlbumEndpoint;
 
-    public SpotifyRepository(IHttpClientFactory httpClientFactory, IOptions<HttpServicesOption> options, ILogger<SpotifyRepository> logger)
+    public SpotifyRepository(
+        IHttpClientFactory httpClientFactory, 
+        IAuthServiceFactory authServiceFactory,
+        IOptions<HttpServicesOption> options, 
+        ILogger<SpotifyRepository> logger)
     : base(httpClientFactory,
-        new TimeProvider(),
-#pragma warning disable CA2000 // Dispose objects before losing scope
-        new SpotifyAuthService(httpClientFactory, options, logger),
-#pragma warning restore CA2000 // Dispose objects before losing scope
-        options.Value.Spotify,
+        new DateTimeFacade(),
+        authServiceFactory.CreateSpotifyAuthService(),
+        options.Value.Spotify ?? throw new ArgumentNullException("options.Value.SpotifyAuth"),
         logger)
     {
         ArgumentNullException.ThrowIfNull(options?.Value?.Spotify, nameof(options.Value.Spotify));

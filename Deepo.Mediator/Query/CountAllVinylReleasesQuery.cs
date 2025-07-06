@@ -1,4 +1,4 @@
-﻿using Framework.Common.Utils.Result;
+﻿using Deepo.Framework.Results;
 using MediatR;
 
 namespace Deepo.Mediator.Query;

@@ -1,18 +1,12 @@
-﻿using Azure.Core;
-using Deepo.DAL.Repository.Feature.Release;
-using Deepo.DAL.Repository.Interfaces;
-using Deepo.Fetcher.Library.Configuration.Setting;
+﻿using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Dto.Discogs;
-using Deepo.Fetcher.Library.Dto.Spotify;
 using Deepo.Fetcher.Library.Interfaces;
-using Deepo.Fetcher.Library.Mappers;
 using Deepo.Fetcher.Library.Repositories.Discogs.Endpoint;
-using Framework.Common.Utils.Result;
-using Framework.Web.Http.Client.Service;
+using Deepo.Framework.Results;
+using Deepo.Framework.Time;
+using Deepo.Framework.Web.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System.Globalization;
-using TimeProvider = Framework.Common.Utils.Time.Provider.TimeProvider;
 
 namespace Deepo.Fetcher.Library.Repositories.Discogs;
 
@@ -22,8 +16,13 @@ internal class DiscogRepository : HttpService, IDiscogRepository
     private readonly EndPointSearch _endPointSearch;
     private readonly EndPointReleases _endPointReleases;
 
-    public DiscogRepository(IHttpClientFactory httpClientFactory, IOptions<HttpServicesOption> options, ILogger<DiscogRepository> logger)
-    : base(httpClientFactory, new TimeProvider(), options.Value.Discogs, logger)
+    public DiscogRepository(IHttpClientFactory httpClientFactory,
+        IOptions<HttpServicesOption> options,
+        ILogger<DiscogRepository> logger)
+    : base(httpClientFactory, 
+        new DateTimeFacade(), 
+        options.Value.Discogs ?? throw new ArgumentNullException("options.Value.SpotifyAuth"), 
+        logger)
     {
         ArgumentNullException.ThrowIfNull(options?.Value?.Discogs, nameof(options.Value.Discogs));
 

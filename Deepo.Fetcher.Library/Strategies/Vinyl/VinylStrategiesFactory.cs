@@ -2,7 +2,7 @@
 using Deepo.Fetcher.Library.Dto.Discogs;
 using Deepo.Fetcher.Library.Dto.Spotify;
 using Deepo.Fetcher.Library.Interfaces;
-using Framework.Common.Utils.Result;
+using Deepo.Framework.Results;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;

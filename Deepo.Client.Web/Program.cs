@@ -4,8 +4,9 @@ using Deepo.Client.Web.Dto;
 using Deepo.Client.Web.Filtering.Vinyl;
 using Deepo.Client.Web.Interfaces;
 using Deepo.Client.Web.Theme;
-using Framework.Common.Utils.Time.Provider;
-using Framework.Web.Http.Client.Service;
+using Deepo.Framework.Interfaces;
+using Deepo.Framework.Time;
+using Deepo.Framework.Web.Service;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -26,7 +27,7 @@ internal static class Program
 
         builder.Services.AddMudServices();
 
-        builder.Services.AddTransient<ITimeProvider, Framework.Common.Utils.Time.Provider.TimeProvider>();
+        builder.Services.AddTransient<IDateTimeFacade, DateTimeFacade>();
         builder.Services.AddSingleton<IThemeProvider, ThemeProvider>();
         builder.Services.AddTransient<IHttpService, HttpService>();
         builder.Services.AddSingleton<IVinylCatalog, VinylLazyCatalog>();

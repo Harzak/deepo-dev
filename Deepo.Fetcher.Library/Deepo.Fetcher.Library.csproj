@@ -12,17 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Harzak.Framework.Common.Utils" Version="1.0.9" />
-		<PackageReference Include="Harzak.Framework.Common.Worker" Version="1.0.1" />
-		<PackageReference Include="Harzak.Framework.Web.Http" Version="1.0.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.5" />
-		<PackageReference Include="Microsoft.Net.Http.Headers" Version="9.0.5" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.ServiceModel.Syndication" Version="9.0.5" />
 	</ItemGroup>
@@ -33,6 +23,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Deepo.DAL.Repository\Deepo.DAL.Repository.csproj" />
+	  <ProjectReference Include="..\Deepo.Framework\Deepo.Framework.csproj" />
 	</ItemGroup>
 
 </Project>

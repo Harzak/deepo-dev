@@ -1,4 +1,5 @@
-﻿using Deepo.Fetcher.Library.Configuration.Setting;
+﻿using Deepo.Fetcher.Library.Authentication;
+using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Fetcher;
 using Deepo.Fetcher.Library.Fetcher.Planification;
 using Deepo.Fetcher.Library.Fetcher.Vinyl;
@@ -6,15 +7,13 @@ using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Repositories.Discogs;
 using Deepo.Fetcher.Library.Repositories.Spotify;
 using Deepo.Fetcher.Library.Strategies.Vinyl;
-using Framework.Common.Utils.Time.Provider;
-using Framework.Common.Worker.Schedule;
-using Framework.Common.Worker.Schedule.Planification;
-using Framework.Web.Http.Client.Handler;
+using Deepo.Fetcher.Library.Workers.Schedule;
+using Deepo.Framework.Interfaces;
+using Deepo.Framework.Time;
+using Deepo.Framework.Web.Handler;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using ITimer = Framework.Common.Utils.Time.ITimer;
-using TimeProvider = Framework.Common.Utils.Time.Provider.TimeProvider;
 
 namespace Deepo.Fetcher.Library.Configuration;
 
@@ -30,23 +29,24 @@ public static class ServiceCollectionExtension
         services.TryAddTransient<LoggingHandler>();
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:Spotify:Name") ?? string.Empty)
-                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new TimeProvider()))
+                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new DateTimeFacade()))
                     .AddHttpMessageHandler((x)=> x.GetRequiredService<LoggingHandler>())
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:SpotifyAuth:Name") ?? string.Empty)
-                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new TimeProvider()))
+                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new DateTimeFacade()))
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:Discogs:Name") ?? string.Empty)
-                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new TimeProvider()))
+                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new DateTimeFacade()))
                     .AddHttpMessageHandler((x) => x.GetRequiredService<LoggingHandler>())
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddTransient<ISpotifyRepository, SpotifyRepository>();
         services.AddTransient<IDiscogRepository, DiscogRepository>();
-        services.AddTransient<ITimeProvider, TimeProvider>();
-        services.AddTransient<ITimer>(x => new Framework.Common.Utils.Time.Timer(1000));
+        services.AddTransient<IAuthServiceFactory, AuthServiceFactory>();
+        services.AddTransient<IDateTimeFacade, DateTimeFacade>();
+        services.AddTransient<Framework.Interfaces.ITimer>(x => new Framework.Time.Timer(1000));
         services.AddTransient<IScheduler, FetchersScheduler>();
         services.AddTransient<IFetcherFactory, FetcherFactory>();
         services.AddTransient<IFetcherProvider, FetcherProvider>();

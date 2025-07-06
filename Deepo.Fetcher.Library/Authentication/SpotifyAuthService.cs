@@ -1,14 +1,14 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
-using Framework.Common.Utils.Extension;
-using Framework.Common.Utils.Result;
-using Framework.Web.Http.Client.Model;
-using Framework.Web.Http.Client.Service;
+using Deepo.Framework.Interfaces;
+using Deepo.Framework.Results;
+using Deepo.Framework.Time;
+using Deepo.Framework.Web.Model;
+using Deepo.Framework.Web.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using TimeProvider = Framework.Common.Utils.Time.Provider.TimeProvider;
 
 namespace Deepo.Fetcher.Library.Authentication;
 
@@ -16,8 +16,14 @@ internal class SpotifyAuthService : HttpService, IAuthenticationHttpService
 {
     private readonly HttpServiceOption _options;
 
-    internal SpotifyAuthService(IHttpClientFactory httpClientFactory, IOptions<HttpServicesOption> options, ILogger<HttpService> logger)
-    : base(httpClientFactory, new TimeProvider(), options.Value.SpotifyAuth, logger)
+    internal SpotifyAuthService(
+        IHttpClientFactory httpClientFactory, 
+        IOptions<HttpServicesOption> options, 
+        ILogger<HttpService> logger)
+    : base(httpClientFactory, 
+        new DateTimeFacade(), 
+        options.Value.SpotifyAuth ?? throw new ArgumentNullException("options.Value.SpotifyAuth"), 
+        logger)
     {
         ArgumentNullException.ThrowIfNull(options?.Value?.Spotify, nameof(options.Value.Spotify));
 
@@ -38,7 +44,7 @@ internal class SpotifyAuthService : HttpService, IAuthenticationHttpService
             {
                 SpotifyToken? spotifyToken = JsonSerializer.Deserialize<SpotifyToken>(response.Content);
 
-                if (spotifyToken != null)
+                if (spotifyToken?.AccessToken != null && spotifyToken?.TokenType != null)
                 {
                     return new TokenModel(spotifyToken.AccessToken, spotifyToken.TokenType, TimeSpan.FromSeconds(spotifyToken.ExpiresIn));
                 }

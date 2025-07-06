@@ -2,7 +2,7 @@
 using Deepo.Fetcher.Library.Fetcher.Movie;
 using Deepo.Fetcher.Library.Fetcher.Vinyl;
 using Deepo.Fetcher.Library.Interfaces;
-using Framework.Common.Worker.Interfaces;
+using Deepo.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

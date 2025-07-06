@@ -1,8 +1,8 @@
 ﻿using Deepo.Client.Web.Configuration;
 using Deepo.Client.Web.Dto;
 using Deepo.Client.Web.Resources;
-using Framework.Common.Utils.Result;
-using Framework.Web.Http.Client.Service;
+using Deepo.Framework.Interfaces;
+using Deepo.Framework.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;

@@ -2,8 +2,8 @@
 using Deepo.Fetcher.Library.LogMessage;
 using Deepo.Fetcher.Library.Strategies.Vinyl;
 using Deepo.Fetcher.Library.Utils;
-using Framework.Common.Utils.Result;
-using Framework.Common.Worker;
+using Deepo.Fetcher.Library.Workers;
+using Deepo.Framework.Results;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 

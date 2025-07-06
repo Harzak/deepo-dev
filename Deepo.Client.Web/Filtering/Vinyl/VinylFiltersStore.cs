@@ -2,8 +2,8 @@
 using Deepo.Client.Web.Configuration;
 using Deepo.Client.Web.Dto;
 using Deepo.Client.Web.Interfaces;
-using Framework.Common.Utils.Result;
-using Framework.Web.Http.Client.Service;
+using Deepo.Framework.Interfaces;
+using Deepo.Framework.Results;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 

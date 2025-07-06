@@ -1,11 +1,11 @@
 ﻿using Deepo.Client.Web.Configuration;
 using Deepo.Client.Web.Dto;
-using Framework.Common.Utils.Result;
-using Framework.Web.Http.Client.Service;
 using Newtonsoft.Json;
 using System.Globalization;
 using Deepo.Client.Web.Filtering;
 using Deepo.Client.Web.Interfaces;
+using Deepo.Framework.Results;
+using Deepo.Framework.Interfaces;
 
 namespace Deepo.Client.Web.Catalog;
 

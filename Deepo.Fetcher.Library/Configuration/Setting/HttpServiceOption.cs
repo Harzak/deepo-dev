@@ -1,4 +1,4 @@
-﻿using Framework.Web.Http.Client.Service;
+﻿using Deepo.Framework.Interfaces;
 using System.Reflection;
 
 namespace Deepo.Fetcher.Library.Configuration.Setting;

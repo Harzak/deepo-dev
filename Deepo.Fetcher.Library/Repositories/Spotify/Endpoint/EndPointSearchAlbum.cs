@@ -1,12 +1,11 @@
 ﻿using Deepo.Fetcher.Library.Configuration;
 using Deepo.Fetcher.Library.Configuration.Setting;
-using Framework.Common.Utils.Extension;
-using Framework.Web.Http.Client.Endpoint;
-using Framework.Web.Http.Client.Endpoint.Queries;
-using Framework.Web.Http.Extension;
+using Deepo.Framework.Web.Endpoint;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Text.Json;
+using Deepo.Framework.Extensions;
+using Deepo.Framework.Interfaces;
 
 namespace Deepo.Fetcher.Library.Repositories.Spotify.Endpoint;
 
@@ -61,7 +60,7 @@ internal class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<
     {
         string? nextQuery = JsonSerializer.Deserialize<Dto.Spotify.DtoSpotifyAlbums>(content)?.Result?.Next;
 
-        if (nextQuery.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(nextQuery))
         {
             Dto.Spotify.ResultSpotify<Dto.Spotify.DtoSpotifyAlbum>? result = JsonSerializer.Deserialize<Dto.Spotify.DtoSpotifyAlbums>(content)?.Result;
             if (result?.Href != null && result?.Offset != null && result.Offset < OFFSET_MAX_RANGE)

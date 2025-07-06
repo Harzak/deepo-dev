@@ -1,5 +1,5 @@
 ﻿using Deepo.DAL.EF.Models;
-using Framework.Common.Worker.Interfaces;
+using Deepo.Framework.Interfaces;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading;
