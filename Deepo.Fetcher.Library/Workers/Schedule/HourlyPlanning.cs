@@ -13,12 +13,12 @@ public class HourlyPlanning : Planning
         set => _minuteTaskStart = value;
     }
 
-    public HourlyPlanning(int startMinute, ITimeProvider timeProvider, ILogger logger) : base(timeProvider, logger)
+    public HourlyPlanning(int startMinute, IDateTimeFacade timeProvider, ILogger logger) : base(timeProvider, logger)
     {
         MinuteTaskStart = startMinute;
     }
 
-    public HourlyPlanning(XPathNavigator xmlPlanning, ITimeProvider timeProvider, ILogger logger) : base(timeProvider, logger)
+    public HourlyPlanning(XPathNavigator xmlPlanning, IDateTimeFacade timeProvider, ILogger logger) : base(timeProvider, logger)
     {
         if (xmlPlanning != null)
         {

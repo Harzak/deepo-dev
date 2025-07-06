@@ -8,6 +8,7 @@ using Deepo.Fetcher.Library.Repositories.Spotify;
 using Deepo.Fetcher.Library.Strategies.Vinyl;
 using Deepo.Fetcher.Library.Workers.Schedule;
 using Deepo.Framework.Interfaces;
+using Deepo.Framework.Time;
 using Deepo.Framework.Web.Handler;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,22 +28,22 @@ public static class ServiceCollectionExtension
         services.TryAddTransient<LoggingHandler>();
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:Spotify:Name") ?? string.Empty)
-                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new Framework.Time.Provider.TimeProvider()))
+                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new DateTimeFacade()))
                     .AddHttpMessageHandler((x)=> x.GetRequiredService<LoggingHandler>())
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:SpotifyAuth:Name") ?? string.Empty)
-                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new Framework.Time.Provider.TimeProvider()))
+                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new DateTimeFacade()))
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddHttpClient(configuration.GetValue<string>("HttpServices:Discogs:Name") ?? string.Empty)
-                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new Framework.Time.Provider.TimeProvider()))
+                    .AddHttpMessageHandler(() => new RateLimitHandler(1, TimeSpan.FromSeconds(1), new DateTimeFacade()))
                     .AddHttpMessageHandler((x) => x.GetRequiredService<LoggingHandler>())
                     .SetHandlerLifetime(Timeout.InfiniteTimeSpan);
 
         services.AddTransient<ISpotifyRepository, SpotifyRepository>();
         services.AddTransient<IDiscogRepository, DiscogRepository>();
-        services.AddTransient<ITimeProvider, Framework.Time.Provider.TimeProvider>();
+        services.AddTransient<IDateTimeFacade, DateTimeFacade>();
         services.AddTransient<Framework.Interfaces.ITimer>(x => new Framework.Time.Timer(1000));
         services.AddTransient<IScheduler, FetchersScheduler>();
         services.AddTransient<IFetcherFactory, FetcherFactory>();

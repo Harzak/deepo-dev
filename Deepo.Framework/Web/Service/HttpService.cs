@@ -3,15 +3,9 @@ using Deepo.Framework.LogMessages;
 using Deepo.Framework.Results;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Deepo.Framework.Web.Service;
 
@@ -22,11 +16,11 @@ public class HttpService : IHttpService, IDisposable
     private bool _disposedValue;
     private readonly ILogger<HttpService> _logger;
 
-    private readonly ITimeProvider _timeProvider;
+    private readonly IDateTimeFacade _timeProvider;
     private readonly string _user_agent;
     private readonly HttpClient _httpClient;
 
-    private HttpService(HttpClient httpClient, ITimeProvider timeProvider, IHttpClientOption option, ILogger<HttpService> logger)
+    private HttpService(HttpClient httpClient, IDateTimeFacade timeProvider, IHttpClientOption option, ILogger<HttpService> logger)
     {
         ArgumentNullException.ThrowIfNull(option, nameof(option));
 
@@ -42,7 +36,7 @@ public class HttpService : IHttpService, IDisposable
     }
 
     public HttpService(IHttpClientFactory httpClientFactory,
-        ITimeProvider timeProvider,
+        IDateTimeFacade timeProvider,
         IHttpClientOption option,
         ILogger<HttpService> logger)
 

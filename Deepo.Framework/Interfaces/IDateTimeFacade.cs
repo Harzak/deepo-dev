@@ -1,7 +1,7 @@
 ﻿
 namespace Deepo.Framework.Interfaces;
 
-public interface ITimeProvider
+public interface IDateTimeFacade
 {
     DateTime DateTimeNow();
     DateTime DateTimeUTCNow();

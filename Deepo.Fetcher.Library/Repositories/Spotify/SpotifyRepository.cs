@@ -4,6 +4,7 @@ using Deepo.Fetcher.Library.Dto.Spotify;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Repositories.Spotify.Endpoint;
 using Deepo.Fetcher.Library.Utils;
+using Deepo.Framework.Time;
 using Deepo.Framework.Web.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -21,7 +22,7 @@ internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
         IOptions<HttpServicesOption> options, 
         ILogger<SpotifyRepository> logger)
     : base(httpClientFactory,
-        new Deepo.Framework.Time.Provider.TimeProvider(),
+        new DateTimeFacade(),
 #pragma warning disable CA2000 // Dispose objects before losing scope
         new SpotifyAuthService(httpClientFactory, options, logger),
 #pragma warning restore CA2000 // Dispose objects before losing scope

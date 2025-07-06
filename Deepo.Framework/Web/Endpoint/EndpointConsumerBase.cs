@@ -12,7 +12,7 @@ public abstract class EndpointConsumerBase<TResultModel>
         _logger = logger;
     }
 
-    public bool TryParse(string text, out TResultModel result)
+    public bool TryParse(string text, out TResultModel? result)
     {
         if (!string.IsNullOrEmpty(text?.Trim()))
         {
@@ -29,12 +29,12 @@ public abstract class EndpointConsumerBase<TResultModel>
             {
                 HttpClientLogs.UnableToParse(_logger, text, typeof(TResultModel), ex);
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw;
             }
         }
-        result = default!;
+        result = default;
         return false;
     }
 

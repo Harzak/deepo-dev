@@ -5,10 +5,10 @@ namespace Deepo.Fetcher.Library.Workers.Schedule;
 
 public class PlanningFactory : IPlanningFactory
 {
-    private readonly ITimeProvider _timeProvider;
+    private readonly IDateTimeFacade _timeProvider;
     private readonly ILogger _logger;
 
-    public PlanningFactory(ITimeProvider timeProvider, ILogger<PlanningFactory> logger)
+    public PlanningFactory(IDateTimeFacade timeProvider, ILogger<PlanningFactory> logger)
     {
         _logger = logger;
         _timeProvider = timeProvider;

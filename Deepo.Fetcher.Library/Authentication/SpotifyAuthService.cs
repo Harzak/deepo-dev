@@ -1,6 +1,7 @@
 ﻿using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Framework.Interfaces;
 using Deepo.Framework.Results;
+using Deepo.Framework.Time;
 using Deepo.Framework.Web.Model;
 using Deepo.Framework.Web.Service;
 using Microsoft.Extensions.Logging;
@@ -20,7 +21,7 @@ internal class SpotifyAuthService : HttpService, IAuthenticationHttpService
         IOptions<HttpServicesOption> options, 
         ILogger<HttpService> logger)
     : base(httpClientFactory, 
-        new Framework.Time.Provider.TimeProvider(), 
+        new DateTimeFacade(), 
         options.Value.SpotifyAuth ?? throw new ArgumentNullException("options.Value.SpotifyAuth"), 
         logger)
     {

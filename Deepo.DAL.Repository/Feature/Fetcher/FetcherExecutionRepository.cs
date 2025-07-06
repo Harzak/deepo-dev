@@ -11,9 +11,9 @@ public sealed class FetcherExecutionRepository : IFetcherExecutionRepository
 {
     private readonly ILogger<FetcherExecutionRepository> _logger;
     private readonly IDbContextFactory<DEEPOContext> _contextFactory;
-    private readonly ITimeProvider _timeProvier;
+    private readonly IDateTimeFacade _timeProvier;
 
-    public FetcherExecutionRepository(IDbContextFactory<DEEPOContext> contextFactory, ITimeProvider datetimeprovider, ILogger<FetcherExecutionRepository> logger)
+    public FetcherExecutionRepository(IDbContextFactory<DEEPOContext> contextFactory, IDateTimeFacade datetimeprovider, ILogger<FetcherExecutionRepository> logger)
     {
         _logger = logger;
         _contextFactory = contextFactory;

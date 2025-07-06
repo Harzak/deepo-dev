@@ -1,8 +1,8 @@
 ﻿using Deepo.Framework.Interfaces;
 
-namespace Deepo.Framework.Time.Provider;
+namespace Deepo.Framework.Time;
 
-public class TimeProvider : ITimeProvider
+public class DateTimeFacade : IDateTimeFacade
 {
     public DateTime DateTimeNow() => DateTime.Now;
     public DateTime DateTimeUTCNow() => DateTime.UtcNow;

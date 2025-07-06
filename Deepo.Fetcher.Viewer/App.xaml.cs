@@ -5,7 +5,6 @@ using Deepo.Fetcher.Viewer.Interfaces;
 using Deepo.Fetcher.Viewer.ViewModels;
 using Deepo.Framework.Interfaces;
 using Deepo.Framework.Time;
-using Deepo.Framework.Time.Provider;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -44,7 +43,7 @@ public partial class App : Application
                 services.AddSingleton<IContentDialogService, ContentDialogService>();
                 services.AddSingleton<INavigationService, NavigationService>();
                 services.AddSingleton<IFetcherListenerFactory, FetcherListenerFactory>();
-                services.AddTransient<ITimeProvider, TimeProvider>();
+                services.AddTransient<IDateTimeFacade, DateTimeFacade>();
                 services.AddTransient<ITimer, Timer>();
 
                 services.AddSingleton(s => new MainWindow()

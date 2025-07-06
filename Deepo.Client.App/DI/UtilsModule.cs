@@ -1,4 +1,5 @@
 ﻿using Deepo.Framework.Interfaces;
+using Deepo.Framework.Time;
 using Ninject.Modules;
 
 namespace Deepo.Client.App.DI
@@ -7,7 +8,7 @@ namespace Deepo.Client.App.DI
     {
         public override void Load()
         {
-            base.Bind<ITimeProvider>().To<Framework.Time.Provider.TimeProvider>();
+            base.Bind<IDateTimeFacade>().To<DateTimeFacade>();
         }
     }
 }

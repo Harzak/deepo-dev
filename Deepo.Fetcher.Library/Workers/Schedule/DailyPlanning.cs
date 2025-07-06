@@ -18,12 +18,12 @@ public class DailyPlanning : HourlyPlanning
         set => _hourTaskStart = value;
     }
 
-    public DailyPlanning(int startHour, int startMinute, ITimeProvider timeProvider, ILogger logger) : base(startMinute, timeProvider, logger)
+    public DailyPlanning(int startHour, int startMinute, IDateTimeFacade timeProvider, ILogger logger) : base(startMinute, timeProvider, logger)
     {
         HourTaskStart = startHour;
     }
 
-    public DailyPlanning(XPathNavigator xmlPlanning, ITimeProvider timeProvider, ILogger logger) : base(xmlPlanning, timeProvider, logger)
+    public DailyPlanning(XPathNavigator xmlPlanning, IDateTimeFacade timeProvider, ILogger logger) : base(xmlPlanning, timeProvider, logger)
     {
         if (xmlPlanning != null)
         {

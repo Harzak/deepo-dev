@@ -16,7 +16,7 @@ public class FetchersScheduler : Scheduler
     public FetchersScheduler(IFetcherProvider fetcherProvider,
         IPlanificationRepository planificationRepository,
         ITimer timer,
-        ITimeProvider datetimeprovider,
+        IDateTimeFacade datetimeprovider,
         ILogger<FetchersScheduler> logger)
     : base(datetimeprovider, timer, logger)
     {

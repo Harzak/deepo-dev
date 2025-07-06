@@ -5,7 +5,7 @@ namespace Deepo.Fetcher.Library.Workers.Schedule;
 
 public class OneShotPlanning : Planning
 {
-    public OneShotPlanning(ITimeProvider timeProvider, ILogger pLogger) : base(timeProvider, pLogger)
+    public OneShotPlanning(IDateTimeFacade timeProvider, ILogger pLogger) : base(timeProvider, pLogger)
     {
 
     }

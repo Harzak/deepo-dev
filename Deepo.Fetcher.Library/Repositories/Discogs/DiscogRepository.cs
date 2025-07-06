@@ -3,6 +3,7 @@ using Deepo.Fetcher.Library.Dto.Discogs;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Repositories.Discogs.Endpoint;
 using Deepo.Framework.Results;
+using Deepo.Framework.Time;
 using Deepo.Framework.Web.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -19,7 +20,7 @@ internal class DiscogRepository : HttpService, IDiscogRepository
         IOptions<HttpServicesOption> options,
         ILogger<DiscogRepository> logger)
     : base(httpClientFactory, 
-        new Framework.Time.Provider.TimeProvider(), 
+        new DateTimeFacade(), 
         options.Value.Discogs ?? throw new ArgumentNullException("options.Value.SpotifyAuth"), 
         logger)
     {

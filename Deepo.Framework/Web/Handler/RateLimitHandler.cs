@@ -7,10 +7,10 @@ public class RateLimitHandler : DelegatingHandler
     protected virtual int Rate { get; set; }
     protected virtual TimeSpan Time { get; set; }
 
-    private readonly ITimeProvider _timeProvider;
+    private readonly IDateTimeFacade _timeProvider;
     private readonly List<DateTimeOffset> _requestHistory;
 
-    public RateLimitHandler(int rate, TimeSpan time, ITimeProvider timeProvider)
+    public RateLimitHandler(int rate, TimeSpan time, IDateTimeFacade timeProvider)
     {
         _timeProvider = timeProvider;
         _requestHistory = [];
@@ -18,7 +18,7 @@ public class RateLimitHandler : DelegatingHandler
         Time = time;
     }
 
-    public RateLimitHandler(int rate, TimeSpan time, ITimeProvider timeProvider, HttpMessageHandler innerHandler) : base(innerHandler)
+    public RateLimitHandler(int rate, TimeSpan time, IDateTimeFacade timeProvider, HttpMessageHandler innerHandler) : base(innerHandler)
     {
         _timeProvider = timeProvider;
         _requestHistory = [];

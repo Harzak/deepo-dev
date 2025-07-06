@@ -9,14 +9,14 @@ namespace Deepo.Fetcher.Library.Workers.Schedule;
 public class Scheduler : TaskScheduler, IScheduler, IDisposable
 {
     public event EventHandler<WorkerEventArgs>? ReadyToStart;
-    protected ITimeProvider TimeProvider { get; }
+    protected IDateTimeFacade TimeProvider { get; }
     protected Dictionary<IWorker, IPlanning> WorkerShedule { get; private set; }
 
     private readonly ILogger _logger;
     private readonly ITimer _timer;
     private bool disposedValue;
 
-    public Scheduler(ITimeProvider timeProvier, ITimer timer, ILogger<Scheduler> logger)
+    public Scheduler(IDateTimeFacade timeProvier, ITimer timer, ILogger<Scheduler> logger)
     {
         TimeProvider = timeProvier;
         WorkerShedule = new Dictionary<IWorker, IPlanning>();

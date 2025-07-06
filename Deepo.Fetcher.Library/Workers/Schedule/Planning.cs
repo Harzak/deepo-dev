@@ -5,13 +5,13 @@ namespace Deepo.Fetcher.Library.Workers.Schedule;
 
 public abstract class Planning : IPlanning
 {
-    protected ITimeProvider TimeProvider { get; set; }
+    protected IDateTimeFacade TimeProvider { get; set; }
     protected DateTime? NextStart { get; set; }
     public DateTime? DateNextStart { get => NextStart; }
 
     private readonly ILogger _logger;
 
-    protected Planning(ITimeProvider TimeProvider, ILogger logger)
+    protected Planning(IDateTimeFacade TimeProvider, ILogger logger)
     {
         _logger = logger;
         this.TimeProvider = TimeProvider;

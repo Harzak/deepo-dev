@@ -10,9 +10,6 @@ using System.Threading.Tasks;
 
 namespace Deepo.Framework.Web.Service;
 
-/// <summary>
-/// Provide a way to perform HTTP requests that require authentication
-/// </summary>
 public abstract class AuthenticatedHttpService : HttpService
 {
     protected IAuthenticationHttpService AuthService { get; }
@@ -20,7 +17,7 @@ public abstract class AuthenticatedHttpService : HttpService
     private TokenModel _token;
 
     protected AuthenticatedHttpService(IHttpClientFactory httpClientFactory,
-        ITimeProvider timeProvider,
+        IDateTimeFacade timeProvider,
         IAuthenticationHttpService authHttpService,
         IHttpClientOption option,
         ILogger<AuthenticatedHttpService> logger)
@@ -33,12 +30,6 @@ public abstract class AuthenticatedHttpService : HttpService
         _token = new TokenModel();
     }
 
-    #region GET Method
-    /// <summary>
-    /// Perform an HTTP GET request with a token verification.
-    /// </summary>
-    /// <returns>The raw content of the request result.</returns>
-    /// <exception cref="MissingTokenException"/>
     public override async Task<OperationResult<string>> GetAsync(Uri endpoint, CancellationToken cancellationToken)
     {
         if (await VerificationToken(cancellationToken).ConfigureAwait(false))
@@ -50,14 +41,7 @@ public abstract class AuthenticatedHttpService : HttpService
             throw new MissingTokenException();
         }
     }
-    #endregion
 
-    #region POST Method
-    /// <summary>
-    /// Perform an HTTP POST request with a token verification.
-    /// </summary>
-    /// <returns>The raw content of the request result.</returns>
-    /// <exception cref="MissingTokenException"/>
     public override async Task<OperationResult<string>> PostAsync(Uri endpoint, HttpContent content, CancellationToken cancellationToken)
     {
         if (await VerificationToken(cancellationToken).ConfigureAwait(false))
@@ -69,9 +53,7 @@ public abstract class AuthenticatedHttpService : HttpService
             throw new MissingTokenException();
         }
     }
-    #endregion
 
-    #region Authentication specification
     private async Task<bool> VerificationToken(CancellationToken cancellationToken)
     {
         if (!_token.IsExpired)
@@ -97,5 +79,4 @@ public abstract class AuthenticatedHttpService : HttpService
     }
 
     protected abstract void SetTokenValue(string token);
-    #endregion
 }
