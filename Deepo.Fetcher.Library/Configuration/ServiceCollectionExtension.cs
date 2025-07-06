@@ -1,4 +1,5 @@
-﻿using Deepo.Fetcher.Library.Configuration.Setting;
+﻿using Deepo.Fetcher.Library.Authentication;
+using Deepo.Fetcher.Library.Configuration.Setting;
 using Deepo.Fetcher.Library.Fetcher;
 using Deepo.Fetcher.Library.Fetcher.Planification;
 using Deepo.Fetcher.Library.Fetcher.Vinyl;
@@ -43,6 +44,7 @@ public static class ServiceCollectionExtension
 
         services.AddTransient<ISpotifyRepository, SpotifyRepository>();
         services.AddTransient<IDiscogRepository, DiscogRepository>();
+        services.AddTransient<IAuthServiceFactory, AuthServiceFactory>();
         services.AddTransient<IDateTimeFacade, DateTimeFacade>();
         services.AddTransient<Framework.Interfaces.ITimer>(x => new Framework.Time.Timer(1000));
         services.AddTransient<IScheduler, FetchersScheduler>();

@@ -19,13 +19,12 @@ internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
 
     public SpotifyRepository(
         IHttpClientFactory httpClientFactory, 
+        IAuthServiceFactory authServiceFactory,
         IOptions<HttpServicesOption> options, 
         ILogger<SpotifyRepository> logger)
     : base(httpClientFactory,
         new DateTimeFacade(),
-#pragma warning disable CA2000 // Dispose objects before losing scope
-        new SpotifyAuthService(httpClientFactory, options, logger),
-#pragma warning restore CA2000 // Dispose objects before losing scope
+        authServiceFactory.CreateSpotifyAuthService(),
         options.Value.Spotify ?? throw new ArgumentNullException("options.Value.SpotifyAuth"),
         logger)
     {
