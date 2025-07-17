@@ -10,6 +10,10 @@ using Microsoft.Extensions.Options;
 
 namespace Deepo.Fetcher.Library.Repositories.Discogs;
 
+/// <summary>
+/// Provides access to Discogs API data.
+/// Handles searching for albums and retrieving release information from the Discogs database.
+/// </summary>
 internal class DiscogRepository : HttpService, IDiscogRepository
 {
     private readonly HttpServiceOption _options;
@@ -33,6 +37,13 @@ internal class DiscogRepository : HttpService, IDiscogRepository
         base.SetAuthorization("Discogs", $"token={_options.Token}");
     }
 
+    /// <summary>
+    /// Searches for albums by release title and year from the Discogs database.
+    /// Filters results to vinyl format releases only.
+    /// </summary>
+    /// <param name="releaseTitle">The title of the release to search for.</param>
+    /// <param name="year">The year of the release to search for.</param>
+    /// <returns>An operation result containing a collection of matching Discogs albums.</returns>
     public async Task<OperationResult<IEnumerable<DtoDiscogsAlbum>>> GetSearchByReleaseTitleAndYear(string releaseTitle, int year, CancellationToken cancellationToken)
     {
         OperationResult<IEnumerable<DtoDiscogsAlbum>> result = new();
@@ -57,6 +68,12 @@ internal class DiscogRepository : HttpService, IDiscogRepository
         return await base.GetAsync(_endPointSearch.Get($"release_title={releaseTitle}&year={year}&format=vinyl&type=release"), cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Searches for albums by artist name from the Discogs database.
+    /// Filters results to vinyl format releases from the current year.
+    /// </summary>
+    /// <param name="nameArtist">The name of the artist to search for.</param>
+    /// <returns>An operation result containing a collection of matching Discogs albums.</returns>
     public async Task<OperationResult<IEnumerable<DtoDiscogsAlbum>>> GetSearchByArtistNameAndYear(string nameArtist, CancellationToken cancellationToken)
     {
         OperationResult<IEnumerable<DtoDiscogsAlbum>> result = new();
@@ -75,11 +92,17 @@ internal class DiscogRepository : HttpService, IDiscogRepository
 
         return result.WithError("Failed to parse Discogs search data");
     }
+    
     private async Task<OperationResult<string>> GetSearchByArtistNameAndYearJson(string nameArtist, CancellationToken cancellationToken)
     {
         return await base.GetAsync(_endPointSearch.Get($"artist={nameArtist}&year={DateTime.UtcNow.Year}&format=vinyl&type=release"), cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Retrieves a specific release by its ID from the Discogs database.
+    /// </summary>
+    /// <param name="id">The unique¨Discogs identifier of the release.</param>
+    /// <returns>An operation result containing the Discogs release details.</returns>
     public async Task<OperationResult<DtoDiscogsRelease>> GetReleaseByID(string id, CancellationToken cancellationToken)
     {
         OperationResult<DtoDiscogsRelease> result = new();
@@ -98,6 +121,7 @@ internal class DiscogRepository : HttpService, IDiscogRepository
 
         return result.WithError("Failed to parse Discogs release return data");
     }
+    
     private async Task<OperationResult<string>> GetReleaseByIDJson(string id, CancellationToken cancellationToken)
     {
         return await base.GetAsync(_endPointReleases.Get(id), cancellationToken).ConfigureAwait(false);

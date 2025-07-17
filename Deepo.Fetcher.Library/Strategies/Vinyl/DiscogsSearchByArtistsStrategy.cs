@@ -8,8 +8,14 @@ using System.Web;
 
 namespace Deepo.Fetcher.Library.Strategies.Vinyl;
 
+/// <summary>
+/// Strategy for searching Discogs releases by artist name.
+/// Implements search logic that finds recent releases (within 50 days) for a specified artist.
+/// </summary>
 internal class DiscogsSearchByArtistsStrategy
 {
+    private const int DAY_SEARCH_LIMIT = 50;
+
     private readonly ILogger _logger;
     private readonly IDiscogRepository _discogRepository;
 
@@ -19,6 +25,12 @@ internal class DiscogsSearchByArtistsStrategy
         _logger = logger;
     }
 
+    /// <summary>
+    /// Searches for recent Discogs releases by artist name asynchronously.
+    /// Filters results to include only releases from the past 50 days.
+    /// </summary>
+    /// <param name="artistName">The name of the artist to search for.</param>
+    /// <returns>An operation result containing a list of matching recent Discogs releases.</returns>
     public async Task<OperationResultList<DtoDiscogsRelease>> SearchAsync(string artistName, CancellationToken cancellationToken)
     {
         OperationResultList<DtoDiscogsRelease> result = new();
@@ -51,7 +63,7 @@ internal class DiscogsSearchByArtistsStrategy
             }
 
             bool isReleaseDateParsed = DateTime.TryParse(releaseRequest.Content.Released, out DateTime parsedReleaseDate);
-            if (isReleaseDateParsed && parsedReleaseDate >= DateTime.Now.AddDays(-50))
+            if (isReleaseDateParsed && parsedReleaseDate >= DateTime.Now.AddDays(-DAY_SEARCH_LIMIT))
             {
                 result.Content.Add(releaseRequest.Content);
                 VinylStrategyLogs.FoundDiscogsReleaseByArtist(_logger, releaseRequest.Content.Title ?? "", artistName);

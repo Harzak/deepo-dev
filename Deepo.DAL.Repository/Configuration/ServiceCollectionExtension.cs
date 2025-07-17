@@ -21,7 +21,7 @@ public static class ServiceCollectionExtension
         services.AddSingleton<IAuthorRepository, AuthorRepository>();
         services.AddSingleton<IFetcherExecutionRepository, FetcherExecutionRepository>();
         services.AddSingleton<IFetcherRepository, FetcherRepository>();
-        services.AddSingleton<IPlanificationRepository, PlanificationRepository>();
+        services.AddSingleton<ISchedulerRepository, SchedulerRepository>();
         services.AddSingleton<IReleaseAlbumRepository, ReleaseAlbumRepository>();
         services.AddSingleton<IGenreAlbumRepository, GenreAlbumRepository>();
         services.AddSingleton<IFetcherHttpRequestRepository, FetcherHttpRequestRepository>();

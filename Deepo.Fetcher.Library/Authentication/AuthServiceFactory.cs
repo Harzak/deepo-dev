@@ -7,6 +7,10 @@ using Microsoft.Extensions.Options;
 
 namespace Deepo.Fetcher.Library.Authentication;
 
+/// <summary>
+/// Creates authentication service instances.
+/// Provides factory methods for creating authentication services for different providers.
+/// </summary>
 internal class AuthServiceFactory : IAuthServiceFactory
 {
     private readonly IHttpClientFactory _httpClientFactory;
@@ -23,6 +27,9 @@ internal class AuthServiceFactory : IAuthServiceFactory
         _loggerFactory = loggerFactory;
     }
 
+    /// <summary>
+    /// Creates an authentication service instance specifically for Spotify API authentication.
+    /// </summary>
     public IAuthenticationHttpService CreateSpotifyAuthService()
     {
         return new SpotifyAuthService(_httpClientFactory, _options, _loggerFactory.CreateLogger<HttpService>());

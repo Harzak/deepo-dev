@@ -15,6 +15,10 @@ using System.Globalization;
 
 namespace Deepo.Fetcher.Library.Fetcher.Vinyl;
 
+/// <summary>
+/// Vinyl fetch pipeline that orchestrates the discovery and processing of vinyl record releases.
+/// Discovers Spotify albums from multiple markets and matches them with Discogs releases for storage.
+/// </summary>
 public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
 {
     private readonly ILogger<VinylFetchPipeline> _logger;
@@ -25,10 +29,12 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
     private IEnumerable<string> _historyIdentifiersCache;
 
     public int SuccessfulFetchCount { get; private set; }
+    
     public int FailedFetchCount { get; private set; }
-    public int IgnoredFetchCount { get; private set; }
-    public int FetchCount => this.SuccessfulFetchCount + this.FailedFetchCount + this.IgnoredFetchCount;
 
+    public int IgnoredFetchCount { get; private set; }
+    
+    public int FetchCount => this.SuccessfulFetchCount + this.FailedFetchCount + this.IgnoredFetchCount;
 
     public VinylFetchPipeline(
         IVinylStrategiesFactory strategiesFactory,
@@ -44,6 +50,10 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
         _historyIdentifiersCache = [];
     }
 
+    /// <summary>
+    /// Starts the vinyl fetch pipeline operation asynchronously.
+    /// Loads history cache and processes albums from French and North American Spotify markets.
+    /// </summary>
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         _historyIdentifiersCache = (await _historyRepository.GetSpotifyReleaseFetchHistoryByDateAsync(DateTime.UtcNow.AddDays(-7), cancellationToken).ConfigureAwait(false))
@@ -57,6 +67,11 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
         await DiscoverSpotifyMarketAsync(usReleases, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Processes Spotify albums from a specific market, attempting to match them with Discogs releases.
+    /// Skips albums already processed and tries multiple search strategies for each album.
+    /// </summary>
+    /// <param name="albums">Asynchronous enumerable of Spotify albums to process.</param>
     private async Task DiscoverSpotifyMarketAsync(IAsyncEnumerable<DtoSpotifyAlbum> albums, CancellationToken cancellationToken)
     {
         await foreach (DtoSpotifyAlbum spotifyAlbum in albums.ConfigureAwait(false))
@@ -87,6 +102,11 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
         }
     }
 
+    /// <summary>
+    /// Searches for matching Discogs releases by the Spotify album title.
+    /// </summary>
+    /// <param name="spotifyAlbum">The Spotify album to search for.</param>
+    /// <returns>True if at least one matching release was found and inserted; otherwise, false.</returns>
     private async Task<bool> SearchByTitleAsync(DtoSpotifyAlbum spotifyAlbum, CancellationToken cancellationToken)
     {
         OperationResultList<DtoDiscogsRelease> searchResult = await _strategiesFactory.SearchDiscogsByTitleAsync(spotifyAlbum.Name!, cancellationToken).ConfigureAwait(false);
@@ -106,6 +126,12 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
         return success;
     }
 
+    /// <summary>
+    /// Searches for matching Discogs releases by the Spotify album's artists.
+    /// Iterates through all artists and searches for releases by each artist name.
+    /// </summary>
+    /// <param name="spotifyAlbum">The Spotify album whose artists to search for.</param>
+    /// <returns>True if at least one matching release was found and inserted; otherwise, false.</returns>
     private async Task<bool> SearchByArtistsAsync(DtoSpotifyAlbum spotifyAlbum, CancellationToken cancellationToken)
     {
         bool success = false;
@@ -128,6 +154,11 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
         return success;
     }
 
+    /// <summary>
+    /// Inserts a Discogs release into the album repository after mapping it to an album model.
+    /// </summary>
+    /// <param name="release">The Discogs release to insert.</param>
+    /// <returns>True if the insertion was successful; otherwise, false.</returns>
     private async Task<bool> InsertReleaseAlbumAsync(DtoDiscogsRelease release, CancellationToken cancellationToken)
     {
         AlbumModel mappedModel = release.MapToAlbum();
@@ -144,6 +175,10 @@ public sealed class VinylFetchPipeline : IVinylFetchPipeline, IDisposable
         }
     }
 
+    /// <summary>
+    /// Adds a Spotify album to the fetch history to prevent duplicate processing.
+    /// </summary>
+    /// <param name="album">The Spotify album to add to history.</param>
     private async Task AddInHistory(DtoSpotifyAlbum album, CancellationToken cancellationToken)
     {
         if (album.Id != null)

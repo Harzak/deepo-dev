@@ -9,7 +9,13 @@ public abstract class MultipleResultEndpointConsumer<TModel> : EndpointConsumerB
 
     public abstract string Get(string query = "");
 
-    public abstract string Options();
+    public virtual string Options()
+    {
+        throw new NotSupportedException("OPTIONS method is not supported for this endpoint.");
+    }
 
-    public abstract string Trace();
+    public virtual string Trace()
+    {
+        throw new NotSupportedException("TRACE method is not supported for this endpoint.");
+    }
 }

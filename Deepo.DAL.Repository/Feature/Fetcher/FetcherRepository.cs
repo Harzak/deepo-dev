@@ -48,6 +48,15 @@ public sealed class FetcherRepository : IFetcherRepository
                         .ConfigureAwait(false);
     }
 
+    public async Task<Models.Fetcher?> GetByIdAsync(string identifier, CancellationToken cancellationToken = default)
+    {
+        using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+
+        return await context.Fetchers
+                        .FirstOrDefaultAsync(x => x.Fetcher_GUID == identifier, cancellationToken)
+                        .ConfigureAwait(false);
+    }
+
     public async Task<V_FetcherExtended?> GetExtendedAsync(string id, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);

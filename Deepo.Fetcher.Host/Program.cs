@@ -21,7 +21,7 @@ class Program
             });
 
             //Host
-            services.AddHostedService<ContinuousHost>();
+            services.AddHostedService<ScheduledHostWorker>();
             #endregion
 
             #region Shared libraries dependencies

@@ -5,6 +5,9 @@ using Microsoft.Extensions.Options;
 
 namespace Deepo.Fetcher.Library.Fetcher.Movie;
 
+/// <summary>
+/// Movie-specific fetcher implementation that processes movie data.
+/// </summary>
 public class FetcherMovie : CancellableWorker
 {
     private readonly FetcherOptions _fetcherOptions;
@@ -24,16 +27,19 @@ public class FetcherMovie : CancellableWorker
         return true;
     }
 
+    /// <summary>
+    /// Executes the movie fetcher's main operation asynchronously.
+    /// </summary>
     protected override Task ExecuteInternalAsync(CancellationToken stoppingToken)
     {
-        return Task.CompletedTask;
+        throw new NotImplementedException("Movie fetching logic is not implemented yet.");
     }
 
     protected override void ForcedStop()
     {
         Dispose();
-        //do some action on critical thing
     }
+
     public override void Dispose()
     {
         base.Dispose();

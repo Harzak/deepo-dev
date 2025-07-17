@@ -39,12 +39,6 @@ public partial class DEEPOContext : DbContext
 
     public virtual DbSet<HttpRequest> HttpRequests { get; set; }
 
-    public virtual DbSet<Planification> Planifications { get; set; }
-
-    public virtual DbSet<PlanificationType> PlanificationTypes { get; set; }
-
-    public virtual DbSet<Planning> Plannings { get; set; }
-
     public virtual DbSet<Provider> Providers { get; set; }
 
     public virtual DbSet<Provider_Release> Provider_Releases { get; set; }
@@ -58,6 +52,10 @@ public partial class DEEPOContext : DbContext
     public virtual DbSet<Release_Movie> Release_Movies { get; set; }
 
     public virtual DbSet<Release_TVShow> Release_TVShows { get; set; }
+
+    public virtual DbSet<Schedule> Schedules { get; set; }
+
+    public virtual DbSet<Scheduler> Schedulers { get; set; }
 
     public virtual DbSet<Track_Album> Track_Albums { get; set; }
 
@@ -263,43 +261,6 @@ public partial class DEEPOContext : DbContext
             entity.Property(e => e.UserAgent).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<Planification>(entity =>
-        {
-            entity.HasKey(e => e.Planification_ID);
-
-            entity.ToTable("Planification", "fetcher");
-
-            entity.HasOne(d => d.Fetcher).WithMany(p => p.Planifications)
-                .HasForeignKey(d => d.Fetcher_ID)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Planification_Fetcher");
-
-            entity.HasOne(d => d.PlanificationType).WithMany(p => p.Planifications)
-                .HasForeignKey(d => d.PlanificationType_ID)
-                .HasConstraintName("FK_Planification_PlanificationType");
-
-            entity.HasOne(d => d.Planning).WithMany(p => p.Planifications)
-                .HasForeignKey(d => d.Planning_ID)
-                .HasConstraintName("FK_Planification_Planning");
-        });
-
-        modelBuilder.Entity<PlanificationType>(entity =>
-        {
-            entity.HasKey(e => e.PlanificationType_ID);
-
-            entity.ToTable("PlanificationType", "fetcher");
-
-            entity.Property(e => e.Code).HasMaxLength(10);
-            entity.Property(e => e.Name).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<Planning>(entity =>
-        {
-            entity.HasKey(e => e.Planing_ID);
-
-            entity.ToTable("Planning", "fetcher");
-        });
-
         modelBuilder.Entity<Provider>(entity =>
         {
             entity.HasKey(e => e.Provider_ID);
@@ -422,6 +383,31 @@ public partial class DEEPOContext : DbContext
             entity.HasOne(d => d.Release).WithMany(p => p.Release_TVShows)
                 .HasForeignKey(d => d.Release_ID)
                 .HasConstraintName("FK_Release_Serie_Release");
+        });
+
+        modelBuilder.Entity<Schedule>(entity =>
+        {
+            entity.HasKey(e => e.Schedule_ID);
+
+            entity.ToTable("Schedule", "fetcher");
+
+            entity.Property(e => e.CronExpression).HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<Scheduler>(entity =>
+        {
+            entity.HasKey(e => e.Scheduler_ID);
+
+            entity.ToTable("Scheduler", "fetcher");
+
+            entity.HasOne(d => d.Fetcher).WithMany(p => p.Schedulers)
+                .HasForeignKey(d => d.Fetcher_ID)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Scheduler_Fetcher");
+
+            entity.HasOne(d => d.Schedule).WithMany(p => p.Schedulers)
+                .HasForeignKey(d => d.Schedule_ID)
+                .HasConstraintName("FK_Scheduler_Schedule");
         });
 
         modelBuilder.Entity<Track_Album>(entity =>

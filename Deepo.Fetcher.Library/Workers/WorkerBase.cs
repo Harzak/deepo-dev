@@ -7,16 +7,19 @@ using System.Diagnostics;
 
 namespace Deepo.Fetcher.Library.Workers;
 
+/// <summary>
+/// Abstract base class for all worker implementations that extends <see cref="BackgroundService"/>.
+/// Provides common functionality for worker lifecycle management, logging, and event handling.
+/// </summary>
 public abstract class WorkerBase : BackgroundService, IWorker
 {
     private readonly ILogger _logger;
     private readonly Stopwatch _timer;
 
-    public string Name { get; set; }
+    public event EventHandler<WorkerEventArgs>? WorkerExecuted;
+    public string Name { get; set; }  
     public Guid ID { get; set; }
     public Task? Executedtask { get => base.ExecuteTask; }
-
-    public event EventHandler<WorkerEventArgs>? WorkerExecuted;
 
     protected WorkerBase(ILogger logger) : base()
     {
@@ -25,7 +28,9 @@ public abstract class WorkerBase : BackgroundService, IWorker
         Name = "DefaultWorker";
     }
 
-    #region Start / Execution
+    /// <summary>
+    /// Starts the worker asynchronously.
+    /// </summary>
     public override async Task StartAsync(CancellationToken cancellationToken)
     {
         WorkerLogs.WorkerTryStart(_logger, Name, ID, DateTime.Now);
@@ -40,19 +45,29 @@ public abstract class WorkerBase : BackgroundService, IWorker
             WorkerLogs.WorkerUnhautorizedToStart(_logger, Name, ID);
         }
     }
+    
     protected virtual bool CanStart()
     {
         return true;
     }
+    
+    /// <summary>
+    /// Executes the worker's main operation
+    /// </summary>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await this.ExecuteInternalAsync(stoppingToken).ConfigureAwait(false);
         this.WorkerExecuted?.Invoke(this, new WorkerEventArgs(this));
     }
+    
+    /// <summary>
+    /// Executes the worker's internal logic.
+    /// </summary>
     protected abstract Task ExecuteInternalAsync(CancellationToken stoppingToken);
-    #endregion
 
-    #region Stop / Dispose
+    /// <summary>
+    /// Stops the worker asynchronously, performing graceful shutdown or forced termination as needed.
+    /// </summary>
     public override Task StopAsync(CancellationToken cancellationToken)
     {
         WorkerLogs.WorkerTryStop(_logger, Name, ID, DateTime.Now);
@@ -69,7 +84,12 @@ public abstract class WorkerBase : BackgroundService, IWorker
         this.WorkerExecuted?.Invoke(this, new WorkerEventArgs(this));
         return stopTask;
     }
+    
     protected abstract bool CanStop();
+    
+    /// <summary>
+    /// Performs forced termination of the worker when graceful shutdown is not possible.
+    /// </summary>
     protected abstract void ForcedStop();
 
     public override void Dispose()
@@ -78,7 +98,6 @@ public abstract class WorkerBase : BackgroundService, IWorker
         base.Dispose();
         GC.SuppressFinalize(this);
     }
-    #endregion
 
     public override string ToString() => $"{GetType()?.Name} | {ID} | {Name}";
 }

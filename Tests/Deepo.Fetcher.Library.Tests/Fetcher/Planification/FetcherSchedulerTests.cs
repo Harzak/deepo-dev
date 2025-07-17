@@ -1,7 +1,7 @@
 ﻿
 using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.DAL.Repository.Interfaces;
-using Deepo.Fetcher.Library.Fetcher.Planification;
+using Deepo.Fetcher.Library.Fetcher;
 using Deepo.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -17,7 +17,7 @@ namespace Deepo.Fetcher.Library.Tests.Fetchers.Planification
         private readonly FetchersScheduler? _scheduler;
         private readonly ILogger<FetchersScheduler>? _logger;
         private readonly Mock<ITimer> _timer;
-        private readonly Mock<IPlanificationRepository> _planificationDBServiceMock;
+        private readonly Mock<ISchedulerRepository> _planificationDBServiceMock;
 
         //[TestInitialize]
         //public void Initialize()

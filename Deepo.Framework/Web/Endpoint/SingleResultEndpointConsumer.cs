@@ -9,16 +9,34 @@ public abstract class SingleResultEndpointConsumer<TModel> : EndpointConsumerBas
 
     public abstract string Get(string id);
 
-    public abstract string Post(string id, string content);
+    public virtual string Post(string id, string content)
+    {
+        throw new NotSupportedException("POST method is not supported for this endpoint.");
+    }
 
-    public abstract string Put(string id, string content);
+    public  virtual string Put(string id, string content)
+    {
+        throw new NotSupportedException("PUT method is not supported for this endpoint.");
+    }
 
-    public abstract string Patch(string id, string content);
+    public virtual string Patch(string id, string content)
+    {
+        throw new NotSupportedException("PATCH method is not supported for this endpoint.");
+    }
 
-    public abstract string Delete(string id);
+    public virtual string Delete(string id)
+    {
+        throw new NotSupportedException("DELETE method is not supported for this endpoint.");
+    }
 
-    public abstract string Options();
+    public virtual string Options()
+    {
+        throw new NotSupportedException("OPTIONS method is not supported for this endpoint.");
+    }
 
-    public abstract string Trace();
+    public virtual string Trace()
+    {
+        throw new NotSupportedException("TRACE method is not supported for this endpoint.");
+    }
 }
 

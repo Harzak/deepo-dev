@@ -15,5 +15,5 @@ public partial class Fetcher
 
     public virtual ICollection<Execution> Executions { get; set; } = new List<Execution>();
 
-    public virtual ICollection<Planification> Planifications { get; set; } = new List<Planification>();
+    public virtual ICollection<Scheduler> Schedulers { get; set; } = new List<Scheduler>();
 }
