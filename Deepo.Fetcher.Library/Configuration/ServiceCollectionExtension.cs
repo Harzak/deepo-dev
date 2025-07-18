@@ -6,6 +6,7 @@ using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Fetcher.Library.Repositories.Discogs;
 using Deepo.Fetcher.Library.Repositories.Spotify;
 using Deepo.Fetcher.Library.Strategies.Vinyl;
+using Deepo.Fetcher.Library.Workers.Scheduling;
 using Deepo.Framework.Interfaces;
 using Deepo.Framework.Time;
 using Deepo.Framework.Web.Handler;
@@ -55,11 +56,13 @@ public static class ServiceCollectionExtension
         services.AddTransient<IAuthServiceFactory, AuthServiceFactory>();
         services.AddTransient<IDateTimeFacade, DateTimeFacade>();
         services.AddTransient<Framework.Interfaces.ITimer>(x => new Framework.Time.Timer(1000));
-        services.AddTransient<IScheduler, FetchersScheduler>();
+        services.AddTransient<IScheduler, FetcherScheduler>();
         services.AddTransient<IFetcherFactory, FetcherFactory>();
         services.AddTransient<IFetcherProvider, FetcherProvider>();
         services.AddTransient<IVinylStrategiesFactory, VinylStrategiesFactory>();
         services.AddTransient<IVinylFetchPipelineFactory, VinylFetchPipelineFactory>();
+        services.AddTransient<IFetcherSchedulerDueEventFactory, FetcherSchedulerDueEventFactory>();
+
     }
 }
 

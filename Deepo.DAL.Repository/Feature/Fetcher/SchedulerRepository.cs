@@ -28,7 +28,11 @@ public sealed class SchedulerRepository : ISchedulerRepository
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
 
-        Scheduler? scheduler = await context.Schedulers.FirstOrDefaultAsync(s => s.Fetcher.Fetcher_GUID == fectherIdentifier, cancellationToken).ConfigureAwait(false);
+        Scheduler? scheduler = await context.Schedulers
+                                            .Include(x => x.Schedule)
+                                            .Include(x => x.Fetcher)
+                                            .FirstOrDefaultAsync(s => s.Fetcher.Fetcher_GUID == fectherIdentifier, cancellationToken)                                  
+                                            .ConfigureAwait(false);
         if (scheduler?.Schedule != null)
         {
             return scheduler.Schedule.CronExpression;
