@@ -12,6 +12,9 @@ using Models = Deepo.DAL.EF.Models;
 
 namespace Deepo.DAL.Repository.Feature.Release;
 
+/// <summary>
+/// Repository for managing album release data including insertion, existence checks, and retrieval operations.
+/// </summary>
 public class ReleaseAlbumRepository : IReleaseAlbumRepository
 {
     private readonly ILogger _logger;
@@ -30,6 +33,9 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
         _logger = logger;
     }
 
+    /// <summary>
+    /// Inserts a complete album with associated artists, genres, and tracks into the database.
+    /// </summary>
     public async Task<DatabaseOperationResult> InsertAsync(AlbumModel item, CancellationToken cancellationToken = default)
     {
         DatabaseOperationResult result = new();
@@ -184,6 +190,9 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
         }
     }
 
+    /// <summary>
+    /// Counts the total number of vinyl releases for a specific market.
+    /// </summary>
     public async Task<int> CountAsync(string market, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -193,6 +202,9 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
                         .ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Checks if an album already exists in the database based on provider identifiers.
+    /// </summary>
     public async Task<bool> ExistsAsync(AlbumModel item, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(item, nameof(item));
@@ -216,6 +228,9 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
         return false;
     }
 
+    /// <summary>
+    /// Retrieves the most recently added vinyl release.
+    /// </summary>
     public async Task<V_LastVinylRelease?> GetLastAsync(CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -226,6 +241,9 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
                         .ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Retrieves all vinyl releases.
+    /// </summary>
     public async Task<IReadOnlyCollection<V_LastVinylRelease>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -237,6 +255,9 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
         return releases.AsReadOnly();
     }
 
+    /// <summary>
+    /// Retrieves vinyl releases for a specific market with pagination support.
+    /// </summary>
     public async Task<IReadOnlyCollection<V_LastVinylRelease>> GetAllAsync(string market, int offset, int limit, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -251,6 +272,9 @@ public class ReleaseAlbumRepository : IReleaseAlbumRepository
         return releases.AsReadOnly();
     }
 
+    /// <summary>
+    /// Retrieves a complete album release including tracks, genres, and assets by its identifier.
+    /// </summary>
     public async Task<Release_Album?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);

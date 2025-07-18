@@ -12,6 +12,9 @@ using Models = Deepo.DAL.EF.Models;
 
 namespace Deepo.DAL.Repository.Feature.Fetcher;
 
+/// <summary>
+/// Repository for managing scheduled fetcher operations and cron expressions.
+/// </summary>
 public sealed class SchedulerRepository : ISchedulerRepository
 {
     private readonly ILogger<SchedulerRepository> _logger;
@@ -23,7 +26,9 @@ public sealed class SchedulerRepository : ISchedulerRepository
         _contextFactory = contextFactory;
     }
 
-
+    /// <summary>
+    /// Retrieves the cron expression for a specific fetcher.
+    /// </summary>
     public async Task<string?> GetCronExpressionForFectherAsync(string fectherIdentifier, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -40,6 +45,9 @@ public sealed class SchedulerRepository : ISchedulerRepository
         return null;
     }
 
+    /// <summary>
+    /// Retrieves all fetcher identifiers mapped to their corresponding cron expressions.
+    /// </summary>
     public async Task<Dictionary<string, string>> GetAllFetcherCronExpressionAsync(CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
