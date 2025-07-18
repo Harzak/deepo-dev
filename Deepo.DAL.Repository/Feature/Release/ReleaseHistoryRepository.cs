@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Deepo.DAL.Repository.Feature.Release;
 
+/// <summary>
+/// Repository for tracking and managing release fetch history for external data providers.
+/// </summary>
 public class ReleaseHistoryRepository : IReleaseHistoryRepository
 {
     private readonly ILogger _logger;
@@ -23,6 +26,9 @@ public class ReleaseHistoryRepository : IReleaseHistoryRepository
         _logger = logger;
     }
 
+    /// <summary>
+    /// Records a Spotify release fetch operation in the history log.
+    /// </summary>
     public async Task<DatabaseOperationResult> AddSpotifyReleaseFetchHistoryAsync(string identifier, DateTime dateUTC, CancellationToken cancellationToken = default)
     {
         DatabaseOperationResult result = new();
@@ -67,6 +73,9 @@ public class ReleaseHistoryRepository : IReleaseHistoryRepository
         }
     }
 
+    /// <summary>
+    /// Retrieves Spotify release fetch history records from a specified minimum date.
+    /// </summary>
     public async Task<ReadOnlyCollection<V_Spotify_Vinyl_Fetch_History>> GetSpotifyReleaseFetchHistoryByDateAsync(DateTime minDateUTC, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -80,6 +89,9 @@ public class ReleaseHistoryRepository : IReleaseHistoryRepository
         return histories.AsReadOnly();
     }
 
+    /// <summary>
+    /// Retrieves Spotify release fetch history records for a specific identifier.
+    /// </summary>
     public async Task<ReadOnlyCollection<V_Spotify_Vinyl_Fetch_History>> GetSpotifyReleaseFetchHistoryByIdentifierAsync(string identifier, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);

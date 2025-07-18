@@ -10,14 +10,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Deepo.DAL.Repository.Configuration;
 
+/// <summary>
+/// Provides extension methods for configuring Data Access Layer services in the dependency injection container.
+/// </summary>
 public static class ServiceCollectionExtension
 {
+    /// <summary>
+    /// Registers database context and repository dependencies required for data access operations.
+    /// </summary>
     public static void AddDALServiceDependencies(this IServiceCollection services, IConfiguration config)
     {
-        //Database
         services.AddDbContextFactory<DEEPOContext>(options => options.UseSqlServer(config.GetConnectionString("DEEPOContext")));
 
-        //Service Dependencies
         services.AddSingleton<IAuthorRepository, AuthorRepository>();
         services.AddSingleton<IFetcherExecutionRepository, FetcherExecutionRepository>();
         services.AddSingleton<IFetcherRepository, FetcherRepository>();

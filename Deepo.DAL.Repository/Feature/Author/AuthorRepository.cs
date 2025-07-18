@@ -9,6 +9,9 @@ using Models = Deepo.DAL.EF.Models;
 
 namespace Deepo.DAL.Repository.Feature.Author;
 
+/// <summary>
+/// Repository for managing author data operations
+/// </summary>
 internal sealed class AuthorRepository : IAuthorRepository
 {
     private readonly ILogger _logger;
@@ -20,6 +23,9 @@ internal sealed class AuthorRepository : IAuthorRepository
         _contextFactory = contextFactory;
     }
 
+    /// <summary>
+    /// Inserts a new author into the database with provider-specific information.
+    /// </summary>
     public async Task<DatabaseOperationResult> Insert(IAuthor item, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(item, nameof(item));
@@ -60,6 +66,9 @@ internal sealed class AuthorRepository : IAuthorRepository
         return result;
     }
 
+    /// <summary>
+    /// Checks if an author already exists in the database based on provider code and identifier.
+    /// </summary>
     public async Task<bool> ExistsAsync(IAuthor item, CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(item, nameof(item));
@@ -73,6 +82,9 @@ internal sealed class AuthorRepository : IAuthorRepository
                         .ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Retrieves an author by their provider-specific identifier.
+    /// </summary>
     public async Task<Models.Author?> GetByProviderIdentifierAsync(string identifier, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);

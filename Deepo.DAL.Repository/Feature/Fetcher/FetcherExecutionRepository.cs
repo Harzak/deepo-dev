@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Deepo.DAL.Repository.Feature.Fetcher;
 
+/// <summary>
+/// Repository for managing fetcher execution lifecycle.
+/// </summary>
 public sealed class FetcherExecutionRepository : IFetcherExecutionRepository
 {
     private readonly ILogger<FetcherExecutionRepository> _logger;
@@ -20,6 +23,9 @@ public sealed class FetcherExecutionRepository : IFetcherExecutionRepository
         _timeProvier = datetimeprovider;
     }
 
+    /// <summary>
+    /// Records the start of a fetcher execution in the database.
+    /// </summary>
     public async Task<bool> LogStartAsync(IWorker worker, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -58,6 +64,9 @@ public sealed class FetcherExecutionRepository : IFetcherExecutionRepository
         }
     }
 
+    /// <summary>
+    /// Records the end of a fetcher execution in the database.
+    /// </summary>
     public async Task<bool> LogEndAsync(IWorker worker, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -102,6 +111,9 @@ public sealed class FetcherExecutionRepository : IFetcherExecutionRepository
         }
     }
 
+    /// <summary>
+    /// Retrieves all fetcher execution records.
+    /// </summary>
     public async Task<IEnumerable<V_FetchersLastExecution>> GetFetcherExecutionsAsync(CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -111,6 +123,9 @@ public sealed class FetcherExecutionRepository : IFetcherExecutionRepository
                         .ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Retrieves the most recent fetcher execution record.
+    /// </summary>
     public async Task<V_FetchersLastExecution?> GetLastFetcherExecutionAsync(CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);

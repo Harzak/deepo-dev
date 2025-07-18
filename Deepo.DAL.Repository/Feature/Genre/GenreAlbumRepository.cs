@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Deepo.DAL.Repository.Feature.Genre;
 
+/// <summary>
+/// Repository for managing album genre data including normalization and search operations.
+/// </summary>
 public class GenreAlbumRepository : IGenreAlbumRepository
 {
     private static char[] ALLOWED_GENRE_NAME_CHAR = ['-', '/', ' '];
@@ -24,6 +27,9 @@ public class GenreAlbumRepository : IGenreAlbumRepository
         _contextFactory = contextFactory;
     }
 
+    /// <summary>
+    /// Retrieves all album genres from the database.
+    /// </summary>
     public async Task<ReadOnlyCollection<Genre_Album>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -35,6 +41,9 @@ public class GenreAlbumRepository : IGenreAlbumRepository
         return genres.AsReadOnly();
     }
 
+    /// <summary>
+    /// Checks if a specific genre already exists in the database.
+    /// </summary>
     public async Task<bool> ExistsAsync(Genre_Album genre, CancellationToken cancellationToken = default)
     {
         using DEEPOContext context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
@@ -44,6 +53,9 @@ public class GenreAlbumRepository : IGenreAlbumRepository
                         .ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Inserts a new genre into the database with normalized name formatting.
+    /// </summary>
     public async Task<DatabaseOperationResult> InsertAsync(string genreName, CancellationToken cancellationToken = default)
     {
         DatabaseOperationResult result = new();
@@ -82,6 +94,9 @@ public class GenreAlbumRepository : IGenreAlbumRepository
         }
     }
 
+    /// <summary>
+    /// Attempts to find an existing genre by performing normalized name matching.
+    /// </summary>
     public async Task<(bool Found, Genre_Album Genre)> TryFindGenreAsync(string genreSearched, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(genreSearched))
