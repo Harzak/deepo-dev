@@ -7,24 +7,30 @@ using Models = Deepo.DAL.EF.Models;
 
 namespace Deepo.Fetcher.Library.Fetcher;
 
+/// <summary>
+/// Manages and provides access to fetcher workers.
+/// Retrieves fetcher configurations from the database and creates corresponding worker instances.
+/// Acts as a factory and repository for fetcher workers.
+/// </summary>
 internal class FetcherProvider : IFetcherProvider
 {
     private readonly IFetcherFactory _fetcherFactory;
-    private readonly IPlanningFactory _planningFactory;
     private readonly IFetcherRepository _fetcherRepository;
-    private readonly IPlanificationRepository _planificationRepository;
+    private readonly ISchedulerRepository _planificationRepository;
 
     public FetcherProvider(IFetcherFactory fetcherFactory,
-        IPlanningFactory planningFactory,
         IFetcherRepository fetcherRepository,
-        IPlanificationRepository planificationRepository)
+        ISchedulerRepository planificationRepository)
     {
         _fetcherFactory = fetcherFactory;
-        _planningFactory = planningFactory;
         _fetcherRepository = fetcherRepository;
         _planificationRepository = planificationRepository;
     }
 
+    /// <summary>
+    /// Retrieves all available fetcher workers from the database and creates corresponding worker instances.
+    /// </summary>
+    /// <returns>A collection of all available fetcher workers.</returns>
     public async Task<IEnumerable<IWorker>> GetAllFetcherAsync()
     {
         List<IWorker> workers = [];
@@ -43,33 +49,30 @@ internal class FetcherProvider : IFetcherProvider
         return workers;
     }
 
-    public async Task<Dictionary<IWorker, IPlanning>> GetAllPlannedFetcherAsync()
-    {
-        Dictionary<IWorker, IPlanning> plannedWorkers = [];
-
-        IEnumerable<Models.V_FetcherPlannification>? plannificationFetchers =  await _planificationRepository.GetAllAsync().ConfigureAwait(false);
-
-        if (plannificationFetchers is null || !plannificationFetchers.Any())
-        {
-            return plannedWorkers;
-        }
-
-        foreach (Models.V_FetcherPlannification plannificationFetcher in plannificationFetchers)
-        {
-            IWorker worker = _fetcherFactory.CreateFetcher(plannificationFetcher.Code ?? string.Empty);
-            worker.ID = Guid.Parse(plannificationFetcher.Fetcher_GUID); //todo
-            IPlanning planning = _planningFactory.CreatePlanning(plannificationFetcher.PlanificationCode ?? string.Empty,
-                                                                    plannificationFetcher.HourStart ?? -1,
-                                                                    plannificationFetcher.MinuteStart ?? -1);
-            plannedWorkers.Add(worker, planning);
-        }
-
-        return plannedWorkers;
-    }
-
+    /// <summary>
+    /// Retrieves a specific fetcher worker by its name from the database and creates the corresponding worker instance.
+    /// </summary>
+    /// <param name="name">The name of the fetcher to retrieve.</param>
+    /// <returns>The fetcher worker if found; otherwise, null.</returns>
     public async Task<IWorker?> GetFetcherByNameAsync(string name)
     {
         Models.Fetcher? fetcherDb = await _fetcherRepository.GetByNameAsync(name).ConfigureAwait(false);
+
+        if (fetcherDb != null)
+        {
+            return _fetcherFactory.CreateFetcher(fetcherDb.Code);
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Retrieves a specific fetcher worker by its identifier from the database and creates the corresponding worker instance.
+    /// </summary>
+    /// <param name="identifier">The unique identifier of the fetcher to retrieve.</param>
+    /// <returns>The fetcher worker if found; otherwise, null.</returns>
+    public async Task<IWorker?> GetFetcherByIdAsync(string identifier)
+    {
+        Models.Fetcher? fetcherDb = await _fetcherRepository.GetByIdAsync(identifier).ConfigureAwait(false);
 
         if (fetcherDb != null)
         {

@@ -9,8 +9,18 @@ using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Library.Mappers;
 
+/// <summary>
+/// Static mapper class for converting Discogs DTOs to album models.
+/// Provides methods to transform Discogs release data into internal album representations.
+/// </summary>
 public static class AlbumMapper
 {
+    /// <summary>
+    /// Maps a Discogs release DTO to an album model.
+    /// Converts all relevant properties including metadata, tracklist, and provider identifiers.
+    /// </summary>
+    /// <param name="master">The Discogs release DTO to map.</param>
+    /// <returns>An album model populated with data from the Discogs release.</returns>
     public static AlbumModel MapToAlbum(this DtoDiscogsRelease master)
     {
         ArgumentNullException.ThrowIfNull(master, nameof(master));

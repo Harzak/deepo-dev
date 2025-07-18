@@ -9,11 +9,14 @@ using System.Threading;
 
 namespace Deepo.Fetcher.Library.Fetcher.Vinyl;
 
+/// <summary>
+/// Vinyl-specific fetcher implementation that processes vinyl record data.
+/// Uses a vinyl fetch pipeline to discover and process vinyl releases from various sources.
+/// </summary>
 internal class FetcherVinyl : CancellableWorker
 {
     private readonly ILogger _logger;
     private readonly IVinylFetchPipelineFactory _pipelineFactory;
-
 
     public FetcherVinyl(IVinylFetchPipelineFactory pipelineFactory, ILogger logger)
     : base(logger)
@@ -32,6 +35,10 @@ internal class FetcherVinyl : CancellableWorker
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Executes the vinyl fetcher's main operation asynchronously.
+    /// Creates a vinyl fetch pipeline and processes vinyl data, logging the results.
+    /// </summary>
     protected override async Task ExecuteInternalAsync(CancellationToken stoppingToken)
     {
         using VinylFetchPipeline _strategy = _pipelineFactory.Create();

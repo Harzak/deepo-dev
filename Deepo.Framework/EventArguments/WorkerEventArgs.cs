@@ -4,9 +4,10 @@ namespace Deepo.Framework.EventArguments;
 
 public class WorkerEventArgs : EventArgs
 {
-    public IWorker? Worker { get; set; }
+    public IWorker Worker { get; set; }
+
     public WorkerEventArgs(IWorker worker)
     {
-        Worker = worker;
+        this.Worker = worker;
     }
 }

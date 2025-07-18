@@ -5,8 +5,15 @@ using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace Deepo.Fetcher.Library.Repositories.Discogs.Endpoint;
+
+/// <summary>
+/// Endpoint consumer for retrieving specific release information from the Discogs API.
+/// Handles requests to the enpoint: "/releases"
+/// </summary>
 internal class EndPointReleases : SingleResultEndpointConsumer<DtoDiscogsRelease?>
 {
+    private const string ENDPOINT_NAME = "releases"; 
+
     private readonly HttpServiceOption _options;
 
     public EndPointReleases(HttpServiceOption options, ILogger logger) : base(logger)
@@ -14,40 +21,22 @@ internal class EndPointReleases : SingleResultEndpointConsumer<DtoDiscogsRelease
         _options = options;
     }
 
+
+    /// <summary>
+    /// Constructs the GET request URL for retrieving a specific release.
+    /// </summary>
+    /// <param name="id">The release ID to retrieve.</param>
+    /// <returns>The relative URL path for the releases endpoint.</returns>
     public override string Get(string id)
     {
-        return $"releases/{id}";
+        return $"{ENDPOINT_NAME}/{id}";
     }
-    public override string Delete(string id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override string Options()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override string Patch(string id, string json)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override string Post(string id, string json)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override string Put(string id, string json)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override string Trace()
-    {
-        throw new NotImplementedException();
-    }
-
+    
+    /// <summary>
+    /// Parses the JSON response text into a Discogs release object.
+    /// </summary>
+    /// <param name="text">The JSON response text from the API.</param>
+    /// <returns>A Discogs release object, or null if parsing fails.</returns>
     protected override DtoDiscogsRelease? Parse(string text)
     {
         return JsonSerializer.Deserialize<DtoDiscogsRelease>(text);

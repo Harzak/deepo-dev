@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Library.Fetcher.Vinyl;
 
+/// <summary>
+/// Creates vinyl fetch pipeline instances.
+/// Provides configured instances with all necessary dependencies for vinyl data processing.
+/// </summary>
 public class VinylFetchPipelineFactory : IVinylFetchPipelineFactory
 {
     private readonly ILogger<VinylFetchPipeline> _logger;
@@ -27,6 +31,10 @@ public class VinylFetchPipelineFactory : IVinylFetchPipelineFactory
         _logger = logger;
     }
 
+    /// <summary>
+    /// Creates a new instance of a vinyl fetch pipeline with all necessary dependencies configured.
+    /// </summary>
+    /// <returns>A configured vinyl fetch pipeline instance ready for use.</returns>
     public VinylFetchPipeline Create()
     {
         return new VinylFetchPipeline(_strategiesFactory, _releaseAlbumRepository, _historyRepository, _logger);

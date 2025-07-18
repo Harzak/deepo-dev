@@ -202,11 +202,8 @@
     <Build Include="fetcher\Tables\Execution.sql" />
     <Build Include="fetcher\Tables\Fetcher.sql" />
     <Build Include="fetcher\Tables\HttpRequest.sql" />
-    <Build Include="fetcher\Tables\Planification.sql" />
-    <Build Include="fetcher\Tables\PlanificationType.sql" />
-    <Build Include="fetcher\Tables\Planning.sql" />
-    <Build Include="fetcher\Views\V_FetcherPlannification.sql" />
-    <Build Include="fetcher\Views\V_FetcherExtended.sql" />
+    <Build Include="fetcher\Tables\Scheduler.sql" />
+    <Build Include="fetcher\Tables\Schedule.sql" />
     <Build Include="dbo\Views\V_LastVinylRelease.sql" />
     <Build Include="fetcher\Views\V_FetchersLastExecution.sql" />
     <Build Include="dbo\Tables\Genre_Album_Release.sql" />

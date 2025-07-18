@@ -8,6 +8,9 @@ using Microsoft.Extensions.Options;
 
 namespace Deepo.Fetcher.Library.Fetcher;
 
+/// <summary>
+/// Creates specific types of fetcher worker instances.
+/// </summary>
 internal class FetcherFactory : IFetcherFactory
 {
     private readonly ILogger _logger;
@@ -23,6 +26,11 @@ internal class FetcherFactory : IFetcherFactory
         _vinylFetchPipelineFactory = vinylFetchPipelineFactory;
     }
 
+    /// <summary>
+    /// Creates a fetcher worker instance based on the provided code.
+    /// </summary>
+    /// <param name="code">The code identifying the type of fetcher to create.</param>
+    /// <returns>A worker instance corresponding to the specified code.</returns>
     public IWorker CreateFetcher(string code)
     {
         switch (code)

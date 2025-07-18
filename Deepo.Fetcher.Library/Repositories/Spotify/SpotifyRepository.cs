@@ -12,15 +12,19 @@ using System.Runtime.CompilerServices;
 
 namespace Deepo.Fetcher.Library.Repositories.Spotify;
 
+/// <summary>
+/// Provides access to Spotify API data.
+/// Handles authentication and retrieval of music releases and albums from Spotify.
+/// </summary>
 internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
 {
     private readonly HttpServiceOption _options;
     private readonly EndPointSearchAlbum _searchAlbumEndpoint;
 
     public SpotifyRepository(
-        IHttpClientFactory httpClientFactory, 
+        IHttpClientFactory httpClientFactory,
         IAuthServiceFactory authServiceFactory,
-        IOptions<HttpServicesOption> options, 
+        IOptions<HttpServicesOption> options,
         ILogger<SpotifyRepository> logger)
     : base(httpClientFactory,
         new DateTimeFacade(),
@@ -34,6 +38,12 @@ internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
         _searchAlbumEndpoint = new EndPointSearchAlbum(_options, logger);
     }
 
+    /// <summary>
+    /// Retrieves new releases from Spotify for a specific market via search functionality.
+    /// Searches for albums from the current year with "new" tag and returns them as an asynchronous enumerable.
+    /// </summary>
+    /// <param name="market">The market (country) to search for new releases.</param>
+    /// <returns>An asynchronous enumerable of HTTP service results containing Spotify albums.</returns>
     public async IAsyncEnumerable<HttpServiceResult<DtoSpotifyAlbum>> GetNewReleasesViaSearch(string market, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         await foreach (string page in GetNewReleasesViaSearchJson(market, cancellationToken).ConfigureAwait(false))
@@ -56,6 +66,12 @@ internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
         }
     }
 
+    /// <summary>
+    /// Performs the HTTP requests to get new releases JSON data from Spotify's search API.
+    /// Constructs search query for current year albums with "new" tag.
+    /// </summary>
+    /// <param name="market">The market (country) to search for new releases.</param>
+    /// <returns>An asynchronous enumerable of JSON response strings from the API.</returns>
     private async IAsyncEnumerable<string> GetNewReleasesViaSearchJson(string market, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         _searchAlbumEndpoint.Market = market;
