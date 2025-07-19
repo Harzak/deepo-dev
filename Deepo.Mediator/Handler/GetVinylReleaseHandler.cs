@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Deepo.Mediator.Handler;
 
+/// <summary>
+/// Handles the processing of queries to retrieve detailed information about a specific vinyl release.
+/// </summary>
 internal sealed class GetVinylReleaseHandler : IRequestHandler<GetVinylReleaseQuery, OperationResult<ReleaseVinylExDto>>
 {
     private readonly IReleaseAlbumRepository _repository;
@@ -16,6 +19,9 @@ internal sealed class GetVinylReleaseHandler : IRequestHandler<GetVinylReleaseQu
         _repository = repository;
     }
 
+    /// <summary>
+    /// Processes the vinyl release query and returns detailed information including tracks, genres, and assets.
+    /// </summary>
     public async Task<OperationResult<ReleaseVinylExDto>> Handle(GetVinylReleaseQuery request, CancellationToken cancellationToken)
     {
 

@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Deepo.Mediator.Handler;
 
+/// <summary>
+/// Handles the processing of queries to retrieve all vinyl genres with optional filtering.
+/// </summary>
 internal sealed class GetAllVinylGenresHandler : IRequestHandler<GetAllVinylGenresQuery, OperationResultList<GenreDto>>
 {
     private readonly IGenreAlbumRepository _repository;
@@ -16,6 +19,9 @@ internal sealed class GetAllVinylGenresHandler : IRequestHandler<GetAllVinylGenr
         this._repository = _repository;
     }
 
+    /// <summary>
+    /// Processes the genre query and returns a collection of available vinyl genres.
+    /// </summary>
     public async Task<OperationResultList<GenreDto>> Handle(GetAllVinylGenresQuery request, CancellationToken cancellationToken)
     {
         OperationResultList<GenreDto> result = new()
