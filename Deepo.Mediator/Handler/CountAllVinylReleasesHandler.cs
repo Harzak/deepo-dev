@@ -22,12 +22,18 @@ internal sealed class CountAllVinylReleasesHandler : IRequestHandler<CountAllVin
     /// </summary>
     public async Task<OperationResult<int>> Handle(CountAllVinylReleasesQuery request, CancellationToken cancellationToken)
     {
-        OperationResult<int> result = new()
-        {
-            Content = await _repository.CountAsync(request.Market, cancellationToken).ConfigureAwait(false)
-        };
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
 
-        return await Task.FromResult(result.WithSuccess()).ConfigureAwait(false);
+        OperationResult<int> result = new();
+
+        if (string.IsNullOrEmpty(request.Market?.Trim()))
+        {
+            return result.WithError("'Market' parameter must not be empty.");
+        }
+
+        result.Content = await _repository.CountAsync(request.Market, cancellationToken).ConfigureAwait(false);
+
+        return result.WithSuccess();
     }
 }
 
