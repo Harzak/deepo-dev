@@ -3,11 +3,11 @@
 namespace Deepo.Fetcher.Viewer.Control;
 
 /// <summary>
-/// Interaction logic for GridReleaseVinyle.xaml
+/// Interaction logic for GridReleaseVinyl.xaml
 /// </summary>
-public partial class GridReleaseVinyle : UserControl
+public partial class GridReleaseVinyl : UserControl
 {
-    public GridReleaseVinyle()
+    public GridReleaseVinyl()
     {
         InitializeComponent();
     }

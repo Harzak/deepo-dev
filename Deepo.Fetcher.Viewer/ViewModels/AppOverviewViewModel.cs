@@ -1,7 +1,7 @@
 ﻿using Deepo.DAL.EF.Models;
 using Deepo.DAL.Repository.Feature.Fetcher;
 using Deepo.DAL.Repository.Interfaces;
-using Deepo.Fetcher.Host.WPF;
+using Deepo.Fetcher.Viewer.WPF;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Deepo.Fetcher.Viewer.Models;
 using System;
@@ -11,12 +11,18 @@ using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Viewer.ViewModels;
 
+/// <summary>
+/// Provides an overview of fetcher operations, including active and inactive fetcher counts with real-time updates.
+/// </summary>
 public class AppOverviewViewModel : BaseViewModel
 {
     private readonly IFetcherExecutionRepository _fetcherExecutionRepository;
     private readonly IFetcherListener _fetcherListener;
     private IEnumerable<V_FetchersLastExecution> _fetcherExecutions;
 
+    /// <summary>
+    /// Gets the count of currently active fetchers that are running.
+    /// </summary>
     public int ActiveFetcherCount
     {
         get
@@ -25,6 +31,9 @@ public class AppOverviewViewModel : BaseViewModel
         }
     }
 
+    /// <summary>
+    /// Gets the count of inactive fetchers that are not currently running.
+    /// </summary>
     public int InactiveFetcherCount
     {
         get
@@ -34,7 +43,7 @@ public class AppOverviewViewModel : BaseViewModel
     }
 
     public AppOverviewViewModel(
-        IFetcherExecutionRepository fetcherExecutionRepository, 
+        IFetcherExecutionRepository fetcherExecutionRepository,
         IFetcherListener fetcherListener)
     {
         _fetcherExecutionRepository = fetcherExecutionRepository;
@@ -44,6 +53,9 @@ public class AppOverviewViewModel : BaseViewModel
         _fetcherListener.FetcherExecutionRowAdded += OnFetcherExecutionRowAdded;
     }
 
+    /// <summary>
+    /// Asynchronously initializes the view model by loading fetcher execution data.
+    /// </summary>
     public async Task InitializeAsync()
     {
         await RefreshFetcherExecutions().ConfigureAwait(false);

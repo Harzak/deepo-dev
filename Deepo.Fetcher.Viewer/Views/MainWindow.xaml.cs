@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Deepo.Fetcher.Host.WPF;
+namespace Deepo.Fetcher.Viewer.WPF;
 
 public partial class MainWindow : Wpf.Ui.Controls.FluentWindow
 {

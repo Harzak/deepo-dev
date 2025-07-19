@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deepo.Fetcher.Host.LogMessages;
+namespace Deepo.Fetcher.Viewer.LogMessages;
 
 internal static partial class HostLogs
 {

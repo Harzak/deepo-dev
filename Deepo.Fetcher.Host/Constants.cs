@@ -1,4 +1,4 @@
-﻿namespace Deepo.Fetcher.Host;
+﻿namespace Deepo.Fetcher.Viewer;
 
 public static class Constants
 {

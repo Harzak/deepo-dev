@@ -1,5 +1,5 @@
 ﻿using Deepo.DAL.Repository.Configuration;
-using Deepo.Fetcher.Host.WPF.Extensions;
+using Deepo.Fetcher.Viewer.Extensions;
 using Deepo.Fetcher.Viewer.Features.Listener;
 using Deepo.Fetcher.Viewer.Interfaces;
 using Deepo.Fetcher.Viewer.ViewModels;
@@ -12,7 +12,7 @@ using NLog.Extensions.Logging;
 using System.Windows;
 using Wpf.Ui;
 
-namespace Deepo.Fetcher.Host.WPF;
+namespace Deepo.Fetcher.Viewer.WPF;
 
 /// <summary>
 /// Interaction logic for App.xaml

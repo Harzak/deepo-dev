@@ -9,8 +9,14 @@ using Deepo.Fetcher.Viewer.LogMessages;
 
 namespace Deepo.Fetcher.Viewer.Features.Listener;
 
+/// <summary>
+/// Manages SQL Server dependency subscriptions for monitoring database changes on specific queries.
+/// </summary>
 internal class SQLDependency : IDisposable
 {
+    /// <summary>
+    /// Gets or sets the maximum number of connection retry attempts when opening database connections.
+    /// </summary>
     public int NumberRetryOpenConnection { get; set; }
 
     internal event OnChangeEventHandler? OnChange;
@@ -34,11 +40,17 @@ internal class SQLDependency : IDisposable
         _subsriptionRequest = subsriptionRequest;
     }
 
+    /// <summary>
+    /// Establishes a subscription to monitor database changes for the configured query.
+    /// </summary>
     internal bool Subscribe()
     {
         return OpenConnection() && CreateCommand() && CreateDependency() && ExecuteCommand();
     }
 
+    /// <summary>
+    /// Removes the subscription and cleans up database resources.
+    /// </summary>
     internal void Unsubscribe()
     {
         _command?.Cancel();

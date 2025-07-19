@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Viewer.Features.Listener;
 
+/// <summary>
+/// Provides database change monitoring capabilities for fetcher operations.
+/// </summary>
 internal sealed class FetcherListener : IFetcherListener
 {
     private readonly SQLListener _releaseVinyListener;
@@ -20,8 +23,19 @@ internal sealed class FetcherListener : IFetcherListener
     private readonly IFetcherHttpRequestRepository _httpRequestRepository;
     private readonly IFetcherExecutionRepository _fetcherExecutionRepository;
 
+    /// <summary>
+    /// Occurs when a new HTTP request log entry is added to the database.
+    /// </summary>
     public event EventHandler<HttpRequestLogEventArgs>? HttpRequestLogRowAdded;
+    
+    /// <summary>
+    /// Occurs when a new vinyl release is added to the database.
+    /// </summary>
     public event EventHandler<GridModelEventArgs>? VinylReleaseRowAdded;
+    
+    /// <summary>
+    /// Occurs when a new fetcher execution is recorded in the database.
+    /// </summary>
     public event EventHandler<FetcherExecutionEventArgs>? FetcherExecutionRowAdded;
 
 
@@ -39,6 +53,9 @@ internal sealed class FetcherListener : IFetcherListener
         _fetcherListener = new SQLListener(connectionString, Queries.FectherExecutionSubscriptionQuery, logger);
     }
 
+    /// <summary>
+    /// Starts monitoring database changes for vinyl releases, HTTP requests, and fetcher executions.
+    /// </summary>
     public void StartListener()
     {
         _releaseVinyListener.OnInsert += OnInsertReleaseVinylAsync;

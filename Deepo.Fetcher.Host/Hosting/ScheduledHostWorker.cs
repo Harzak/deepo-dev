@@ -4,7 +4,7 @@ using Deepo.Framework.EventArguments;
 using Deepo.Framework.Interfaces;
 using Microsoft.Extensions.Logging;
 
-namespace Deepo.Fetcher.Host.Hosting;
+namespace Deepo.Fetcher.Viewer.Hosting;
 
 /// <summary>
 /// Implements a scheduled host worker that manages fetcher task execution based on scheduling events.

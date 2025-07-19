@@ -1,5 +1,5 @@
-﻿using Deepo.Fetcher.Host.Interfaces;
-using Deepo.Fetcher.Host.LogMessages;
+﻿using Deepo.Fetcher.Viewer.Interfaces;
+using Deepo.Fetcher.Viewer.LogMessages;
 using Deepo.Fetcher.Library.Interfaces;
 using Deepo.Framework.Interfaces;
 using Microsoft.Extensions.Hosting;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Deepo.Fetcher.Host.Hosting;
+namespace Deepo.Fetcher.Viewer.Hosting;
 
 /// <summary>
 /// Provides a base implementation for host workers that manage the execution lifecycle of fetcher tasks.
