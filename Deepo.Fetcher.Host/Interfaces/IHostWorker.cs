@@ -1,4 +1,4 @@
-﻿namespace Deepo.Fetcher.Host.Interfaces;
+﻿namespace Deepo.Fetcher.Viewer.Interfaces;
 
 public interface IHostWorker : IHostedService, IDisposable
 {

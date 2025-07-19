@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Deepo.Fetcher.Viewer.Exceptions;
 
+/// <summary>
+/// Represents an exception that is thrown when an invalid SQL subscription operation occurs.
+/// </summary>
 public class InvalideSQLSubscriptionException : Exception
 {
     public InvalideSQLSubscriptionException()

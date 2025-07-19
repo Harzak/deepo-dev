@@ -6,10 +6,24 @@ using Deepo.Fetcher.Viewer.Exceptions;
 
 namespace Deepo.Fetcher.Viewer.Features.Listener;
 
+/// <summary>
+/// Provides SQL Server database change monitoring capabilities using SqlDependency notifications.
+/// </summary>
 public class SQLListener : IListener, IDisposable
 {
+    /// <summary>
+    /// Occurs when a database insert operation is detected.
+    /// </summary>
     public event EventHandler? OnInsert;
+    
+    /// <summary>
+    /// Occurs when a database update operation is detected.
+    /// </summary>
     public event EventHandler? OnUpdate;
+    
+    /// <summary>
+    /// Occurs when a database delete operation is detected.
+    /// </summary>
     public event EventHandler? OnDelete;
 
     private readonly ILogger _logger;
@@ -28,12 +42,18 @@ public class SQLListener : IListener, IDisposable
         _subsriptionRequest = subsriptionRequest;
     }
 
+    /// <summary>
+    /// Starts the SQL dependency listener for database change notifications.
+    /// </summary>
     public bool StartListener()
     {
         SqlDependency.Start(_connectionString);
         return Subscribe();
     }
 
+    /// <summary>
+    /// Stops the SQL dependency listener and cleans up resources.
+    /// </summary>
     public void StopListener()
     {
         SqlDependency.Stop(_connectionString);

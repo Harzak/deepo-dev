@@ -1,6 +1,6 @@
 ﻿using MudBlazor;
 
-namespace Deepo.Client.Web.Theme;
+namespace Deepo.Client.Web.Interfaces;
 
 public interface IThemeProvider
 {
