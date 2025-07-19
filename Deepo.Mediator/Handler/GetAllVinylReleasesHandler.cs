@@ -7,6 +7,9 @@ using MediatR;
 
 namespace Deepo.Mediator.Handler;
 
+/// <summary>
+/// Handles the processing of queries to retrieve vinyl releases with pagination support.
+/// </summary>
 internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylReleasesWithPaginationQuery, OperationResultList<ReleaseVinylDto>>
 {
     private readonly IReleaseAlbumRepository _repository;
@@ -16,6 +19,9 @@ internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylRe
         _repository = repository;
     }
 
+    /// <summary>
+    /// Processes the paginated vinyl releases query and returns a collection of vinyl releases with associated metadata.
+    /// </summary>
     public async Task<OperationResultList<ReleaseVinylDto>> Handle(GetAllVinylReleasesWithPaginationQuery request, CancellationToken cancellationToken)
     {
         OperationResultList<ReleaseVinylDto> result = new()
