@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 
 namespace Deepo.Framework.Web.Handler;
 
+/// <summary>
+/// Provides HTTP message handling with comprehensive logging of request and response information.
+/// </summary>
 public class LoggingHandler : DelegatingHandler
 {
-
     private readonly ILogger<LoggingHandler> _logger;
 
     public LoggingHandler(ILogger<LoggingHandler> logger) : base()

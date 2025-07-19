@@ -9,8 +9,14 @@ using System.Runtime.CompilerServices;
 
 namespace Deepo.Framework.Web.Service;
 
+/// <summary>
+/// Provides HTTP service functionality with support for GET and POST operations, authentication headers, and response handling.
+/// </summary>
 public class HttpService : IHttpService, IDisposable
 {
+    /// <summary>
+    /// Gets the name identifier for this HTTP service instance.
+    /// </summary>
     public string Name { get; }
 
     private bool _disposedValue;
@@ -54,6 +60,9 @@ public class HttpService : IHttpService, IDisposable
     }
 
     #region GET Methods
+    /// <summary>
+    /// Asynchronously performs an HTTP GET request to the specified endpoint.
+    /// </summary>
     public virtual async Task<OperationResult<string>> GetAsync(string endpoint, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(endpoint);
@@ -66,6 +75,9 @@ public class HttpService : IHttpService, IDisposable
         return await GetAsync(relativeUri, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Asynchronously performs an HTTP GET request to the specified URI endpoint.
+    /// </summary>
     public virtual async Task<OperationResult<string>> GetAsync(Uri endpoint, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(endpoint);
@@ -79,6 +91,9 @@ public class HttpService : IHttpService, IDisposable
         return await Read(response, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Asynchronously performs paginated HTTP GET requests to retrieve multiple pages of results.
+    /// </summary>
     public virtual async IAsyncEnumerable<string> GetAsync(string endpoint, IPaginableEndpointQuery paginableQuery, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(endpoint);
@@ -100,6 +115,9 @@ public class HttpService : IHttpService, IDisposable
         }
     }
 
+    /// <summary>
+    /// Asynchronously performs paginated HTTP GET requests to the specified URI endpoint.
+    /// </summary>
     public virtual async IAsyncEnumerable<string> GetAsync(Uri endpoint, IPaginableEndpointQuery paginableQuery, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         if (endpoint != null)
@@ -141,6 +159,9 @@ public class HttpService : IHttpService, IDisposable
     #endregion
 
     #region POST Methods
+    /// <summary>
+    /// Asynchronously performs an HTTP POST request to the specified endpoint with content.
+    /// </summary>
     public virtual async Task<OperationResult<string>> PostAsync(string endpoint, HttpContent content, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(endpoint);
@@ -160,6 +181,9 @@ public class HttpService : IHttpService, IDisposable
         return await Read(response, cancellationToken).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Asynchronously performs an HTTP POST request to the specified URI endpoint with content.
+    /// </summary>
     public virtual async Task<OperationResult<string>> PostAsync(Uri endpoint, HttpContent content, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(endpoint);
@@ -226,6 +250,9 @@ public class HttpService : IHttpService, IDisposable
         SetDate(_timeProvider.DateTimeUTCNow());
     }
 
+    /// <summary>
+    /// Sets the authorization header for HTTP requests with the specified scheme and parameter.
+    /// </summary>
     public virtual void SetAuthorization(string scheme, string parameter)
     {
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(scheme, parameter);

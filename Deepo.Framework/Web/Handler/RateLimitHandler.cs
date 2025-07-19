@@ -2,9 +2,19 @@
 
 namespace Deepo.Framework.Web.Handler;
 
+/// <summary>
+/// Provides HTTP message handling with rate limiting functionality to control request frequency.
+/// </summary>
 public class RateLimitHandler : DelegatingHandler
 {
+    /// <summary>
+    /// Gets or sets the maximum number of requests allowed within the specified time period.
+    /// </summary>
     protected virtual int Rate { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the time period for rate limiting enforcement.
+    /// </summary>
     protected virtual TimeSpan Time { get; set; }
 
     private readonly IDateTimeFacade _timeProvider;

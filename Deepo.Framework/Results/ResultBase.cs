@@ -2,11 +2,17 @@
 
 namespace Deepo.Framework.Results;
 
+/// <summary>
+/// Provides an abstract base class for operation results with success/failure status and error handling.
+/// </summary>
 public abstract class ResultBase : IResult
 {
     private bool _isSuccess;
     private bool _isFailed;
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the operation completed successfully.
+    /// </summary>
     public bool IsSuccess
     {
         get => _isSuccess;
@@ -17,6 +23,9 @@ public abstract class ResultBase : IResult
         }
     }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether the operation failed.
+    /// </summary>
     public bool IsFailed
     {
         get => _isFailed;
@@ -27,8 +36,14 @@ public abstract class ResultBase : IResult
         }
     }
 
+    /// <summary>
+    /// Gets or sets the error message when the operation fails.
+    /// </summary>
     public string ErrorMessage { get; set; }
 
+    /// <summary>
+    /// Gets or sets the error code when the operation fails.
+    /// </summary>
     public string ErrorCode { get; set; }
 
     protected ResultBase(bool success)
@@ -43,6 +58,9 @@ public abstract class ResultBase : IResult
 
     }
 
+    /// <summary>
+    /// Affects this result with the success status of another result.
+    /// </summary>
     public IResult Affect(IResult result)
     {
         if (result != null && IsSuccess)
@@ -52,6 +70,9 @@ public abstract class ResultBase : IResult
         return this;
     }
 
+    /// <summary>
+    /// Affects this result with the success status of a result produced by a function.
+    /// </summary>
     public IResult Affect(Func<IResult> result)
     {
         if (result != null)
@@ -61,6 +82,9 @@ public abstract class ResultBase : IResult
         return this;
     }
 
+    /// <summary>
+    /// Asynchronously affects this result with the success status of a result produced by an async function.
+    /// </summary>
     public async Task<IResult> Affect(Func<Task<IResult>> result)
     {
         if (result != null)

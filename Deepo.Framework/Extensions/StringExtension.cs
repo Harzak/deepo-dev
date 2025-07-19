@@ -7,18 +7,14 @@ using System.Threading.Tasks;
 
 namespace Deepo.Framework.Extensions;
 
+/// <summary>
+/// Provides extension methods for string manipulation and validation operations.
+/// </summary>
 public static class StringExtension
 {
-    public static bool IsNullOrEmpty([NotNullWhen(false)] this string? str)
-    {
-        return string.IsNullOrEmpty(str);
-    }
-
-    public static bool IsNullOrWhiteSpace([NotNullWhen(false)] this string str)
-    {
-        return string.IsNullOrWhiteSpace(str);
-    }
-
+    /// <summary>
+    /// Truncates the string to the specified maximum length and optionally appends a replacement string.
+    /// </summary>
     public static string Truncate(this string str, int maxLength, string? replacement = "")
     {
         ArgumentNullException.ThrowIfNull(str);
