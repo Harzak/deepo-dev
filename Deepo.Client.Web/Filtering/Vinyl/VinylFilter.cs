@@ -4,12 +4,22 @@ using System.Collections.ObjectModel;
 
 namespace Deepo.Client.Web.Filtering.Vinyl;
 
+/// <summary>
+/// Provides filtering capabilities for vinyl release collections.
+/// </summary>
 public class VinylFilter : IFilter<ReleaseVinylDto>
 {
     private readonly IVinylFiltersStore _filtersStore;
     private HashSet<Guid> _genresFilterCache;
 
+    /// <summary>
+    /// Occurs when filter criteria have changed.
+    /// </summary>
     public event EventHandler<FilterEventArgs>? FilterChanged;
+    
+    /// <summary>
+    /// Gets the collection of filter predicates used to determine which items should be visible.
+    /// </summary>
     public Collection<Func<ReleaseVinylDto, bool>> Predicates => [
         FilterByReleaseDate,
         FilterByGenre

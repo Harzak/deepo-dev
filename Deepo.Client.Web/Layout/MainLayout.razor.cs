@@ -1,4 +1,4 @@
-﻿using Deepo.Client.Web.Theme;
+﻿using Deepo.Client.Web.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace Deepo.Client.Web.Layout;

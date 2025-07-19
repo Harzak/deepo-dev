@@ -9,8 +9,14 @@ using System.Collections.ObjectModel;
 
 namespace Deepo.Client.Web.Filtering.Vinyl;
 
+/// <summary>
+/// Manages filter criteria for vinyl releases, including genres, markets, and release dates.
+/// </summary>
 public sealed class VinylFiltersStore : IVinylFiltersStore
 {
+    /// <summary>
+    /// Occurs when filter criteria have changed.
+    /// </summary>
     public event EventHandler<FilterEventArgs>? FilterChanged;
 
     private readonly IHttpService _httpService;
@@ -21,10 +27,29 @@ public sealed class VinylFiltersStore : IVinylFiltersStore
     private Collection<string> _availableMarkets;
     private DateTime _searchedDate;
 
+    /// <summary>
+    /// Gets the currently selected search date for filtering releases.
+    /// </summary>
     public DateTime SearchDate => _searchedDate;
+    
+    /// <summary>
+    /// Gets the collection of genres currently selected for filtering.
+    /// </summary>
     public IEnumerable<GenreDto> SearchedGenres => _searchedGenres;
+    
+    /// <summary>
+    /// Gets the collection of all available genres that can be used for filtering.
+    /// </summary>
     public IEnumerable<GenreDto> AvailableGenres => _availableGenres;
+    
+    /// <summary>
+    /// Gets the collection of markets currently selected for filtering.
+    /// </summary>
     public IEnumerable<string> SearchedMarkets => _searchedMarkets;
+    
+    /// <summary>
+    /// Gets the collection of all available markets that can be used for filtering.
+    /// </summary>
     public IEnumerable<string> AvailableMarkets => _availableMarkets;
 
     public VinylFiltersStore(IHttpService httpService)
@@ -38,6 +63,9 @@ public sealed class VinylFiltersStore : IVinylFiltersStore
         _searchedDate = DateTime.MinValue;
     }
 
+    /// <summary>
+    /// Asynchronously initializes the filter store by loading available genres and markets from the API.
+    /// </summary>
     public async Task InitializeAsync()
     {
         _availableMarkets = [.. Constants.AVAILABLE_MARKETS];
@@ -58,6 +86,9 @@ public sealed class VinylFiltersStore : IVinylFiltersStore
         this.InvokeFilterChanged();
     }
 
+    /// <summary>
+    /// Sets the genres to be used for filtering vinyl releases.
+    /// </summary>
     public void SetSearchedGenres(IEnumerable<GenreDto> genres)
     {
         GenreDto[] genreArray = genres as GenreDto[] ?? genres.ToArray();
@@ -84,6 +115,9 @@ public sealed class VinylFiltersStore : IVinylFiltersStore
         }
     }
 
+    /// <summary>
+    /// Sets the markets to be used for filtering vinyl releases.
+    /// </summary>
     public void SetSearchedMarkets(IEnumerable<string> markets)
     {
         string[] marketsArray = markets as string[] ?? markets.ToArray();
@@ -110,6 +144,9 @@ public sealed class VinylFiltersStore : IVinylFiltersStore
         }
     }
 
+    /// <summary>
+    /// Sets the date to be used for filtering vinyl releases.
+    /// </summary>
     public void SetSearchedDate(DateTime date)
     {
         if (_searchedDate != date)
