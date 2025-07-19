@@ -4,6 +4,9 @@ using Deepo.Dto;
 using Deepo.Framework.Results;
 using Deepo.Mediator.Query;
 using MediatR;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Deepo.Mediator.Tests")]
 
 namespace Deepo.Mediator.Handler;
 
@@ -24,14 +27,29 @@ internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylRe
     /// </summary>
     public async Task<OperationResultList<ReleaseVinylDto>> Handle(GetAllVinylReleasesWithPaginationQuery request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
+
         OperationResultList<ReleaseVinylDto> result = new()
         {
             Content = []
         };
 
-        IReadOnlyCollection<V_LastVinylRelease> allVinylReleasesDB = await _repository.GetAllAsync(request.Market, 
-                                                                                                   request.Offset, 
-                                                                                                   request.Limit, 
+        if (request.Offset < 0)
+        {
+            return result.WithError("'Offset' parameter must be greater than 0.");
+        }
+        if (request.Limit < 0)
+        {
+            return result.WithError("'Limit' parameter must be greater than 0.");
+        }
+        if (string.IsNullOrEmpty(request.Market?.Trim()))
+        {
+            return result.WithError("'Market' parameter must not be empty.");
+        }
+
+        IReadOnlyCollection<V_LastVinylRelease> allVinylReleasesDB = await _repository.GetAllAsync(request.Market,
+                                                                                                   request.Offset,
+                                                                                                   request.Limit,
                                                                                                    cancellationToken).ConfigureAwait(false);
 
         if (allVinylReleasesDB != null)
@@ -57,7 +75,7 @@ internal sealed class GetAllVinylReleasesHandler : IRequestHandler<GetAllVinylRe
                         });
                     }
                 }
-                if(!string.IsNullOrEmpty(vinylReleaseDB.ArtistsNames))
+                if (!string.IsNullOrEmpty(vinylReleaseDB.ArtistsNames))
                 {
                     string[] artistsNames = vinylReleaseDB.ArtistsNames.Split(';');
                     foreach (string artistName in artistsNames)

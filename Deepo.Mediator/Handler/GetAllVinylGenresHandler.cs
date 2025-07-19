@@ -24,6 +24,8 @@ internal sealed class GetAllVinylGenresHandler : IRequestHandler<GetAllVinylGenr
     /// </summary>
     public async Task<OperationResultList<GenreDto>> Handle(GetAllVinylGenresQuery request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
+
         OperationResultList<GenreDto> result = new()
         {
             Content = []

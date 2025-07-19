@@ -24,14 +24,20 @@ internal sealed class GetVinylReleaseHandler : IRequestHandler<GetVinylReleaseQu
     /// </summary>
     public async Task<OperationResult<ReleaseVinylExDto>> Handle(GetVinylReleaseQuery request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
 
         OperationResult<ReleaseVinylExDto> result = new();
+
+        if (request.Id == Guid.Empty)
+        {
+            return result.WithError("'Id' parameter must not be empty.");
+        }
 
         Release_Album? vinylReleaseDB = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
 
         if (vinylReleaseDB is null)
         {
-            return result.WithFailure();
+            return result.WithError($"no record found for parameter: 'id' = {request.Id}");
         }
 
         result.Content = new ReleaseVinylExDto()
@@ -76,9 +82,7 @@ internal sealed class GetVinylReleaseHandler : IRequestHandler<GetVinylReleaseQu
             });
         }
 
-        result.WithSuccess();
-
-        return await Task.FromResult(result).ConfigureAwait(false);
+        return result.WithSuccess();
     }
 }
 
