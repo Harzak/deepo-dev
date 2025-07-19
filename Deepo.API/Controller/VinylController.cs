@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Deepo.API.Controller;
 
+/// <summary>
+/// API controller for managing vinyl release operations.
+/// </summary>
 [Route(ControllerConstants.VINYL_CONTROLLER_NAME)]
 [ApiController]
 public class VinylController : ControllerBase
@@ -19,6 +22,9 @@ public class VinylController : ControllerBase
         _logger = logger;
     }
 
+    /// <summary>
+    /// Gets the total count of vinyl releases for a specified market.
+    /// </summary>
     [HttpGet]
     [Route("count")]
     public async Task<IActionResult> Get(string market, CancellationToken cancellationToken)
@@ -40,7 +46,12 @@ public class VinylController : ControllerBase
         }
     }
 
-    //vinyl?market=FR&offset=100&limit=50
+    /// <summary>
+    /// Gets vinyl releases with pagination for a specified market.
+    /// </summary>
+    /// <remarks>
+    /// Example: /vinyl?market=FR&offset=100&limit=50
+    /// </remarks>
     [HttpGet]
     public async Task<IActionResult> Get(string market, int offset, int limit, CancellationToken cancellationToken)
     {
@@ -65,7 +76,12 @@ public class VinylController : ControllerBase
         }
     }
 
-    //vinyl/8b8d2254-ec00-49b9-9d45-7241fb7b937d
+    /// <summary>
+    /// Gets a specific vinyl release by its unique identifier.
+    /// </summary>
+    /// <remarks>
+    /// Example: /vinyl/8b8d2254-ec00-49b9-9d45-7241fb7b937d
+    /// </remarks>
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
@@ -87,7 +103,12 @@ public class VinylController : ControllerBase
         }
     }
 
-    //vinyl/genres
+    /// <summary>
+    /// Gets all vinyl genres, optionally filtered by a search term.
+    /// </summary>
+    /// <remarks>
+    /// Example: /vinyl/genres
+    /// </remarks>
     [HttpGet]
     [Route("genres")]
     public async Task<IActionResult> GetGenres(CancellationToken cancellationToken, string? filter = null)

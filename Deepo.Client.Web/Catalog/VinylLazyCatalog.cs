@@ -9,17 +9,47 @@ using Deepo.Framework.Interfaces;
 
 namespace Deepo.Client.Web.Catalog;
 
+/// <summary>
+/// Provides a lazy-loading catalog implementation for vinyl releases with pagination and filtering capabilities.
+/// </summary>
 public sealed class VinylLazyCatalog : IVinylCatalog
 {
     private readonly IHttpService _httpService;
     private int _nextOffset;
 
-    public IFilteredCollection<ReleaseVinylDto> Items {get;set;}
+    /// <summary>
+    /// Gets or sets the filtered collection of vinyl release items.
+    /// </summary>
+    public IFilteredCollection<ReleaseVinylDto> Items { get; set; }
+
+    /// <summary>
+    /// Gets a value indicating whether the catalog has been loaded with data.
+    /// </summary>
     public bool IsLoaded { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether an error occurred during catalog operations.
+    /// </summary>
     public bool IsInError { get; private set; }
+
+    /// <summary>
+    /// Gets the error message when an error occurs during catalog operations.
+    /// </summary>
     public string ErrorMessage { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether more items can be loaded from the data source.
+    /// </summary>
     public bool CanGoNext { get; private set; }
+
+    /// <summary>
+    /// Gets the current page index in the paginated catalog.
+    /// </summary>
     public int CurrentPageIndex { get; private set; }
+
+    /// <summary>
+    /// Gets the index of the last page based on the current loaded items.
+    /// </summary>
     public int LastPageIndex => CalculateLastPageIndex();
 
     public VinylLazyCatalog(IHttpService httpService, IFilter<ReleaseVinylDto> filter)
@@ -34,6 +64,9 @@ public sealed class VinylLazyCatalog : IVinylCatalog
         this.ErrorMessage = string.Empty;
     }
 
+    /// <summary>
+    /// Asynchronously loads the next page of vinyl releases.
+    /// </summary>
     public async Task NextAsync()
     {
         CurrentPageIndex++;
@@ -41,6 +74,9 @@ public sealed class VinylLazyCatalog : IVinylCatalog
         await LoadPageAsync(CurrentPageIndex + 1).ConfigureAwait(false);
     }
 
+    /// <summary>
+    /// Asynchronously loads the previous page of vinyl releases.
+    /// </summary>
     public async Task PreviousAsync()
     {
         if (CurrentPageIndex > 1)

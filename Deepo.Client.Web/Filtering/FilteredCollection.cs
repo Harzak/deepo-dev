@@ -3,12 +3,18 @@ using System.Collections.ObjectModel;
 
 namespace Deepo.Client.Web.Filtering;
 
+/// <summary>
+/// Represents an observable collection that can be filtered based on specified criteria.
+/// </summary>
 public sealed class FilteredCollection<T> : ObservableCollection<T>, IFilteredCollection<T> , IDisposable where T : class
 {
     private readonly List<T> _allItems;
     private IFilter<T>? _filter;
     private bool _isFiltering;
 
+    /// <summary>
+    /// Gets or sets the filter applied to this collection.
+    /// </summary>
     public IFilter<T>? Filter
     {
         get => _filter;
