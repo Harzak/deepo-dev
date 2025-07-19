@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Deepo.Framework.Exceptions;
 
-namespace Deepo.Framework.Exceptions;
-
-public class MissingTokenException : System.Exception
+/// <summary>
+/// Represents an exception that is thrown when a required authentication token is missing or unavailable.
+/// </summary>
+public class MissingTokenException : Exception
 {
     public MissingTokenException()
     {

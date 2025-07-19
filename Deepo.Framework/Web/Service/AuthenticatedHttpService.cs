@@ -10,8 +10,14 @@ using System.Threading.Tasks;
 
 namespace Deepo.Framework.Web.Service;
 
+/// <summary>
+/// Provides an abstract HTTP service with automatic authentication token management and verification.
+/// </summary>
 public abstract class AuthenticatedHttpService : HttpService
 {
+    /// <summary>
+    /// Gets the authentication service used for token management.
+    /// </summary>
     protected IAuthenticationHttpService AuthService { get; }
 
     private TokenModel _token;
@@ -30,6 +36,9 @@ public abstract class AuthenticatedHttpService : HttpService
         _token = new TokenModel();
     }
 
+    /// <summary>
+    /// Asynchronously performs an authenticated HTTP GET request to the specified URI endpoint.
+    /// </summary>
     public override async Task<OperationResult<string>> GetAsync(Uri endpoint, CancellationToken cancellationToken)
     {
         if (await VerificationToken(cancellationToken).ConfigureAwait(false))
@@ -42,6 +51,9 @@ public abstract class AuthenticatedHttpService : HttpService
         }
     }
 
+    /// <summary>
+    /// Asynchronously performs an authenticated HTTP POST request to the specified URI endpoint with content.
+    /// </summary>
     public override async Task<OperationResult<string>> PostAsync(Uri endpoint, HttpContent content, CancellationToken cancellationToken)
     {
         if (await VerificationToken(cancellationToken).ConfigureAwait(false))
@@ -72,11 +84,17 @@ public abstract class AuthenticatedHttpService : HttpService
         return true;
     }
 
+    /// <summary>
+    /// Sets the authentication token value for subsequent HTTP requests.
+    /// </summary>
     protected void SetToken(TokenModel newToken)
     {
         _token = newToken;
         SetTokenValue(_token.Value);
     }
 
+    /// <summary>
+    /// Sets the authentication token value for subsequent HTTP requests.
+    /// </summary>
     protected abstract void SetTokenValue(string token);
 }

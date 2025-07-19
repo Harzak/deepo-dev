@@ -3,6 +3,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Deepo.Framework.Web.Endpoint;
 
+/// <summary>
+/// Provides an abstract base class for endpoint consumers that parse text responses into strongly-typed models.
+/// </summary>
 public abstract class EndpointConsumerBase<TResultModel>
 {
     private readonly ILogger _logger;
@@ -12,6 +15,9 @@ public abstract class EndpointConsumerBase<TResultModel>
         _logger = logger;
     }
 
+    /// <summary>
+    /// Attempts to parse the specified text into the result model type with error handling.
+    /// </summary>
     public bool TryParse(string text, out TResultModel? result)
     {
         if (!string.IsNullOrEmpty(text?.Trim()))
@@ -38,6 +44,9 @@ public abstract class EndpointConsumerBase<TResultModel>
         return false;
     }
 
+    /// <summary>
+    /// Parses the specified text into the result model type.
+    /// </summary>
     protected abstract TResultModel Parse(string text);
 }
 
