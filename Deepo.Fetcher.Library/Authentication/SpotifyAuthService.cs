@@ -6,9 +6,12 @@ using Deepo.Framework.Web.Model;
 using Deepo.Framework.Web.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+
+[assembly: InternalsVisibleTo("Deepo.Fetcher.Library.Tests")]
 
 namespace Deepo.Fetcher.Library.Authentication;
 
@@ -16,7 +19,7 @@ namespace Deepo.Fetcher.Library.Authentication;
 /// Spotify-specific implementation of the authentication HTTP service.
 /// Handles OAuth2 client credentials flow for Spotify API authentication.
 /// </summary>
-internal class SpotifyAuthService : HttpService, IAuthenticationHttpService
+internal sealed class SpotifyAuthService : HttpService, IAuthenticationHttpService
 {
     private readonly HttpServiceOption _options;
 
@@ -48,7 +51,7 @@ internal class SpotifyAuthService : HttpService, IAuthenticationHttpService
 
         OperationResult<string> response = await base.PostAsync("api/token", content, cancellationToken).ConfigureAwait(false);
 
-        if (response != null && response.IsSuccess && response.HasContent)
+        if (response != null && response.IsSuccess && !string.IsNullOrEmpty(response.Content))
         {
             SpotifyToken? spotifyToken = JsonSerializer.Deserialize<SpotifyToken>(response.Content);
 

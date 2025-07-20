@@ -12,7 +12,7 @@ namespace Deepo.Fetcher.Library.Strategies.Vinyl;
 /// Strategy for searching Discogs releases by artist name.
 /// Implements search logic that finds recent releases (within 50 days) for a specified artist.
 /// </summary>
-internal class DiscogsSearchByArtistsStrategy
+internal sealed class DiscogsSearchByArtistsStrategy
 {
     private const int DAY_SEARCH_LIMIT = 50;
 

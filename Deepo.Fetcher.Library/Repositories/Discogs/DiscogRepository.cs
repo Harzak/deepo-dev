@@ -7,6 +7,10 @@ using Deepo.Framework.Time;
 using Deepo.Framework.Web.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Deepo.Fetcher.Library.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 
 namespace Deepo.Fetcher.Library.Repositories.Discogs;
 
@@ -14,7 +18,7 @@ namespace Deepo.Fetcher.Library.Repositories.Discogs;
 /// Provides access to Discogs API data.
 /// Handles searching for albums and retrieving release information from the Discogs database.
 /// </summary>
-internal class DiscogRepository : HttpService, IDiscogRepository
+internal sealed class DiscogRepository : HttpService, IDiscogRepository
 {
     private readonly HttpServiceOption _options;
     private readonly EndPointSearch _endPointSearch;

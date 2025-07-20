@@ -1,5 +1,6 @@
 ﻿using Deepo.Framework.LogMessages;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace Deepo.Framework.Web.Endpoint;
 
@@ -27,11 +28,7 @@ public abstract class EndpointConsumerBase<TResultModel>
                 result = Parse(text);
                 return true;
             }
-            catch (FormatException ex)
-            {
-                HttpClientLogs.UnableToParse(_logger, text, typeof(TResultModel), ex);
-            }
-            catch (InvalidOperationException ex)
+            catch (Exception ex) when (ex is FormatException or InvalidOperationException or JsonException)
             {
                 HttpClientLogs.UnableToParse(_logger, text, typeof(TResultModel), ex);
             }

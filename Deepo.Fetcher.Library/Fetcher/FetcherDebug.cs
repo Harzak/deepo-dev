@@ -7,7 +7,7 @@ namespace Deepo.Fetcher.Library.Fetcher;
 /// A debug implementation of a fetcher worker used for testing and debugging purposes.
 /// Provides a simple console output when executed without performing actual data fetching operations.
 /// </summary>
-internal class FetcherDebug : CancellableWorker
+internal sealed class FetcherDebug : CancellableWorker
 {
     internal FetcherDebug(ILogger logger)
     : base(logger)

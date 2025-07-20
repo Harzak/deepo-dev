@@ -11,7 +11,7 @@ namespace Deepo.Fetcher.Library.Fetcher;
 /// <summary>
 /// Creates specific types of fetcher worker instances.
 /// </summary>
-internal class FetcherFactory : IFetcherFactory
+internal sealed class FetcherFactory : IFetcherFactory
 {
     private readonly ILogger _logger;
     private readonly IOptions<FetcherOptions> _fetcherOptions;

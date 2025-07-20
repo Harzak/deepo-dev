@@ -16,7 +16,7 @@ namespace Deepo.Fetcher.Library.Repositories.Spotify;
 /// Provides access to Spotify API data.
 /// Handles authentication and retrieval of music releases and albums from Spotify.
 /// </summary>
-internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
+internal sealed class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
 {
     private readonly HttpServiceOption _options;
     private readonly EndPointSearchAlbum _searchAlbumEndpoint;
@@ -62,6 +62,10 @@ internal class SpotifyRepository : AuthenticatedHttpService, ISpotifyRepository
                     yield return result.WithSuccess().WithValue(album);
                 }
 
+            }
+            else
+            {
+                break;
             }
         }
     }
