@@ -10,7 +10,7 @@ namespace Deepo.Fetcher.Library.Repositories.Discogs.Endpoint;
 /// Endpoint consumer for performing search operations in the Discogs API.
 /// Handles requests to the enpoint: "/releases"
 /// </summary>
-internal class EndPointSearch : MultipleResultEndpointConsumer<IEnumerable<DtoDiscogsAlbum>?>
+internal sealed class EndPointSearch : MultipleResultEndpointConsumer<IEnumerable<DtoDiscogsAlbum>?>
 {
     private const string ENDPOINT_NAME = "database/search";   
 

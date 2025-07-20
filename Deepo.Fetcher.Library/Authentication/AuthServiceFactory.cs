@@ -11,7 +11,7 @@ namespace Deepo.Fetcher.Library.Authentication;
 /// Creates authentication service instances.
 /// Provides factory methods for creating authentication services for different providers.
 /// </summary>
-internal class AuthServiceFactory : IAuthServiceFactory
+internal sealed class AuthServiceFactory : IAuthServiceFactory
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IOptions<HttpServicesOption> _options;

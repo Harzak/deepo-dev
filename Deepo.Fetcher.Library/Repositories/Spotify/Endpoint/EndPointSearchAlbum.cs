@@ -13,7 +13,7 @@ namespace Deepo.Fetcher.Library.Repositories.Spotify.Endpoint;
 /// Endpoint consumer for searching albums in the Spotify API.
 /// Implements pagination support and provides methods for album search operations.
 /// </summary>
-internal class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<Dto.Spotify.DtoSpotifyAlbum>?>, IPaginableEndpointQuery
+internal sealed class EndPointSearchAlbum : MultipleResultEndpointConsumer<IEnumerable<Dto.Spotify.DtoSpotifyAlbum>?>, IPaginableEndpointQuery
 {
     private const int OFFSET_MAX_RANGE = 1000;
     private const int LIMIT_MAX_RANGE = 50;

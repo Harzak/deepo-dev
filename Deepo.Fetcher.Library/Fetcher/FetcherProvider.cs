@@ -12,7 +12,7 @@ namespace Deepo.Fetcher.Library.Fetcher;
 /// Retrieves fetcher configurations from the database and creates corresponding worker instances.
 /// Acts as a factory and repository for fetcher workers.
 /// </summary>
-internal class FetcherProvider : IFetcherProvider
+internal sealed class FetcherProvider : IFetcherProvider
 {
     private readonly IFetcherFactory _fetcherFactory;
     private readonly IFetcherRepository _fetcherRepository;

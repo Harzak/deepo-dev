@@ -13,7 +13,7 @@ namespace Deepo.Fetcher.Library.Fetcher.Vinyl;
 /// Vinyl-specific fetcher implementation that processes vinyl record data.
 /// Uses a vinyl fetch pipeline to discover and process vinyl releases from various sources.
 /// </summary>
-internal class FetcherVinyl : CancellableWorker
+internal sealed class FetcherVinyl : CancellableWorker
 {
     private readonly ILogger _logger;
     private readonly IVinylFetchPipelineFactory _pipelineFactory;

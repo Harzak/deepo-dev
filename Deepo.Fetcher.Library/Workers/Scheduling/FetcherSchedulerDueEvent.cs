@@ -17,7 +17,7 @@ namespace Deepo.Fetcher.Library.Workers.Scheduling;
 /// This class implements <see cref="BackgroundService"/> to efficiently handle long delays (hours to days)
 /// without blocking threads, for cron-based scheduling scenarios.
 /// </summary>
-internal class FetcherSchedulerDueEvent : BackgroundService, IFetcherSchedulerDueEvent
+internal sealed class FetcherSchedulerDueEvent : BackgroundService, IFetcherSchedulerDueEvent
 {
     private readonly IDateTimeFacade _dateTimeProvider;
     private readonly ILogger _logger;
