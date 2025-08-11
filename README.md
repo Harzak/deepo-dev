@@ -1,7 +1,7 @@
 </br>
 
 A small personal project to keep track of the latest releases (vinyl, movie...)  
-This app was built during my spare time as a way to explore and pratice full-stack development, it has no pretensions and no commercial purpose.
+This app was built during my spare time as a way to explore and practice full-stack development, it has no pretensions and no commercial purpose.
 
 </br>
 
